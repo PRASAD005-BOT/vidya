@@ -147,9 +147,39 @@ This project has the Django application in the `VidyAI` subdirectory. The deploy
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licens![dashboard2](https://github.com/user-attachments/assets/3765befe-060d-4dca-be62-e0037396c01b)
+ed under the MIT Licen![multilang](https://github.com/user-attachments/assets/dfaa![mult![generate quiz](https://github.com/user-attachments/assets/f3f79![math puzzeles](https://github.com/user-attachments/assets/52d8acf4-7f62-49d8-912e-c2606dedb214)
+b7a-8dfd-![Analysis of![streak status](https://github.com/user-attachments/assets/c3f2f55a-10b4-4abe-8d02-b82dd7cb3e66)
+ quiz](https://github.com/user-a![streak](https://github.com/user-attachments/assets/d701f0cd-01c5![user analysis](https://github.com/user-attachments/assets/fa3d04bf-5ca6-48de-a74b-2b66d0fcd956)
+-4cea-9842-f72c47ecfba6)
+tt![cam w![cerification and progress](https://github.com/user-attachme![Quiz](https://github.com/user-attachments/assets/0cc249c9-40c9-47b5-8de6-485e06c15b9f)
+nts/assets/4f4bd0c0-c635-4061-9448-7e48f2c93489)
+ith emotions](https://github.com/user-attachments/assets/3fb83905-614c-463b-9ffa-734795871410)![learning by quizzes](https://github.com/user-attachments/assets/f64eb92d-2d4f-444b![word master](https://github.com/user-attachments/assets/6c466394-e9ff-4f88-b871-c43fe925fef8)
+-80a1-3445faad6f75)
 
-## Acknowledgements
+achments/assets/1a6d85fc-d897-41cb-a856![emotion detection](https://github.com/user-att![v![learning by games](https://github.com/user-attachments/assets/82c1da99-1f04-4a9e-babe-8829ce027736)
+ideo mentors](https://github.com/user-attachments/assets/bd0d1ce6-926a-423f-a8c3-7d69a3a58489)
+ac![about](https://github.com/user-attachments/assets/2c86a91f-bafe-4a35-b27c-e8874639d4e8)
+hments/assets/f0620167-![mentors](https://github.com/user-attachments/assets/1dae96b6-ebb7-45a5-b99f-75b5a2787bf4)
+0dd7-4ff6-a545-c16e29b0b76a)
+-5fd44f989a0b)
+412b-8c4b-209f92db3311)
+i lang](https://github.![mentors](ht![automatic dout ask](https://github.com/user-attachments/assets/3cc17f0c-09a1-42fd-ac94-fb60acfba4c6)
+tps://github.com/user-attachments/assets/6f14f6e5-72ea-4940-a017-a51093c652ca)
+com/user-attachments/assets/3c4d350d-0c19-4acd-9854-240413cc90b0![learn topics](https://github.com/user-attachments/assets/a333b41b-4d14-4bf6-8c08-388c583d5104)
+)![lessons creator](https://github.com/user-attachments/assets/c50bc25b-d8a3-4c41-99bb-62409a8f9dfd)
+
+cd11-d54b-48b2-8956-e92f060![correction of quiz](https://github.com/user-attachments/assets/9ffdbd7a-bd4f-48dc-b309-f9db385c50a5)
+de750)
+se - see the LICENSE![voice sppech mutlilanguage](https://github.com/user-attachments/assets/e5bfacff-a5a1-4df8-9e2a-36f9ca6c65e5)
+ file for details.
+
+## Acknowledgements![quiz with time](https://github.com/user-attachments/assets/2eb0cd7e![Quiz](https://github.com/user-attachments/assets/aaa794e9-0ced-411c-9a88-9f069b176289)
+-62d8-4d30-82af-4f8bd105d93b)
+
+![night visoin dark ![dashboard](https://github.com/user-attachments/assets/ae715da1-9789-4c78-8c05-c8a40d6b4817)
+mode](https://github.com/user-attachments/assets/ed24d5![profile update](https://github.com/user-attachments/assets/6235133f-a489-4cdf-81ad-5b7ab18fcdfd)
+f0-7ad2-4386-b33d-9876aae08148)
 
 - Google Gemini API for AI capabilities
 - National Education Policy (NEP) for educational framework guidance
