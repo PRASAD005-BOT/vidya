@@ -1,10 +1,13 @@
 services:
-  # Web service for Django app
   - type: web
     name: vidyai
     runtime: python
-    buildCommand: pip install -r requirements.txt && cd VidyAI && python manage.py collectstatic --no-input && python manage.py migrate
-    startCommand: cd VidyAI && gunicorn vidyai.wsgi:application
+    buildCommand: |
+      pip install -r requirements.txt
+      cd VidyAI
+      python manage.py collectstatic --no-input
+      python manage.py migrate
+    startCommand: cd VidyAI && gunicorn vidyai.wsgi:application --bind 0.0.0.0:$PORT
     envVars:
       - key: SECRET_KEY
         generateValue: true
@@ -18,10 +21,5 @@ services:
         fromDatabase:
           name: vidyai_db
           property: connectionString
-
-# Database service for PostgreSQL
-databases:
-  - name: vidyai_db
-    plan: free
-    databaseName: vidyai
-    user: vidyai 
+      - key: ALLOWED_HOSTS
+        value: "*"
