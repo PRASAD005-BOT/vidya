@@ -1,0 +1,389 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - VidyAI++{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chat-container {
+        height: 75vh;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .chat-sidebar {
+        height: 75vh;
+        overflow-y: auto;
+        border-right: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .chat-sidebar .list-group-item {
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+    }
+    
+    .chat-sidebar .list-group-item:first-child {
+        border-top: none;
+    }
+    
+    .chat-sidebar .list-group-item.active {
+        background-color: rgba(67, 97, 238, 0.1);
+        color: var(--primary-color);
+        border-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    .chat-messages {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .message {
+        max-width: 75%;
+        margin-bottom: 1rem;
+        padding: 0.75rem 1rem;
+        border-radius: 1rem;
+        position: relative;
+    }
+    
+    .message-ai {
+        align-self: flex-start;
+        background-color: #f0f2f5;
+        border-bottom-left-radius: 0.25rem;
+    }
+    
+    .message-user {
+        align-self: flex-end;
+        background-color: #4361ee;
+        color: white;
+        border-bottom-right-radius: 0.25rem;
+    }
+    
+    .message-time {
+        font-size: 0.7rem;
+        color: rgba(0, 0, 0, 0.5);
+        margin-top: 0.25rem;
+        text-align: right;
+    }
+    
+    .message-user .message-time {
+        color: rgba(255, 255, 255, 0.75);
+    }
+    
+    .chat-input {
+        padding: 1rem;
+        background-color: #fff;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .chat-input-container {
+        display: flex;
+        align-items: center;
+    }
+    
+    .chat-input textarea {
+        border-radius: 1.5rem;
+        padding: 0.75rem 1rem;
+        resize: none;
+    }
+    
+    .btn-send {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .btn-voice {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .new-chat-btn {
+        border-radius: 0;
+        text-align: left;
+        padding: 0.75rem 1rem;
+    }
+    
+    pre {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+    }
+    
+    code {
+        font-family: monospace;
+    }
+    
+    /* Typing indicator */
+    .typing-indicator {
+        display: none;
+        align-self: flex-start;
+        background-color: #f0f2f5;
+        padding: 0.75rem 1rem;
+        border-radius: 1rem;
+        border-bottom-left-radius: 0.25rem;
+        margin-bottom: 1rem;
+    }
+    
+    .typing-indicator span {
+        height: 10px;
+        width: 10px;
+        float: left;
+        margin: 0 1px;
+        background-color: #9E9EA1;
+        display: block;
+        border-radius: 50%;
+        opacity: 0.4;
+    }
+    
+    .typing-indicator span:nth-of-type(1) {
+        animation: 1s blink infinite 0.3333s;
+    }
+    
+    .typing-indicator span:nth-of-type(2) {
+        animation: 1s blink infinite 0.6666s;
+    }
+    
+    .typing-indicator span:nth-of-type(3) {
+        animation: 1s blink infinite 0.9999s;
+    }
+    
+    @keyframes blink {
+        50% {
+            opacity: 1;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+    <div class="row">
+        <!-- Sidebar with Chat History -->
+        <div class="col-md-3 chat-sidebar">
+            <a href="{% url 'tutor:ai_chat' %}" class="btn btn-primary w-100 mb-3 new-chat-btn">
+                <i class="fas fa-plus me-2"></i> New Chat
+            </a>
+            
+            <h6 class="px-3 mt-4 mb-2">Recent Chats</h6>
+            <div class="list-group list-group-flush">
+                {% for past_chat in all_chats %}
+                <a href="{% url 'tutor:ai_chat' %}?chat_id={{ past_chat.id }}" class="list-group-item list-group-item-action {% if past_chat.id == chat.id %}active{% endif %}">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1 text-truncate">{{ past_chat.title }}</h6>
+                        <small>{{ past_chat.updated_at|date:"d M" }}</small>
+                    </div>
+                    <p class="mb-1 text-truncate">
+                        {% if past_chat.subject %}
+                        <small><i class="fas fa-book me-1"></i> {{ past_chat.subject.name }}</small>
+                        {% endif %}
+                    </p>
+                </a>
+                {% empty %}
+                <div class="text-center py-4">
+                    <p class="text-muted">No chat history yet</p>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <h6 class="px-3 mt-4 mb-2">Start a Subject Chat</h6>
+            <div class="list-group list-group-flush">
+                {% for subject in subjects %}
+                <a href="{% url 'tutor:ai_chat' %}?subject_id={{ subject.id }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-book me-2"></i> {{ subject.name }}
+                </a>
+                {% empty %}
+                <div class="text-center py-4">
+                    <p class="text-muted">No subjects available</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Main Chat Area -->
+        <div class="col-md-9">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">{{ chat.title }}</h5>
+                    {% if chat.subject %}
+                    <span class="badge bg-primary">{{ chat.subject.name }}</span>
+                    {% endif %}
+                </div>
+                
+                <div class="chat-container">
+                    <!-- Chat Messages -->
+                    <div class="chat-messages" id="chatMessages">
+                        {% for message in messages %}
+                        <div class="message {% if message.message_type == 'user' %}message-user{% else %}message-ai{% endif %}">
+                            {{ message.content|linebreaks }}
+                            <div class="message-time">
+                                {{ message.timestamp|time:"H:i" }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+                        <!-- Typing indicator -->
+                        <div class="typing-indicator" id="typingIndicator">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Chat Input -->
+                    <div class="chat-input">
+                        <form id="chatForm" method="post" action="{% url 'tutor:ai_chat' %}?chat_id={{ chat.id }}">
+                            {% csrf_token %}
+                            <div class="chat-input-container">
+                                <button type="button" class="btn btn-voice me-2" id="voiceInputBtn">
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                                <textarea class="form-control me-2" id="messageInput" name="message" rows="1" placeholder="Type your message here..."></textarea>
+                                <button type="submit" class="btn btn-primary btn-send">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatMessages = document.getElementById('chatMessages');
+        const chatForm = document.getElementById('chatForm');
+        const messageInput = document.getElementById('messageInput');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const voiceInputBtn = document.getElementById('voiceInputBtn');
+        
+        // Scroll to bottom of chat
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // Call scrollToBottom on page load
+        scrollToBottom();
+        
+        // Auto-resize textarea
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+        
+        // Handle form submission with AJAX
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const message = messageInput.value.trim();
+            if (!message) return;
+            
+            // Add user message to chat
+            const userMessageElement = document.createElement('div');
+            userMessageElement.classList.add('message', 'message-user');
+            userMessageElement.innerHTML = `${message.replace(/\n/g, '<br>')}<div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>`;
+            chatMessages.appendChild(userMessageElement);
+            
+            // Clear input
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+            
+            // Show typing indicator
+            typingIndicator.style.display = 'block';
+            scrollToBottom();
+            
+            // Send message to server
+            const formData = new FormData(chatForm);
+            
+            fetch(chatForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide typing indicator
+                typingIndicator.style.display = 'none';
+                
+                // Add AI response to chat
+                const aiMessageElement = document.createElement('div');
+                aiMessageElement.classList.add('message', 'message-ai');
+                aiMessageElement.innerHTML = `${data.ai_message.replace(/\n/g, '<br>')}<div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>`;
+                chatMessages.appendChild(aiMessageElement);
+                
+                // Update chat title if changed
+                if (data.chat_title) {
+                    document.querySelector('.card-header h5').textContent = data.chat_title;
+                }
+                
+                scrollToBottom();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Hide typing indicator
+                typingIndicator.style.display = 'none';
+                
+                // Show error message
+                const errorMessageElement = document.createElement('div');
+                errorMessageElement.classList.add('message', 'message-ai');
+                errorMessageElement.innerHTML = `Sorry, there was an error processing your request. Please try again.<div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>`;
+                chatMessages.appendChild(errorMessageElement);
+                
+                scrollToBottom();
+            });
+        });
+        
+        // Voice input placeholder
+        voiceInputBtn.addEventListener('click', function() {
+            alert('Voice input is not implemented in this demo. In a full version, this would activate speech recognition.');
+        });
+        
+        // Handle Enter key to submit form (Shift+Enter for new line)
+        messageInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                chatForm.dispatchEvent(new Event('submit'));
+            }
+        });
+        
+        // Format code blocks in AI messages
+        function formatCodeBlocks() {
+            const aiMessages = document.querySelectorAll('.message-ai');
+            
+            aiMessages.forEach(message => {
+                // Find text that looks like code blocks and wrap in <pre><code> tags
+                let html = message.innerHTML;
+                
+                // Replace ```code``` blocks
+                html = html.replace(/```([^`]+)```/g, '<pre><code>$1</code></pre>');
+                
+                // Replace `inline code` blocks
+                html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+                
+                message.innerHTML = html;
+            });
+        }
+        
+        formatCodeBlocks();
+    });
+</script>
+{% endblock %}

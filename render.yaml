@@ -1,0 +1,27 @@
+services:
+  # Web service for Django app
+  - type: web
+    name: vidyai
+    runtime: python
+    buildCommand: pip install -r requirements.txt && cd VidyAI && python manage.py collectstatic --no-input && python manage.py migrate
+    startCommand: cd VidyAI && gunicorn vidyai.wsgi:application
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: 3.9.16
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: DJANGO_SETTINGS_MODULE
+        value: vidyai.settings
+      - key: DATABASE_URL
+        fromDatabase:
+          name: vidyai_db
+          property: connectionString
+
+# Database service for PostgreSQL
+databases:
+  - name: vidyai_db
+    plan: free
+    databaseName: vidyai
+    user: vidyai 

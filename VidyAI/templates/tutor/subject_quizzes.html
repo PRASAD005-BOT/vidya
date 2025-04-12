@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - VidyAI++{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'tutor:tutor_home' %}">AI Tutor</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'tutor:subjects' %}">Subjects</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ subject.name }} Quizzes</li>
+        </ol>
+    </nav>
+    
+    <div class="row align-items-center mb-4">
+        <div class="col-md-8">
+            <h1 class="mb-0">{{ subject.name }} Quizzes</h1>
+            <p class="lead text-muted">Test your knowledge in {{ subject.name }}</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a href="{% url 'tutor:ai_chat' %}?subject_id={{ subject.id }}" class="btn btn-primary">
+                <i class="fas fa-comment-dots me-1"></i> Chat with AI Tutor
+            </a>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        {% for quiz in quizzes %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ quiz.title }}</h5>
+                                    <p class="card-text text-muted">
+                                        <i class="fas fa-question-circle me-1"></i> {{ quiz.question_count }} questions
+                                        <br>
+                                        <i class="fas fa-signal me-1"></i> Grade {{ quiz.grade_level }}
+                                    </p>
+                                    
+                                    {% if quiz.has_attempt %}
+                                    <div class="mb-3">
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ quiz.score_percentage }}%;" aria-valuenow="{{ quiz.score_percentage }}" aria-valuemin="0" aria-valuemax="100">
+                                                {{ quiz.score_percentage }}%
+                                            </div>
+                                        </div>
+                                        <div class="text-muted small mt-1">
+                                            Last attempt: {{ quiz.last_attempt_date|date:"d M, Y" }}
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    <a href="{% url 'tutor:quiz_detail' quiz.id %}" class="btn btn-primary w-100">
+                                        {% if quiz.has_attempt %}
+                                        <i class="fas fa-redo me-1"></i> Try Again
+                                        {% else %}
+                                        <i class="fas fa-play me-1"></i> Start Quiz
+                                        {% endif %}
+                                    </a>
+                                    
+                                    <hr class="my-3">
+                                    <button class="btn btn-outline-danger btn-sm w-100 delete-quiz-btn" 
+                                            data-quiz-id="{{ quiz.id }}"
+                                            data-quiz-title="{{ quiz.title }}">
+                                        <i class="fas fa-trash me-1"></i> Delete Quiz
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12 text-center py-5">
+                            <p class="text-muted">No quizzes available for {{ subject.name }} yet.</p>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#generateQuizModal">
+                                <i class="fas fa-plus me-1"></i> Generate Quiz
+                            </button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Generate Quiz Modal -->
+<div class="modal fade" id="generateQuizModal" tabindex="-1" aria-labelledby="generateQuizModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="generateQuizModalLabel">Generate {{ subject.name }} Quiz</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="generateQuizForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="topic" class="form-label">Topic</label>
+                        <input type="text" class="form-control" id="topic" placeholder="e.g., Photosynthesis, Equations">
+                    </div>
+                    <div class="mb-3">
+                        <label for="difficulty" class="form-label">Difficulty</label>
+                        <select class="form-select" id="difficulty">
+                            <option value="easy">Easy</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="questionCount" class="form-label">Number of Questions</label>
+                        <select class="form-select" id="questionCount">
+                            <option value="5">5 questions</option>
+                            <option value="10" selected>10 questions</option>
+                            <option value="15">15 questions</option>
+                            <option value="20">20 questions</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-bolt me-1"></i> Generate Quiz
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Quiz Confirmation Modal -->
+<div class="modal fade" id="deleteQuizModal" tabindex="-1" aria-labelledby="deleteQuizModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteQuizModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the quiz: <strong id="quiz-title-placeholder"></strong>?</p>
+                <p class="text-danger">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteQuizForm" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i> Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const generateQuizForm = document.getElementById('generateQuizForm');
+        const deleteQuizModal = document.getElementById('deleteQuizModal');
+        const quizTitlePlaceholder = document.getElementById('quiz-title-placeholder');
+        const deleteQuizForm = document.getElementById('deleteQuizForm');
+        
+        generateQuizForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const topic = document.getElementById('topic').value.trim();
+            const difficulty = document.getElementById('difficulty').value;
+            const questionCount = document.getElementById('questionCount').value;
+            
+            if (!topic) {
+                alert('Please enter a topic');
+                return;
+            }
+            
+            // In the full implementation, this would send a request to generate_content with content_type=quiz
+            alert('Quiz generation would be implemented in the full version. This would generate a ' + difficulty + ' quiz with ' + questionCount + ' questions about "' + topic + '" for {{ subject.name }}.');
+            
+            // Close the modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('generateQuizModal'));
+            modal.hide();
+        });
+
+        // Handle delete quiz buttons
+        document.querySelectorAll('.delete-quiz-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const quizId = this.getAttribute('data-quiz-id');
+                const quizTitle = this.getAttribute('data-quiz-title');
+                
+                // Set the quiz title in the modal
+                quizTitlePlaceholder.textContent = quizTitle;
+                
+                // Set the form action with from=subject parameter
+                deleteQuizForm.action = `{% url 'tutor:delete_quiz' 0 %}?from=subject`.replace('0', quizId);
+                
+                // Show the modal
+                const modal = new bootstrap.Modal(deleteQuizModal);
+                modal.show();
+            });
+        });
+    });
+</script>
+{% endblock %} 

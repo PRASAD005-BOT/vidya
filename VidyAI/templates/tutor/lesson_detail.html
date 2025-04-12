@@ -1,0 +1,375 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - VidyAI++{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'tutor:tutor_home' %}">AI Tutor</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'tutor:lessons' %}">Lessons</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ lesson.title }}</li>
+        </ol>
+    </nav>
+    
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{{ lesson.title }}</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Lesson progress bar -->
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ progress.completion_percentage }}%;" aria-valuenow="{{ progress.completion_percentage }}" aria-valuemin="0" aria-valuemax="100">
+                            {{ progress.completion_percentage }}% Complete
+                        </div>
+                    </div>
+                    
+                    <!-- Lesson content -->
+                    <div class="lesson-content">
+                        {% if lesson_sections %}
+                            {% for section in lesson_sections %}
+                            <div id="{{ section.id }}" class="lesson-section" {% if not forloop.first %}style="display: none;"{% endif %}>
+                                <h2 class="mb-4 text-primary border-bottom pb-2">{{ section.title }}</h2>
+                                <div class="section-content mb-4">
+                                    {% autoescape off %}
+                                    <div class="rich-text-content">
+                                        {{ section.content|linebreaksbr }}
+                                    </div>
+                                    {% endautoescape %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            {% autoescape off %}
+                            <div class="rich-text-content">
+                                {{ lesson.content|linebreaksbr }}
+                            </div>
+                            {% endautoescape %}
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Navigation buttons -->
+                    <div class="d-flex justify-content-between mt-5">
+                        <button class="btn btn-outline-primary" id="prevSectionBtn">
+                            <i class="fas fa-arrow-left me-1"></i> Previous Section
+                        </button>
+                        <div class="section-indicator">
+                            <span id="currentSectionNumber">1</span> of <span id="totalSections">{{ lesson_sections|length }}</span>
+                        </div>
+                        <button class="btn btn-primary" id="nextSectionBtn">
+                            Next Section <i class="fas fa-arrow-right ms-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Lesson Information</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-book me-2"></i> <strong>Subject:</strong> {{ lesson.subject.name }}</li>
+                        <li class="mb-2"><i class="fas fa-signal me-2"></i> <strong>Grade:</strong> {{ lesson.grade }}</li>
+                        <li class="mb-2"><i class="fas fa-clock me-2"></i> <strong>Duration:</strong> {{ lesson.estimated_duration|default:"20" }} minutes</li>
+                        <li class="mb-2"><i class="fas fa-layer-group me-2"></i> <strong>Difficulty:</strong> {{ lesson.difficulty|title }}</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Lesson Sections</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush" id="sectionsList">
+                        {% if lesson.content %}
+                            {% for section in lesson_sections %}
+                            <button class="list-group-item list-group-item-action {% if forloop.first %}active{% endif %}" 
+                                    data-section-id="{{ section.id }}">
+                                {{ forloop.counter }}. {{ section.title }}
+                            </button>
+                            {% endfor %}
+                        {% else %}
+                            <div class="list-group-item text-center py-3">
+                                <p class="text-muted mb-0">No sections available</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Additional Resources</h5>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'tutor:ai_chat' %}?subject_id={{ lesson.subject.id }}" class="btn btn-primary w-100 mb-3">
+                        <i class="fas fa-comment-dots me-1"></i> Ask AI Tutor
+                    </a>
+                    <a href="#" class="btn btn-outline-primary w-100 mb-3" id="takeQuizBtn">
+                        <i class="fas fa-question-circle me-1"></i> Take Practice Quiz
+                    </a>
+                    <a href="#" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-download me-1"></i> Download as PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Practice Quiz Modal -->
+<div class="modal fade" id="practiceQuizModal" tabindex="-1" aria-labelledby="practiceQuizModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="practiceQuizModalLabel">{{ lesson.title }} - Practice Quiz</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>This would contain practice questions related to the lesson in a full implementation.</p>
+                <form>
+                    <div class="mb-4">
+                        <p><strong>1. Sample question related to the lesson?</strong></p>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="q1" id="q1a" value="a">
+                            <label class="form-check-label" for="q1a">Option A</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="q1" id="q1b" value="b">
+                            <label class="form-check-label" for="q1b">Option B</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="q1" id="q1c" value="c">
+                            <label class="form-check-label" for="q1c">Option C</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p><strong>2. Another sample question?</strong></p>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="q2" id="q2a" value="a">
+                            <label class="form-check-label" for="q2a">Option A</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="q2" id="q2b" value="b">
+                            <label class="form-check-label" for="q2b">Option B</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="q2" id="q2c" value="c">
+                            <label class="form-check-label" for="q2c">Option C</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Submit Answers</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<style>
+    .rich-text-content {
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+    
+    .rich-text-content p {
+        margin-bottom: 1.2rem;
+        text-align: justify;
+    }
+    
+    .rich-text-content ul, 
+    .rich-text-content ol {
+        margin-bottom: 1.2rem;
+        padding-left: 2rem;
+    }
+    
+    .rich-text-content li {
+        margin-bottom: 0.5rem;
+    }
+    
+    .rich-text-content h3 {
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        color: #0d6efd;
+        font-weight: 600;
+    }
+    
+    .rich-text-content h4 {
+        margin-top: 1.2rem;
+        margin-bottom: 0.8rem;
+        font-weight: 600;
+    }
+    
+    .section-indicator {
+        background-color: #f8f9fa;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        font-weight: 500;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Section navigation
+        const sectionButtons = document.querySelectorAll('#sectionsList button');
+        const prevSectionBtn = document.getElementById('prevSectionBtn');
+        const nextSectionBtn = document.getElementById('nextSectionBtn');
+        const lessonSections = document.querySelectorAll('.lesson-section');
+        const currentSectionNumber = document.getElementById('currentSectionNumber');
+        const totalSections = document.getElementById('totalSections');
+        
+        let currentSectionIndex = 0;
+        
+        // Initialize total sections count
+        if (totalSections && lessonSections.length > 0) {
+            totalSections.textContent = lessonSections.length;
+        }
+        
+        // Disable previous button if on first section
+        if (currentSectionIndex === 0) {
+            prevSectionBtn.disabled = true;
+        }
+        
+        // Disable next button if on last section or no sections
+        if (sectionButtons.length === 0 || currentSectionIndex === sectionButtons.length - 1) {
+            nextSectionBtn.disabled = true;
+        }
+        
+        // Section selection
+        sectionButtons.forEach((button, index) => {
+            button.addEventListener('click', function() {
+                switchToSection(index);
+            });
+        });
+        
+        // Function to switch to a specific section
+        function switchToSection(index) {
+            // Remove active class from all buttons
+            sectionButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to selected button
+            sectionButtons[index].classList.add('active');
+            
+            // Hide all sections
+            lessonSections.forEach(section => section.style.display = 'none');
+            
+            // Show selected section
+            lessonSections[index].style.display = 'block';
+            
+            currentSectionIndex = index;
+            
+            // Update section counter
+            if (currentSectionNumber) {
+                currentSectionNumber.textContent = (index + 1);
+            }
+            
+            // Enable/disable navigation buttons
+            prevSectionBtn.disabled = currentSectionIndex === 0;
+            nextSectionBtn.disabled = currentSectionIndex === sectionButtons.length - 1;
+            
+            // Scroll to top of content
+            lessonSections[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // If this is the first time viewing this section, mark as viewed
+            if (!sectionButtons[index].classList.contains('viewed')) {
+                sectionButtons[index].classList.add('viewed');
+                
+                // Update progress for newly viewed sections
+                updateProgress();
+            }
+        }
+        
+        // Previous section button
+        prevSectionBtn.addEventListener('click', function() {
+            if (currentSectionIndex > 0) {
+                switchToSection(currentSectionIndex - 1);
+            }
+        });
+        
+        // Next section button
+        nextSectionBtn.addEventListener('click', function() {
+            if (currentSectionIndex < sectionButtons.length - 1) {
+                switchToSection(currentSectionIndex + 1);
+            }
+        });
+        
+        // Take quiz button
+        const takeQuizBtn = document.getElementById('takeQuizBtn');
+        if (takeQuizBtn) {
+            takeQuizBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const modal = new bootstrap.Modal(document.getElementById('practiceQuizModal'));
+                modal.show();
+            });
+        }
+        
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            // Left arrow key for previous section
+            if (e.key === 'ArrowLeft' && !prevSectionBtn.disabled) {
+                prevSectionBtn.click();
+            }
+            // Right arrow key for next section
+            else if (e.key === 'ArrowRight' && !nextSectionBtn.disabled) {
+                nextSectionBtn.click();
+            }
+        });
+        
+        // Function to update progress
+        function updateProgress() {
+            // Calculate new progress based on sections viewed
+            const progressBar = document.querySelector('.progress-bar');
+            if (!progressBar) return;
+            
+            // Count viewed sections
+            const viewedSections = document.querySelectorAll('#sectionsList button.viewed').length;
+            const totalSectionsCount = sectionButtons.length;
+            
+            // Calculate new progress based on viewed sections
+            const newProgress = Math.min(100, Math.round((viewedSections / totalSectionsCount) * 100));
+            const currentProgress = parseInt(progressBar.getAttribute('aria-valuenow'));
+            
+            if (newProgress > currentProgress) {
+                progressBar.style.width = newProgress + '%';
+                progressBar.setAttribute('aria-valuenow', newProgress);
+                progressBar.textContent = newProgress + '% Complete';
+                
+                // Send AJAX request to update progress
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                
+                fetch('{% url "tutor:lesson_detail" lesson.id %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        'progress_percentage': newProgress
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        console.error('Failed to update progress');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating progress:', error);
+                });
+            }
+        }
+    });
+</script>
+{% endblock %} 

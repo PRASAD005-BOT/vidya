@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %}VidyAI++ - Multilingual AI Tutoring Platform{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <section class="py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-3">Learn With <span class="text-primary">AI-Powered</span> Tutoring</h1>
+                <p class="lead mb-4">
+                    VidyAI++ provides personalized, multilingual education with AI tutors and human mentors 
+                    to help underprivileged students excel in their studies.
+                </p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                    <a href="{% url 'core:register' %}" class="btn btn-primary btn-lg px-4 me-md-2">Get Started</a>
+                    <a href="{% url 'core:about' %}" class="btn btn-outline-secondary btn-lg px-4">Learn More</a>
+                </div>
+            </div>
+            <div class="col-lg-6 mt-5 mt-lg-0">
+                <img src="https://images.pexels.com/photos/3769981/pexels-photo-3769981.jpeg" class="img-fluid rounded-3 shadow" alt="Students learning with technology">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5">
+        <h2 class="text-center mb-5">Key Features</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-robot text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">AI Tutoring</h5>
+                        <p class="card-text">
+                            Get personalized learning assistance in your native language with our advanced AI tutors.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-chalkboard-teacher text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">Human Mentorship</h5>
+                        <p class="card-text">
+                            Connect with dedicated mentors for guidance, motivation, and personalized support.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-gamepad text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">Gamified Learning</h5>
+                        <p class="card-text">
+                            Learn through fun, engaging games that adapt to your learning style and pace.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="py-5 bg-light rounded-3 p-4">
+        <h2 class="text-center mb-5">Why Choose VidyAI++?</h2>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-language text-primary me-3" style="font-size: 2rem;"></i>
+                    </div>
+                    <div>
+                        <h5>Multilingual Support</h5>
+                        <p>Learn in 10+ Indian languages including Hindi, Tamil, Telugu, Bengali, and more.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-wifi-slash text-primary me-3" style="font-size: 2rem;"></i>
+                    </div>
+                    <div>
+                        <h5>Offline Learning</h5>
+                        <p>Continue learning even without internet using our offline-first technology.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-brain text-primary me-3" style="font-size: 2rem;"></i>
+                    </div>
+                    <div>
+                        <h5>Adaptive Learning</h5>
+                        <p>Content adapts to your learning style: visual, auditory, or kinesthetic.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-universal-access text-primary me-3" style="font-size: 2rem;"></i>
+                    </div>
+                    <div>
+                        <h5>Inclusive Design</h5>
+                        <p>Accessible for all users, including those with limited literacy or abilities.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5 text-center">
+        <h2 class="mb-4">Ready to Start Learning?</h2>
+        <p class="lead mb-4">Join thousands of students already improving their education with VidyAI++</p>
+        <a href="{% url 'core:register' %}" class="btn btn-primary btn-lg px-5">Register Now</a>
+    </section>
+</div>
+{% endblock %} 

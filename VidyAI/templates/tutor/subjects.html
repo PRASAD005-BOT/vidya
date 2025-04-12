@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Subjects - VidyAI++{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Learning Subjects</h1>
+    
+    <div class="row">
+        {% for subject in subjects %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if subject.cover_image %}
+                <img src="{{ subject.cover_image.url }}" class="card-img-top" alt="{{ subject.name }}" style="height: 180px; object-fit: cover;">
+                {% else %}
+                <div class="bg-light text-center py-4">
+                    <i class="fas fa-book-open text-primary" style="font-size: 5rem;"></i>
+                </div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <h5 class="card-title">{{ subject.name }}</h5>
+                    <p class="card-text">{{ subject.description|truncatewords:30 }}</p>
+                    
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'tutor:ai_chat' %}?subject_id={{ subject.id }}" class="btn btn-primary">
+                            <i class="fas fa-comment-dots me-1"></i> Start Chat
+                        </a>
+                        
+                        <div class="btn-group">
+                            <a href="{% url 'tutor:subject_lessons' subject.id %}" class="btn btn-outline-primary">
+                                <i class="fas fa-book-reader me-1"></i> Lessons
+                            </a>
+                            <a href="{% url 'tutor:subject_quizzes' subject.id %}" class="btn btn-outline-primary">
+                                <i class="fas fa-question-circle me-1"></i> Quizzes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center py-5">
+                <i class="fas fa-info-circle fa-3x mb-3"></i>
+                <h4>No Subjects Available</h4>
+                <p>Ask your administrator to add learning subjects to the system.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

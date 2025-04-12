@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Learning Home | VidyAI++{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-animated">
+                <div class="card-body">
+                    <h2 class="gradient-text mb-4"><i class="fas fa-graduation-cap me-2"></i> Learning Center</h2>
+                    <p class="lead">
+                        Welcome to your personalized learning center. Explore interactive learning activities, track your skills, and earn badges as you learn!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <!-- Learning Games -->
+        <div class="col-md-6 mb-4 fade-in">
+            <div class="card h-100 hover-lift card-animated">
+                <div class="card-header bg-gradient-purple text-white">
+                    <h4 class="mb-0"><i class="fas fa-gamepad me-2"></i> Learning Games</h4>
+                </div>
+                <div class="card-body">
+                    <p>Learn through engaging interactive games designed to enhance your understanding and retention.</p>
+                    <div class="d-grid">
+                        <a href="{% url 'learning:learning_games' %}" class="btn btn-primary">
+                            <i class="fas fa-dice me-2"></i> Play Learning Games
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Learning Style -->
+        <div class="col-md-6 mb-4 fade-in">
+            <div class="card h-100 hover-lift card-animated">
+                <div class="card-header bg-gradient-green text-white">
+                    <h4 class="mb-0"><i class="fas fa-brain me-2"></i> Learning Style</h4>
+                </div>
+                <div class="card-body">
+                    <p>Discover your learning style preferences to customize your learning experience for maximum effectiveness.</p>
+                    <div class="d-grid">
+                        <a href="{% url 'learning:learning_style' %}" class="btn btn-success">
+                            <i class="fas fa-brain me-2"></i> Take Learning Style Assessment
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <!-- Skill Heatmap -->
+        <div class="col-md-4 mb-4 slide-in-right">
+            <div class="card h-100 hover-lift card-animated">
+                <div class="card-header bg-gradient-blue text-white">
+                    <h4 class="mb-0"><i class="fas fa-th me-2"></i> Skill Heatmap</h4>
+                </div>
+                <div class="card-body">
+                    <p>Visualize your skill proficiency across different categories with an interactive heatmap.</p>
+                    <div class="d-grid">
+                        <a href="{% url 'learning:skill_heatmap' %}" class="btn btn-info">
+                            <i class="fas fa-th me-2"></i> View Skill Heatmap
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Badges -->
+        <div class="col-md-4 mb-4 slide-in-right">
+            <div class="card h-100 hover-lift card-animated">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0"><i class="fas fa-award me-2"></i> Badges & Certifications</h4>
+                </div>
+                <div class="card-body">
+                    <p>Showcase your achievements and earned credentials from your learning journey.</p>
+                    <div class="d-grid">
+                        <a href="{% url 'learning:badges_showcase' %}" class="btn btn-warning">
+                            <i class="fas fa-medal me-2"></i> View Badges
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Learning Stats -->
+        <div class="col-md-4 mb-4 slide-in-right">
+            <div class="card h-100 hover-lift card-animated">
+                <div class="card-header bg-gradient-pink text-white">
+                    <h4 class="mb-0"><i class="fas fa-chart-line me-2"></i> Learning Stats</h4>
+                </div>
+                <div class="card-body">
+                    <p>Track your learning progress and analyze your performance metrics over time.</p>
+                    <div class="d-grid">
+                        <a href="{% url 'learning:learning_stats' %}" class="btn btn-danger">
+                            <i class="fas fa-chart-pie me-2"></i> View Statistics
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Streak Stats -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-animated">
+                <div class="card-header bg-gradient-orange text-white">
+                    <h4 class="mb-0"><i class="fas fa-fire me-2"></i> Learning Streak</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <p>Maintain a daily learning streak to build habits and earn bonus points. The longer your streak, the greater your rewards!</p>
+                            <div class="d-grid d-md-block">
+                                <a href="{% url 'learning:streak_stats' %}" class="btn btn-orange">
+                                    <i class="fas fa-calendar-check me-2"></i> View Streak Statistics
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="display-1 text-orange">
+                                <i class="fas fa-fire bounce"></i>
+                            </div>
+                            <h2 class="text-orange">{{ streak.current_streak }} Days</h2>
+                            <p class="text-muted">Current Streak</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

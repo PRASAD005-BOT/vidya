@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VidyAI++{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f6f8fc;
+            color: #333;
+        }
+        
+        .navbar {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+        
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: white !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            background-color: rgba(67, 97, 238, 0.1);
+            border-bottom: 1px solid rgba(67, 97, 238, 0.2);
+            font-weight: 600;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+        
+        .display-image {
+            height: 400px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        /* Voice control button */
+        .voice-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        
+        .voice-btn i {
+            font-size: 24px;
+        }
+        
+        /* Accessibility features */
+        .accessibility-panel {
+            position: fixed;
+            top: 70px;
+            right: -250px;
+            width: 250px;
+            background-color: white;
+            border-radius: 10px 0 0 10px;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            transition: right 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .accessibility-panel.visible {
+            right: 0;
+        }
+        
+        .accessibility-toggle {
+            position: absolute;
+            left: -40px;
+            top: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 10px 0 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'core:home' %}">
+                <i class="fas fa-brain me-2"></i>VidyAI++
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:home' %}"><i class="fas fa-home me-1"></i> Home</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:dashboard' %}"><i class="fas fa-tachometer-alt me-1"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tutor:tutor_home' %}"><i class="fas fa-robot me-1"></i> AI Tutor</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mentor:mentor_home' %}"><i class="fas fa-chalkboard-teacher me-1"></i> Mentors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'learning:learning_home' %}"><i class="fas fa-gamepad me-1"></i> Learning Games</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:about' %}"><i class="fas fa-info-circle me-1"></i> About</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-1"></i> {{ user.username }}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{% url 'core:profile' %}"><i class="fas fa-user-circle me-1"></i> Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'core:logout' %}"><i class="fas fa-sign-out-alt me-1"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'core:login' %}" class="btn btn-outline-light me-2"><i class="fas fa-sign-in-alt me-1"></i> Login</a>
+                    <a href="{% url 'core:register' %}" class="btn btn-light"><i class="fas fa-user-plus me-1"></i> Register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Accessibility Panel -->
+    <div class="accessibility-panel" id="accessibilityPanel">
+        <div class="accessibility-toggle" onclick="toggleAccessibility()">
+            <i class="fas fa-universal-access"></i>
+        </div>
+        <h5>Accessibility Options</h5>
+        <div class="mb-3">
+            <label class="form-label">Text Size</label>
+            <div class="btn-group w-100" role="group">
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeFontSize(-1)">A-</button>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeFontSize(0)">Reset</button>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeFontSize(1)">A+</button>
+            </div>
+        </div>
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="highContrastMode" onchange="toggleHighContrast()">
+            <label class="form-check-label" for="highContrastMode">
+                High Contrast Mode
+            </label>
+        </div>
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="dyslexiaFont" onchange="toggleDyslexiaFont()">
+            <label class="form-check-label" for="dyslexiaFont">
+                Dyslexia-friendly Font
+            </label>
+        </div>
+        <button class="btn btn-sm btn-primary w-100" id="voiceCommandBtn">
+            <i class="fas fa-microphone me-1"></i> Voice Commands
+        </button>
+    </div>
+    
+    <!-- Voice Control Button -->
+    <div class="voice-btn" id="voiceBtn">
+        <i class="fas fa-microphone"></i>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        {% if messages %}
+        <div class="messages mt-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>VidyAI++</h5>
+                    <p>Multilingual AI Tutoring & Mentorship Platform for BPL Government School Students</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'core:home' %}" class="text-white">Home</a></li>
+                        <li><a href="{% url 'core:about' %}" class="text-white">About</a></li>
+                        <li><a href="#" class="text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i> contact@vidyai.org</li>
+                        <li><i class="fas fa-phone me-2"></i> +91 123-456-7890</li>
+                    </ul>
+                    <div class="social-icons mt-2">
+                        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 VidyAI++. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Accessibility and Voice Control Scripts -->
+    <script>
+        // Accessibility Panel Toggle
+        function toggleAccessibility() {
+            const panel = document.getElementById('accessibilityPanel');
+            panel.classList.toggle('visible');
+        }
+        
+        // Font Size Control
+        let currentFontSize = 0;
+        function changeFontSize(direction) {
+            const htmlElement = document.documentElement;
+            const body = document.body;
+            
+            // Reset
+            if (direction === 0) {
+                body.style.fontSize = '';
+                currentFontSize = 0;
+                return;
+            }
+            
+            // Increase or decrease
+            currentFontSize += direction;
+            currentFontSize = Math.max(-2, Math.min(4, currentFontSize)); // Limit range
+            
+            body.style.fontSize = `${100 + (currentFontSize * 10)}%`;
+        }
+        
+        // High Contrast Mode
+        function toggleHighContrast() {
+            document.body.classList.toggle('high-contrast');
+            
+            if (document.body.classList.contains('high-contrast')) {
+                document.documentElement.style.setProperty('--primary-color', '#ffff00');
+                document.documentElement.style.setProperty('--secondary-color', '#ff8000');
+                document.body.style.backgroundColor = '#000000';
+                document.body.style.color = '#ffffff';
+            } else {
+                document.documentElement.style.setProperty('--primary-color', '#4361ee');
+                document.documentElement.style.setProperty('--secondary-color', '#3a0ca3');
+                document.body.style.backgroundColor = '#f6f8fc';
+                document.body.style.color = '#333';
+            }
+        }
+        
+        // Dyslexia Font
+        function toggleDyslexiaFont() {
+            if (document.getElementById('dyslexiaFont').checked) {
+                // Load dyslexia-friendly font
+                const fontLink = document.createElement('link');
+                fontLink.id = 'dyslexiaFontLink';
+                fontLink.rel = 'stylesheet';
+                fontLink.href = 'https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap';
+                document.head.appendChild(fontLink);
+                
+                document.body.style.fontFamily = "'Lexend', sans-serif";
+                document.body.style.letterSpacing = '0.5px';
+                document.body.style.wordSpacing = '3px';
+                document.body.style.lineHeight = '1.5';
+            } else {
+                // Remove dyslexia font
+                const fontLink = document.getElementById('dyslexiaFontLink');
+                if (fontLink) {
+                    fontLink.remove();
+                }
+                
+                document.body.style.fontFamily = "'Poppins', sans-serif";
+                document.body.style.letterSpacing = '';
+                document.body.style.wordSpacing = '';
+                document.body.style.lineHeight = '';
+            }
+        }
+        
+        // Voice control functionality (placeholder)
+        document.getElementById('voiceBtn').addEventListener('click', function() {
+            alert('Voice control is not yet implemented in this demo. In a full version, this would activate speech recognition.');
+        });
+        
+        document.getElementById('voiceCommandBtn').addEventListener('click', function() {
+            alert('Voice commands are not yet implemented in this demo. In a full version, this would activate speech recognition.');
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 

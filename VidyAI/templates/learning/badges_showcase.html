@@ -1,0 +1,424 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }} | VidyAI++{% endblock %}
+
+{% block extra_css %}
+<style>
+    .badge-card {
+        border: none;
+        border-radius: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .badge-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    
+    .badge-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        font-size: 2.5rem;
+        color: white;
+    }
+    
+    .badge-bronze {
+        background: linear-gradient(135deg, #cd7f32, #e6bc9c);
+    }
+    
+    .badge-silver {
+        background: linear-gradient(135deg, #C0C0C0, #E8E8E8);
+    }
+    
+    .badge-gold {
+        background: linear-gradient(135deg, #FFD700, #FFF8DC);
+    }
+    
+    .badge-platinum {
+        background: linear-gradient(135deg, #E5E4E2, #FFFFFF);
+    }
+    
+    .certification-card {
+        border: none;
+        border-radius: 15px;
+        background: linear-gradient(135deg, #4361ee, #3a0ca3);
+        color: white;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .certification-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+    
+    .badge-ribbon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 30px;
+        height: 40px;
+        background-color: #f72585;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%);
+    }
+    
+    .progress-container {
+        height: 10px;
+        background-color: rgba(0,0,0,0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        margin-bottom: 5px;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #4361ee, #f72585);
+        border-radius: 5px;
+        transition: width 1s ease-in-out;
+    }
+    
+    .badge-empty {
+        opacity: 0.3;
+        filter: grayscale(1);
+    }
+    
+    .confetti-animation {
+        position: relative;
+    }
+    
+    .confetti-animation::before {
+        content: "";
+        position: absolute;
+        top: -20px;
+        left: -20px;
+        right: -20px;
+        bottom: -20px;
+        background-image: 
+            radial-gradient(circle, #f72585 4px, transparent 4px),
+            radial-gradient(circle, #4361ee 3px, transparent 3px),
+            radial-gradient(circle, #ffbe0b 5px, transparent 5px);
+        background-size: 50px 50px;
+        animation: confetti 10s linear infinite;
+        opacity: 0;
+        z-index: -1;
+    }
+    
+    .confetti-animation:hover::before {
+        opacity: 0.6;
+    }
+    
+    @keyframes confetti {
+        0% {
+            background-position: 0 0, 25px 25px, 10px 10px;
+        }
+        100% {
+            background-position: 50px 50px, 75px 75px, 60px 60px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-animated bg-gradient-purple text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h2 class="mb-0"><i class="fas fa-award me-2 bounce"></i> Digital Badges & Certifications</h2>
+                            <p class="mb-0">Showcase your achievements and skills</p>
+                        </div>
+                        <div class="text-center">
+                            <h3 class="mb-0">{{ earned_badges }} / {{ total_badges }}</h3>
+                            <p class="mb-0 small">Badges Earned</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Progress Stats -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3 mb-md-0">
+            <div class="card h-100 card-animated">
+                <div class="card-body">
+                    <h4 class="card-title"><i class="fas fa-medal text-primary me-2"></i> Badge Progress</h4>
+                    <div class="progress-container">
+                        <div class="progress-fill" data-progress="{{ badges_progress }}"></div>
+                    </div>
+                    <p class="mb-0">You've earned {{ earned_badges }} out of {{ total_badges }} available badges</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100 card-animated">
+                <div class="card-body">
+                    <h4 class="card-title"><i class="fas fa-certificate text-success me-2"></i> Certification Progress</h4>
+                    <div class="progress-container">
+                        <div class="progress-fill" data-progress="{{ certs_progress }}"></div>
+                    </div>
+                    <p class="mb-0">You've earned {{ earned_certs }} out of {{ total_certs }} available certifications</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Badges by Level -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-animated">
+                <div class="card-header">
+                    <h3 class="mb-0"><i class="fas fa-trophy text-warning me-2"></i> Your Badge Collection</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Platinum Badges -->
+                    <h4 class="gradient-text mb-3">Platinum Badges</h4>
+                    <div class="row mb-4">
+                        {% for badge in badges_by_level.platinum %}
+                        <div class="col-6 col-md-3 mb-3 fade-in" data-counter="{{ forloop.counter }}">
+                            <div class="card badge-card confetti-animation">
+                                <div class="card-body text-center">
+                                    <div class="badge-icon badge-platinum">
+                                        <i class="{{ badge.badge.icon }}"></i>
+                                    </div>
+                                    <h5>{{ badge.badge.name }}</h5>
+                                    <p class="text-muted mb-0 small">{{ badge.badge.description|truncatechars:60 }}</p>
+                                    <div class="mt-2 text-muted">
+                                        <small>Earned: {{ badge.earned_date|date:"M d, Y" }}</small>
+                                    </div>
+                                    <div class="badge-ribbon">P</div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12">
+                            <div class="alert alert-light">
+                                <i class="fas fa-info-circle me-2"></i> You haven't earned any Platinum badges yet. Complete advanced achievements to unlock them!
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Gold Badges -->
+                    <h4 class="gradient-text mb-3">Gold Badges</h4>
+                    <div class="row mb-4">
+                        {% for badge in badges_by_level.gold %}
+                        <div class="col-6 col-md-3 mb-3 fade-in" data-counter="{{ forloop.counter }}">
+                            <div class="card badge-card">
+                                <div class="card-body text-center">
+                                    <div class="badge-icon badge-gold">
+                                        <i class="{{ badge.badge.icon }}"></i>
+                                    </div>
+                                    <h5>{{ badge.badge.name }}</h5>
+                                    <p class="text-muted mb-0 small">{{ badge.badge.description|truncatechars:60 }}</p>
+                                    <div class="mt-2 text-muted">
+                                        <small>Earned: {{ badge.earned_date|date:"M d, Y" }}</small>
+                                    </div>
+                                    <div class="badge-ribbon">G</div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12">
+                            <div class="alert alert-light">
+                                <i class="fas fa-info-circle me-2"></i> You haven't earned any Gold badges yet. Keep learning to unlock them!
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Silver Badges -->
+                    <h4 class="gradient-text mb-3">Silver Badges</h4>
+                    <div class="row mb-4">
+                        {% for badge in badges_by_level.silver %}
+                        <div class="col-6 col-md-3 mb-3 fade-in" data-counter="{{ forloop.counter }}">
+                            <div class="card badge-card">
+                                <div class="card-body text-center">
+                                    <div class="badge-icon badge-silver">
+                                        <i class="{{ badge.badge.icon }}"></i>
+                                    </div>
+                                    <h5>{{ badge.badge.name }}</h5>
+                                    <p class="text-muted mb-0 small">{{ badge.badge.description|truncatechars:60 }}</p>
+                                    <div class="mt-2 text-muted">
+                                        <small>Earned: {{ badge.earned_date|date:"M d, Y" }}</small>
+                                    </div>
+                                    <div class="badge-ribbon">S</div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12">
+                            <div class="alert alert-light">
+                                <i class="fas fa-info-circle me-2"></i> You haven't earned any Silver badges yet. Continue your learning journey to unlock them!
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Bronze Badges -->
+                    <h4 class="gradient-text mb-3">Bronze Badges</h4>
+                    <div class="row">
+                        {% for badge in badges_by_level.bronze %}
+                        <div class="col-6 col-md-3 mb-3 fade-in" data-counter="{{ forloop.counter }}">
+                            <div class="card badge-card">
+                                <div class="card-body text-center">
+                                    <div class="badge-icon badge-bronze">
+                                        <i class="{{ badge.badge.icon }}"></i>
+                                    </div>
+                                    <h5>{{ badge.badge.name }}</h5>
+                                    <p class="text-muted mb-0 small">{{ badge.badge.description|truncatechars:60 }}</p>
+                                    <div class="mt-2 text-muted">
+                                        <small>Earned: {{ badge.earned_date|date:"M d, Y" }}</small>
+                                    </div>
+                                    <div class="badge-ribbon">B</div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12">
+                            <div class="alert alert-light">
+                                <i class="fas fa-info-circle me-2"></i> You haven't earned any Bronze badges yet. Start by completing basic activities!
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Certifications -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-animated">
+                <div class="card-header bg-gradient-green text-white">
+                    <h3 class="mb-0"><i class="fas fa-certificate me-2"></i> Your Certifications</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for cert in user_certifications %}
+                        <div class="col-md-6 mb-3 slide-in-right" data-counter="{{ forloop.counter }}">
+                            <div class="card certification-card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-3">
+                                            <i class="{{ cert.certification.icon }} fa-3x"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="mb-1">{{ cert.certification.name }}</h4>
+                                            <p class="mb-2">{{ cert.certification.description|truncatechars:100 }}</p>
+                                            <div class="d-flex justify-content-between">
+                                                <span><i class="fas fa-calendar-alt me-1"></i> {{ cert.earned_date|date:"F d, Y" }}</span>
+                                                <span><i class="fas fa-star me-1"></i> {{ cert.certification.points }} pts</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> You haven't earned any certifications yet. Earn multiple badges in related skills to unlock certifications!
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Available Badges -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-animated">
+                <div class="card-header">
+                    <h3 class="mb-0"><i class="fas fa-unlock-alt me-2 text-warning"></i> Badges to Unlock</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <div class="card badge-card badge-empty">
+                                <div class="card-body text-center">
+                                    <div class="badge-icon badge-gold">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <h5>Master Scholar</h5>
+                                    <p class="mb-0 text-muted small">Complete 10 courses</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card badge-card badge-empty">
+                                <div class="card-body text-center">
+                                    <div class="badge-icon badge-silver">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <h5>Quick Learner</h5>
+                                    <p class="mb-0 text-muted small">Complete 5 quizzes in a day</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card badge-card badge-empty">
+                                <div class="card-body text-center">
+                                    <div class="badge-icon badge-bronze">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                    <h5>Streak Master</h5>
+                                    <p class="mb-0 text-muted small">Maintain a 30-day streak</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card badge-card badge-empty">
+                                <div class="card-body text-center">
+                                    <div class="badge-icon badge-platinum">
+                                        <i class="fas fa-crown"></i>
+                                    </div>
+                                    <h5>Ultimate Champion</h5>
+                                    <p class="mb-0 text-muted small">Earn all other badges</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set progress bar widths
+        document.querySelectorAll('.progress-fill').forEach(function(element) {
+            if (element.dataset.progress) {
+                element.style.width = element.dataset.progress + '%';
+            }
+        });
+        
+        // Set animation delays for badge items
+        document.querySelectorAll('[data-counter]').forEach(function(element) {
+            var counter = element.dataset.counter;
+            element.style.animationDelay = counter + '00ms';
+        });
+    });
+</script>
+{% endblock %} 

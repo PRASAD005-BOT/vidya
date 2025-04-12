@@ -1,0 +1,962 @@
+{% extends 'base.html' %}
+
+{% block title %}Mentors - VidyAI++{% endblock %}
+
+{% block extra_css %}
+<style>
+    .webcam-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 160px;
+        height: 120px;
+        z-index: 1000;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: none; /* Hidden by default */
+    }
+    
+    .webcam-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .webcam-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .webcam-status {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        font-size: 10px;
+        padding: 2px 5px;
+        text-align: center;
+    }
+    
+    .confusion-dialog {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        z-index: 2000;
+        width: 90%;
+        max-width: 500px;
+    }
+    
+    .video-controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .emotion-toggle {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1001;
+    }
+</style>
+{% endblock %}
+
+<!-- Add CSRF token for AJAX requests -->
+{% block extra_head %}
+<meta name="csrf-token" content="{{ csrf_token }}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-primary text-white">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="card-title">Learn from Video Mentors</h2>
+                            <p class="lead mb-4">
+                                Select a topic you want to learn, and we'll find the best educational videos to help you master it.
+                                Watch tutorials from expert instructors and enhance your understanding.
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-center d-none d-md-block">
+                            <i class="fas fa-chalkboard-teacher" style="font-size: 8rem; opacity: 0.3;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-search me-2"></i> Find Video Tutorials</h5>
+                </div>
+                <div class="card-body">
+                    <form id="topicSearchForm">
+                        <div class="mb-3">
+                            <label for="topic" class="form-label">What do you want to learn?</label>
+                            <input type="text" class="form-control" id="topic" name="topic" 
+                                placeholder="e.g., Python, Math, History, Physics, Chemistry, Biology, English">
+                            <div class="form-text">Enter a subject like Python, Math, Chemistry, or any specific topic</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="difficulty" class="form-label">Difficulty Level</label>
+                            <select class="form-select" id="difficulty" name="difficulty">
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-search me-2"></i> Find Videos
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-video me-2"></i> <span id="videoResultsTitle">Educational Videos</span></h5>
+                    <div id="loadingSpinner" class="spinner-border spinner-border-sm text-primary d-none" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="initialMessage" class="text-center py-5">
+                        <i class="fas fa-search" style="font-size: 3rem; color: #ccc;"></i>
+                        <p class="mt-3 text-muted">Search for a topic to find educational videos</p>
+                    </div>
+                    
+                    <div id="videoResults" class="d-none">
+                        <!-- Videos will be displayed here -->
+                    </div>
+                    
+                    <div id="errorMessage" class="alert alert-danger d-none" role="alert">
+                        <i class="fas fa-exclamation-circle me-2"></i> 
+                        <span id="errorText"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-play-circle me-2"></i> <span id="videoPlayerTitle">Video Player</span></h5>
+                    <div class="video-controls">
+                        <button id="enableEmotionDetection" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-face-smile me-1"></i> Enable Emotion Detection
+                        </button>
+                        <!-- Debug button for testing - more visible for easier access -->
+                        <button id="debugTriggerConfusion" class="btn btn-sm btn-danger">
+                            <i class="fas fa-bug me-1"></i> Test Confusion Dialog
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="videoPlayerContainer" class="ratio ratio-16x9 d-none">
+                        <div id="player"></div>
+                    </div>
+                    
+                    <div id="noVideoMessage" class="text-center py-5">
+                        <i class="fas fa-film" style="font-size: 3rem; color: #ccc;"></i>
+                        <p class="mt-3 text-muted">Select a video to play</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Webcam container for emotion detection -->
+<div id="webcamContainer" class="webcam-container">
+    <video id="webcamVideo" class="webcam-video" autoplay muted playsinline></video>
+    <canvas id="webcamCanvas" class="webcam-canvas"></canvas>
+    <div id="webcamStatus" class="webcam-status">Emotion detection inactive</div>
+    <button id="toggleEmotionDetection" class="btn btn-sm btn-outline-light emotion-toggle">
+        <i class="fas fa-eye-slash"></i>
+    </button>
+</div>
+
+<!-- Confusion Help Dialog -->
+<div id="confusionDialog" class="confusion-dialog">
+    <div class="d-flex justify-content-between align-items-start mb-3">
+        <h5><i class="fas fa-question-circle text-primary me-2"></i> Need help understanding?</h5>
+        <button type="button" class="btn-close" id="closeConfusionDialog"></button>
+    </div>
+    <p>It seems like you might be having trouble understanding this concept. Would you like some help?</p>
+    <div class="mb-3">
+        <label for="questionInput" class="form-label">Ask a question about this topic:</label>
+        <textarea id="questionInput" class="form-control" rows="3" placeholder="What part is confusing you?"></textarea>
+    </div>
+    <div class="d-flex gap-2">
+        <button id="submitQuestion" class="btn btn-primary">
+            <i class="fas fa-paper-plane me-1"></i> Ask Question
+        </button>
+        <button id="resumeVideo" class="btn btn-outline-secondary">
+            <i class="fas fa-play me-1"></i> Resume Video
+        </button>
+    </div>
+    <div id="aiAnswer" class="mt-3 d-none">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Answer:</h6>
+                <p id="aiAnswerText" class="card-text"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add an emotion feedback display container with better styling -->
+<div id="emotionFeedback" class="position-fixed bottom-0 start-0 m-3 p-3 bg-dark text-white rounded shadow-lg" style="z-index: 1001; display: none; max-width: 300px; opacity: 0.9;">
+    <div class="d-flex align-items-center">
+        <i class="fas fa-face-smile me-3 fs-4"></i>
+        <div>
+            <div class="mb-1">Current emotion: <span id="currentEmotion" class="fw-bold">neutral</span></div>
+            <div id="emotionMessage" class="small">Emotion detection active</div>
+        </div>
+        <button type="button" class="btn-close btn-close-white ms-3" id="closeEmotionFeedback" aria-label="Close"></button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Load YouTube API first -->
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<!-- Load Emotion Detection script -->
+<script src="/static/js/emotion-detection.js"></script>
+
+<script>
+    // YouTube player reference
+    let youtubePlayer = null;
+    
+    // Initialize YouTube API
+    function onYouTubeIframeAPIReady() {
+        console.log("YouTube API ready");
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const topicSearchForm = document.getElementById('topicSearchForm');
+        const videoResults = document.getElementById('videoResults');
+        const initialMessage = document.getElementById('initialMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const videoResultsTitle = document.getElementById('videoResultsTitle');
+        const videoPlayerContainer = document.getElementById('videoPlayerContainer');
+        const noVideoMessage = document.getElementById('noVideoMessage');
+        const videoPlayerTitle = document.getElementById('videoPlayerTitle');
+        
+        // Emotion detection elements
+        const webcamContainer = document.getElementById('webcamContainer');
+        const webcamVideo = document.getElementById('webcamVideo');
+        const webcamCanvas = document.getElementById('webcamCanvas');
+        const webcamStatus = document.getElementById('webcamStatus');
+        const enableEmotionDetectionBtn = document.getElementById('enableEmotionDetection');
+        const toggleEmotionDetectionBtn = document.getElementById('toggleEmotionDetection');
+        
+        // Confusion dialog elements
+        const confusionDialog = document.getElementById('confusionDialog');
+        const closeConfusionDialog = document.getElementById('closeConfusionDialog');
+        const questionInput = document.getElementById('questionInput');
+        const submitQuestion = document.getElementById('submitQuestion');
+        const resumeVideo = document.getElementById('resumeVideo');
+        const aiAnswer = document.getElementById('aiAnswer');
+        const aiAnswerText = document.getElementById('aiAnswerText');
+        
+        // Current video information
+        let currentVideoId = null;
+        let currentVideoTitle = null;
+        
+        // Emotion detection instance
+        let emotionDetection = null;
+
+        // Add event listeners to the play buttons
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('play-video') || e.target.closest('.play-video')) {
+                const button = e.target.classList.contains('play-video') ? e.target : e.target.closest('.play-video');
+                const videoId = button.getAttribute('data-video-id');
+                const card = button.closest('.card');
+                const title = card.querySelector('.card-title').textContent;
+                playVideo(videoId, title);
+                e.preventDefault();
+            }
+        });
+        
+        // Function to play a video
+        function playVideo(videoId, title) {
+            // Store current video info
+            currentVideoId = videoId;
+            currentVideoTitle = title;
+            
+            console.log("Playing video:", videoId, title);
+            
+            // Show the video player container
+            videoPlayerContainer.classList.remove('d-none');
+            noVideoMessage.classList.add('d-none');
+            videoPlayerTitle.textContent = title;
+            
+            // Create or update the player
+            if (youtubePlayer) {
+                youtubePlayer.destroy();
+            }
+            
+            // Create a new player with the YouTube API
+            youtubePlayer = new YT.Player('player', {
+                height: '100%',
+                width: '100%',
+                videoId: videoId,
+                playerVars: {
+                    'autoplay': 1,
+                    'enablejsapi': 1,
+                    'modestbranding': 1,
+                    'rel': 0,
+                    'fs': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange,
+                    'onError': onPlayerError
+                }
+            });
+            
+            // Scroll to the video player
+            videoPlayerContainer.scrollIntoView({ behavior: 'smooth' });
+            
+            // Hide confusion dialog if visible
+            confusionDialog.style.display = 'none';
+            
+            // Show notification
+            showNotification("Video Started", `Now playing: ${title}`, "info");
+        }
+        
+        function onPlayerReady(event) {
+            console.log("YouTube player ready");
+            event.target.playVideo();
+        }
+        
+        function onPlayerStateChange(event) {
+            console.log("Player state changed:", event.data);
+        }
+        
+        function onPlayerError(event) {
+            console.error("YouTube player error:", event.data);
+            showNotification("Video Error", "There was a problem playing this video. Please try another one.", "danger");
+        }
+        
+        // Form submission for video search
+        topicSearchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const topic = document.getElementById('topic').value.trim();
+            const difficulty = document.getElementById('difficulty').value;
+            
+            if (!topic) {
+                errorText.textContent = 'Please enter a topic to search for videos';
+                errorMessage.classList.remove('d-none');
+                return;
+            }
+            
+            // Show loading spinner and hide other elements
+            loadingSpinner.classList.remove('d-none');
+            initialMessage.classList.add('d-none');
+            videoResults.classList.add('d-none');
+            errorMessage.classList.add('d-none');
+            
+            // Update the results title
+            videoResultsTitle.textContent = `Videos for: ${topic}`;
+            
+            // Make AJAX request to search for videos
+            const searchUrl = "{% url 'mentor:search_videos' %}";
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            
+            // Add a timestamp to prevent caching
+            const timestamp = new Date().getTime();
+            
+            fetch(`${searchUrl}?t=${timestamp}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Cache-Control': 'no-cache'
+                },
+                body: JSON.stringify({
+                    'topic': topic,
+                    'difficulty': difficulty
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Hide loading spinner
+                loadingSpinner.classList.add('d-none');
+                
+                // Console log for debugging
+                console.log("Search response:", data);
+                
+                if (data.status === 'success') {
+                    // Display the videos
+                    videoResults.innerHTML = '';
+                    videoResults.classList.remove('d-none');
+                    
+                    if (data.videos.length === 0) {
+                        videoResults.innerHTML = `
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> No videos found for "${topic}". Try another search term.
+                            </div>
+                        `;
+                    } else {
+                        // Create a row for the videos
+                        const row = document.createElement('div');
+                        row.className = 'row g-3';
+                        
+                        // Add each video to the row
+                        data.videos.forEach(video => {
+                            const col = document.createElement('div');
+                            col.className = 'col-md-6 col-lg-4';
+                            
+                            col.innerHTML = `
+                                <div class="card h-100 video-card" data-video-id="${video.id}">
+                                    <img src="${video.thumbnail}" class="card-img-top" alt="${video.title}">
+                                    <div class="card-body">
+                                        <h6 class="card-title">${video.title}</h6>
+                                        <p class="card-text text-muted small">
+                                            <i class="fas fa-user me-1"></i> ${video.channel}<br>
+                                            <i class="fas fa-calendar me-1"></i> ${video.published_at}
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button class="btn btn-primary btn-sm w-100 play-video" data-video-id="${video.id}">
+                                            <i class="fas fa-play me-1"></i> Watch Video
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                            
+                            row.appendChild(col);
+                        });
+                        
+                        videoResults.appendChild(row);
+                    }
+                } else {
+                    // Show error message
+                    errorText.textContent = data.message || 'An error occurred while searching for videos';
+                    errorMessage.classList.remove('d-none');
+                }
+            })
+            .catch(error => {
+                // Hide loading spinner and show error message
+                loadingSpinner.classList.add('d-none');
+                errorText.textContent = 'Failed to connect to the server. Please try again later.';
+                errorMessage.classList.remove('d-none');
+                console.error('Error:', error);
+            });
+        });
+
+        // Initialize emotion detection when button is clicked
+        enableEmotionDetectionBtn.addEventListener('click', async function() {
+            if (emotionDetection) {
+                // Already initialized, toggle active state
+                if (emotionDetection.isActive) {
+                    emotionDetection.stop();
+                    enableEmotionDetectionBtn.innerHTML = '<i class="fas fa-face-meh me-1"></i> Disable Emotion Detection';
+                    webcamContainer.style.display = 'none';
+                } else {
+                    emotionDetection.start();
+                    enableEmotionDetectionBtn.innerHTML = '<i class="fas fa-face-meh me-1"></i> Disable Emotion Detection';
+                    webcamContainer.style.display = 'block';
+                }
+                return;
+            }
+            
+            // First-time initialization - show loading state
+            this.disabled = true;
+            this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Initializing...';
+            
+            // First-time initialization
+            webcamCanvas.width = 160;
+            webcamCanvas.height = 120;
+            
+            // Show the webcam container while loading to make progress visible
+            webcamContainer.style.display = 'block';
+            webcamStatus.textContent = 'Initializing emotion detection...';
+            
+            try {
+                // Initialize the emotion detection system with the correct elements
+                emotionDetection = new EmotionDetection({
+                    webcamElement: webcamVideo,
+                    canvasElement: webcamCanvas,
+                    videoElement: youtubePlayer,
+                    confusionThreshold: 0.6,
+                    onConfusion: function() {
+                        // This will be called when confusion is detected
+                        console.log("Confusion callback triggered from emotion detection");
+                        handleConfusion();
+                    },
+                    statusCallback: function(status) {
+                        webcamStatus.textContent = status;
+                        console.log("Emotion status update:", status);
+                    },
+                    emotionCallback: function(emotion) {
+                        // Update the emotion display
+                        const emotionFeedback = document.getElementById('emotionFeedback');
+                        const currentEmotion = document.getElementById('currentEmotion');
+                        const emotionMessage = document.getElementById('emotionMessage');
+                        
+                        if (!emotionFeedback || !currentEmotion || !emotionMessage) return;
+                        
+                        // Show the emotion feedback
+                        emotionFeedback.style.display = 'block';
+                        
+                        // Update current emotion
+                        currentEmotion.textContent = emotion;
+                        
+                        // Update icon based on emotion
+                        const emotionIcon = emotionFeedback.querySelector('i');
+                        emotionIcon.className = 'fas me-3 fs-4';
+                        
+                        // Set icon and message based on emotion
+                        switch(emotion) {
+                            case 'happy':
+                                emotionIcon.classList.add('fa-face-laugh');
+                                emotionMessage.textContent = "You seem to be enjoying the content!";
+                                break;
+                            case 'sad':
+                                emotionIcon.classList.add('fa-face-sad-tear');
+                                emotionMessage.textContent = "You seem a bit sad. Need a break?";
+                                break;
+                            case 'angry':
+                                emotionIcon.classList.add('fa-face-angry');
+                                emotionMessage.textContent = "You seem frustrated. Need help?";
+                                break;
+                            case 'fearful':
+                                emotionIcon.classList.add('fa-face-frown-open');
+                                emotionMessage.textContent = "You seem anxious. Is the content too difficult?";
+                                break;
+                            case 'disgusted':
+                                emotionIcon.classList.add('fa-face-grimace');
+                                emotionMessage.textContent = "This topic seems unpleasant?";
+                                break;
+                            case 'surprised':
+                                emotionIcon.classList.add('fa-face-surprise');
+                                emotionMessage.textContent = "Surprised by the content?";
+                                break;
+                            case 'neutral':
+                            default:
+                                emotionIcon.classList.add('fa-face-meh');
+                                emotionMessage.textContent = "Watching attentively";
+                                break;
+                        }
+                    }
+                });
+                
+                // Initialize and wait for it to complete
+                await emotionDetection.init();
+                
+                // Start the detection
+                emotionDetection.start();
+                
+                // Reset button state
+                this.innerHTML = '<i class="fas fa-face-meh me-1"></i> Disable Emotion Detection';
+                this.disabled = false;
+            } catch (error) {
+                console.error('Error initializing emotion detection:', error);
+                
+                // Hide webcam container since initialization failed
+                webcamContainer.style.display = 'none';
+                
+                // Reset button state
+                this.innerHTML = '<i class="fas fa-face-smile me-1"></i> Enable Emotion Detection';
+                this.disabled = false;
+                
+                // Show error message
+                const errorAlert = document.createElement('div');
+                errorAlert.className = 'alert alert-danger alert-dismissible fade show';
+                errorAlert.innerHTML = `
+                    <strong>Emotion detection error:</strong> ${error.message}
+                    <br><small>Please check your camera permissions and internet connection.</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                
+                // Insert the alert after the enable button
+                const parentElement = enableEmotionDetectionBtn.parentElement;
+                parentElement.insertAdjacentElement('afterend', errorAlert);
+            }
+        });
+        
+        // Toggle webcam display
+        toggleEmotionDetectionBtn.addEventListener('click', function() {
+            if (this.querySelector('i').classList.contains('fa-eye-slash')) {
+                // Show webcam feed
+                webcamVideo.style.display = 'none';
+                webcamCanvas.style.display = 'none';
+                this.querySelector('i').classList.replace('fa-eye-slash', 'fa-eye');
+            } else {
+                // Hide webcam feed
+                webcamVideo.style.display = 'block';
+                webcamCanvas.style.display = 'block';
+                this.querySelector('i').classList.replace('fa-eye', 'fa-eye-slash');
+            }
+        });
+        
+        // Handle user confusion
+        function handleConfusion() {
+            console.log("Confusion detected! Showing help dialog");
+            
+            if (!currentVideoId || !youtubePlayer) {
+                console.log("No video playing, ignoring confusion");
+                return;
+            }
+            
+            // Show notification
+            showNotification("Confusion Detected", "Pausing video to help you understand better", "warning");
+            
+            // Pause the YouTube video player using the YouTube API
+            try {
+                if (youtubePlayer && youtubePlayer.pauseVideo) {
+                    youtubePlayer.pauseVideo();
+                    console.log("Video paused successfully");
+                } else {
+                    console.warn("YouTube player not ready to pause");
+                }
+            } catch (e) {
+                console.error("Error pausing video:", e);
+            }
+            
+            // Show confusion dialog
+            confusionDialog.style.display = 'block';
+            
+            // Prefill question with current video title
+            questionInput.value = `I'm having trouble understanding this part about ${currentVideoTitle || 'this video'}. Can you explain it differently?`;
+            
+            // Clear any previous answers
+            aiAnswer.classList.add('d-none');
+            aiAnswerText.textContent = '';
+        }
+        
+        // Close confusion dialog
+        closeConfusionDialog.addEventListener('click', function() {
+            console.log("Closing confusion dialog");
+            confusionDialog.style.display = 'none';
+            aiAnswer.classList.add('d-none');
+        });
+        
+        // Resume video playback
+        resumeVideo.addEventListener('click', function() {
+            console.log("Resuming video playback");
+            confusionDialog.style.display = 'none';
+            
+            // Resume playback using the YouTube API
+            try {
+                if (youtubePlayer && youtubePlayer.playVideo) {
+                    youtubePlayer.playVideo();
+                    console.log("Video resumed successfully");
+                } else {
+                    console.warn("YouTube player not ready to resume");
+                }
+            } catch (e) {
+                console.error("Error resuming video:", e);
+            }
+        });
+        
+        // Submit question to AI
+        submitQuestion.addEventListener('click', async function() {
+            const question = questionInput.value.trim();
+            if (!question) return;
+            
+            // Show loading state
+            this.disabled = true;
+            this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
+            
+            // Get CSRF token directly from cookie
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            
+            const csrftoken = getCookie('csrftoken');
+            
+            try {
+                console.log("Submitting question:", question);
+                console.log("Video title:", currentVideoTitle);
+                console.log("Video ID:", currentVideoId);
+                
+                // Get response from API with proper CSRF token
+                const response = await fetch("{% url 'mentor:ask_question' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({
+                        question: question,
+                        videoTitle: currentVideoTitle,
+                        videoId: currentVideoId
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log("Answer received:", data);
+                
+                // Display the AI's answer
+                if (data.status === 'success') {
+                    aiAnswerText.textContent = data.answer || "I apologize, but I couldn't generate a specific answer. Try breaking down the concept into smaller parts to understand it better.";
+                    aiAnswer.classList.remove('d-none');
+                } else {
+                    throw new Error(data.message || 'Unknown error');
+                }
+            } catch (error) {
+                console.error('Error getting answer:', error);
+                
+                // Display a fallback answer
+                aiAnswerText.textContent = "I apologize, but I couldn't generate an answer at this time. A good strategy is to break down complex topics into smaller parts and focus on understanding one concept at a time.";
+                aiAnswer.classList.remove('d-none');
+            } finally {
+                // Reset button state
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-paper-plane me-1"></i> Ask Question';
+            }
+        });
+
+        // Debug: add event listener to manually trigger confusion
+        document.getElementById('debugTriggerConfusion').addEventListener('click', function() {
+            console.log("Debug: Manually triggering confusion");
+            handleConfusion();
+        });
+
+        // Allow closing the emotion feedback
+        document.getElementById('closeEmotionFeedback').addEventListener('click', function() {
+            document.getElementById('emotionFeedback').style.display = 'none';
+        });
+    });
+
+    // Helper function to load scripts dynamically and wait for them
+    function loadScript(src) {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+            document.head.appendChild(script);
+        });
+    }
+
+    // Function to show a notification
+    function showNotification(title, message, type = "info") {
+        const toast = document.createElement('div');
+        toast.className = `toast align-items-center text-white bg-${type} border-0 show`;
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+        toast.style.position = 'fixed';
+        toast.style.top = '20px';
+        toast.style.right = '20px';
+        toast.style.zIndex = '2000';
+        
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">
+                    <strong>${title}</strong><br>
+                    ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // Remove after 5 seconds
+        setTimeout(() => {
+            toast.remove();
+        }, 5000);
+    }
+
+    // Update detection status
+    function updateDetectionStatus(status) {
+        const statusElement = document.getElementById('detection-status');
+        if (statusElement) {
+            statusElement.textContent = status;
+        }
+        console.log('Detection status:', status);
+    }
+
+    // Update emotion feedback
+    function updateEmotionFeedback(emotion, confidence) {
+        console.log(`Updating emotion feedback: ${emotion} (${confidence})`);
+        
+        const feedbackContainer = document.getElementById('emotion-feedback');
+        const emotionText = document.getElementById('current-emotion');
+        const messageElement = document.getElementById('emotion-message');
+        
+        // Only show feedback if container exists
+        if (!feedbackContainer) return;
+        
+        // Set message based on emotion
+        let message = "";
+        let iconClass = "";
+        
+        switch(emotion) {
+            case 'happy':
+                message = "You seem to be enjoying the content!";
+                iconClass = "bi-emoji-smile text-success";
+                break;
+            case 'sad':
+                message = "This content seems to make you sad. Would you like some help?";
+                iconClass = "bi-emoji-frown text-primary";
+                break;
+            case 'angry':
+                message = "You appear frustrated. Let me pause to help you.";
+                iconClass = "bi-emoji-angry text-danger";
+                break;
+            case 'fearful':
+                message = "This content might be confusing you. Let me help.";
+                iconClass = "bi-emoji-dizzy text-warning";
+                break;
+            case 'disgusted':
+                message = "You don't seem to like this content. Let me help find something better.";
+                iconClass = "bi-emoji-expressionless text-dark";
+                break;
+            case 'surprised':
+                message = "Something surprised you! Need me to explain?";
+                iconClass = "bi-emoji-surprise text-info";
+                break;
+            case 'neutral':
+            default:
+                message = "You seem focused on learning.";
+                iconClass = "bi-emoji-neutral text-secondary";
+                break;
+        }
+        
+        // Update the display
+        if (emotionText) emotionText.textContent = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+        if (messageElement) messageElement.textContent = message;
+        
+        // Update icon if it exists
+        const iconElement = document.getElementById('emotion-icon');
+        if (iconElement) {
+            // Remove all existing icon classes and add new ones
+            iconElement.className = '';
+            iconElement.className = 'bi ' + iconClass;
+        }
+        
+        // Show the feedback container
+        feedbackContainer.classList.remove('d-none');
+    }
+
+    // Handle confusion detection
+    function handleConfusion() {
+        console.log("Confusion detected! Showing help dialog...");
+        
+        // Only proceed if the player is ready
+        if (youtubePlayer && typeof youtubePlayer.pauseVideo === 'function') {
+            try {
+                // Pause the video
+                youtubePlayer.pauseVideo();
+                console.log("Video paused due to detected confusion");
+                
+                // Show toast notification
+                const toast = new bootstrap.Toast(document.getElementById('confusion-toast'));
+                toast.show();
+                
+                // Get current video title
+                const currentVideo = document.getElementById('current-video-title').textContent || 'this video';
+                
+                // Update confusion modal with video title
+                const titleElement = document.getElementById('confusion-video-title');
+                if (titleElement) {
+                    titleElement.textContent = currentVideo;
+                }
+                
+                // Pre-fill question with prompt
+                const questionInput = document.getElementById('questionInput');
+                if (questionInput) {
+                    questionInput.value = `I'm confused about "${currentVideo}". Can you explain `;
+                    
+                    // Show the confusion modal
+                    const confusionModal = new bootstrap.Modal(document.getElementById('confusion-modal'));
+                    confusionModal.show();
+                    
+                    // Focus on the question input and position cursor at the end
+                    setTimeout(() => {
+                        questionInput.focus();
+                        const len = questionInput.value.length;
+                        questionInput.setSelectionRange(len, len);
+                    }, 500);
+                }
+            } catch (error) {
+                console.error("Error handling confusion:", error);
+            }
+        } else {
+            console.warn("YouTube player not ready, cannot pause video for confusion");
+        }
+    }
+
+    // Initialize emotion detection with appropriate callbacks
+    function initEmotionDetection() {
+        console.log("Initializing emotion detection...");
+        
+        detector = new EmotionDetection({
+            webcamElement: document.getElementById('webcam'),
+            canvasElement: document.getElementById('canvas'),
+            videoElement: youtubePlayer,
+            confusionThreshold: 3,  // Lower threshold to detect confusion faster for any non-happy/neutral emotion
+            statusCallback: updateDetectionStatus,
+            confusionCallback: handleConfusion,
+            emotionCallback: updateEmotionFeedback
+        });
+        
+        detector.init().then(() => {
+            console.log("Emotion detection initialized successfully");
+            document.getElementById('detection-status').innerHTML = 'Emotion detection active';
+            document.getElementById('detection-status').className = 'badge bg-success';
+        }).catch(error => {
+            console.error("Error initializing emotion detection:", error);
+            document.getElementById('detection-status').innerHTML = 'Failed to initialize: ' + error.message;
+            document.getElementById('detection-status').className = 'badge bg-danger';
+            document.getElementById('detection-alert').classList.remove('d-none');
+        });
+    }
+</script>
+{% endblock %} 

@@ -1,0 +1,530 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Learning Streak | VidyAI++{% endblock %}
+
+{% block extra_css %}
+<style>
+    .streak-card {
+        border-radius: 15px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+    }
+    
+    .streak-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .streak-header {
+        background: linear-gradient(135deg, #4361ee, #3a0ca3);
+        color: white;
+        padding: 20px;
+        position: relative;
+    }
+    
+    .streak-number {
+        font-size: 4rem;
+        font-weight: bold;
+        text-align: center;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .streak-label {
+        text-align: center;
+        font-size: 1.2rem;
+        margin-top: -10px;
+    }
+    
+    .streak-flame {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 2rem;
+        animation: flicker 2s infinite alternate;
+        color: #ff9e00;
+        text-shadow: 0 0 10px #ff9e00;
+    }
+    
+    @keyframes flicker {
+        0%, 18%, 22%, 25%, 53%, 57%, 100% {
+            opacity: 1;
+        }
+        20%, 24%, 55% {
+            opacity: 0.5;
+        }
+    }
+    
+    .calendar-day {
+        width: 20px;
+        height: 20px;
+        border-radius: 2px;
+        display: inline-block;
+        margin: 2px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    
+    .calendar-day:hover {
+        transform: scale(1.2);
+    }
+    
+    .activity-level-0 {
+        background-color: #ebedf0;
+    }
+    
+    .activity-level-1 {
+        background-color: #c6e48b;
+    }
+    
+    .activity-level-2 {
+        background-color: #7bc96f;
+    }
+    
+    .activity-level-3 {
+        background-color: #239a3b;
+    }
+    
+    .activity-level-4 {
+        background-color: #196127;
+    }
+    
+    .calendar-container {
+        padding: 10px;
+        overflow-x: auto;
+        white-space: nowrap;
+        margin-bottom: 10px;
+    }
+    
+    .calendar-week {
+        display: inline-block;
+        vertical-align: top;
+    }
+    
+    .calendar-month-label {
+        font-size: 0.8rem;
+        text-align: center;
+        margin-bottom: 5px;
+        color: #586069;
+    }
+    
+    .calendar-day-label {
+        font-size: 0.7rem;
+        color: #586069;
+        height: 20px;
+        width: 20px;
+        text-align: center;
+        margin: 2px;
+    }
+    
+    .tooltip-custom {
+        position: absolute;
+        padding: 8px 12px;
+        background-color: rgba(0,0,0,0.8);
+        color: white;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        z-index: 100;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .milestone-card {
+        border-radius: 10px;
+        overflow: hidden;
+        background: #f8f9fa;
+        transition: transform 0.3s ease;
+        border: none;
+        height: 100%;
+    }
+    
+    .milestone-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .milestone-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        color: #4361ee;
+    }
+    
+    .milestone-complete {
+        border-left: 5px solid #4361ee;
+    }
+    
+    .milestone-incomplete {
+        opacity: 0.6;
+        filter: grayscale(0.5);
+    }
+    
+    .streak-counter-digit {
+        display: inline-block;
+        background-color: #4361ee;
+        color: white;
+        border-radius: 5px;
+        padding: 5px 10px;
+        margin: 0 2px;
+        font-weight: bold;
+        font-size: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .streak-counter-separator {
+        display: inline-block;
+        font-weight: bold;
+        font-size: 1.5rem;
+        margin: 0 2px;
+    }
+    
+    .daily-goal-progress {
+        height: 10px;
+        border-radius: 5px;
+        overflow: hidden;
+        background-color: #ebedf0;
+        margin-bottom: 5px;
+    }
+    
+    .goal-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #4361ee, #f72585);
+        border-radius: 5px;
+        transition: width 1s ease-in-out;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-animated bg-gradient-blue text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h2 class="mb-0"><i class="fas fa-fire me-2 bounce"></i> Learning Streaks</h2>
+                            <p class="mb-0">Track your daily learning momentum</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="mb-1">
+                                <span class="streak-counter-digit">{{ streak_days }}</span>
+                                <span class="streak-counter-separator">days</span>
+                            </div>
+                            <p class="mb-0 small">Current Streak</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Streak Stats -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3 mb-md-0">
+            <div class="card streak-card h-100 card-animated">
+                <div class="streak-header">
+                    <div class="streak-number">{{ streak_days }}</div>
+                    <div class="streak-label">Current Streak</div>
+                    <div class="streak-flame">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h5 class="card-title">Daily Goal</h5>
+                        <div class="daily-goal-progress">
+                            <div class="goal-progress-bar" data-progress="{{ daily_goal_percent }}"></div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <small>{{ daily_progress }} points today</small>
+                            <small>Goal: {{ daily_goal }} points</small>
+                        </div>
+                    </div>
+                    <p class="card-text">Keep your streak going! Learn something new every day to maintain and build your streak. You'll earn bonus points for longer streaks.</p>
+                    <div class="d-grid">
+                        <a href="{% url 'learning:learning_games' %}" class="btn btn-primary">Continue Learning</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3 mb-md-0">
+            <div class="card streak-card h-100 card-animated">
+                <div class="card-body">
+                    <h5 class="card-title">Streak Stats</h5>
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-trophy text-warning me-2"></i> Longest Streak</span>
+                            <span class="badge bg-primary rounded-pill">{{ longest_streak }} days</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-calendar-check text-success me-2"></i> Total Days Learned</span>
+                            <span class="badge bg-primary rounded-pill">{{ total_days_active }}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-bolt text-danger me-2"></i> Streak Bonus Points</span>
+                            <span class="badge bg-primary rounded-pill">{{ streak_bonus_points }}</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-star text-info me-2"></i> Average Points per Day</span>
+                            <span class="badge bg-primary rounded-pill">{{ avg_points_per_day }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-light">
+                    <small class="text-muted">Streak started: {{ streak_start_date|date:"F j, Y" }}</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card streak-card h-100 card-animated">
+                <div class="card-body">
+                    <h5 class="card-title">Next Streak Milestones</h5>
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item d-flex justify-content-between align-items-center 
+                                {{ milestone_3_days|yesno:'milestone-complete,milestone-incomplete' }}">
+                            <span><i class="fas fa-flag-checkered me-2"></i> 3-Day Streak</span>
+                            <span class="badge {{ milestone_3_days|yesno:'bg-success,bg-secondary' }} rounded-pill">
+                                {{ milestone_3_days|yesno:'Completed,+10 points' }}
+                            </span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center 
+                                {{ milestone_7_days|yesno:'milestone-complete,milestone-incomplete' }}">
+                            <span><i class="fas fa-flag-checkered me-2"></i> 7-Day Streak</span>
+                            <span class="badge {{ milestone_7_days|yesno:'bg-success,bg-secondary' }} rounded-pill">
+                                {{ milestone_7_days|yesno:'Completed,+25 points' }}
+                            </span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center 
+                                {{ milestone_14_days|yesno:'milestone-complete,milestone-incomplete' }}">
+                            <span><i class="fas fa-flag-checkered me-2"></i> 14-Day Streak</span>
+                            <span class="badge {{ milestone_14_days|yesno:'bg-success,bg-secondary' }} rounded-pill">
+                                {{ milestone_14_days|yesno:'Completed,+50 points' }}
+                            </span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center 
+                                {{ milestone_30_days|yesno:'milestone-complete,milestone-incomplete' }}">
+                            <span><i class="fas fa-flag-checkered me-2"></i> 30-Day Streak</span>
+                            <span class="badge {{ milestone_30_days|yesno:'bg-success,bg-secondary' }} rounded-pill">
+                                {{ milestone_30_days|yesno:'Completed,+100 points + Badge' }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-light d-grid">
+                    <a href="{% url 'learning:learning_games' %}" class="btn btn-sm btn-outline-primary">Keep Learning</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Activity Calendar -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-animated">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i> Activity Calendar</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Your learning activity over the last 90 days:</p>
+                    
+                    <div class="d-flex mb-2">
+                        <div class="me-3">
+                            <span class="calendar-day-label"></span>
+                            <span class="calendar-day-label">M</span>
+                            <span class="calendar-day-label">W</span>
+                            <span class="calendar-day-label">F</span>
+                        </div>
+                        
+                        <div class="calendar-container">
+                            {% for month in calendar_data %}
+                            <div class="calendar-month">
+                                <div class="calendar-month-label">{{ month.month_name }}</div>
+                                <div class="d-flex">
+                                    {% for week in month.weeks %}
+                                    <div class="calendar-week">
+                                        {% for day in week %}
+                                        <div class="calendar-day activity-level-{{ day.level }}" 
+                                             data-date="{{ day.date }}" 
+                                             data-points="{{ day.points }}" 
+                                             data-activities="{{ day.activities }}"></div>
+                                        {% endfor %}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center justify-content-end">
+                        <span class="me-1 small text-muted">Less</span>
+                        <div class="calendar-day activity-level-0 me-1"></div>
+                        <div class="calendar-day activity-level-1 me-1"></div>
+                        <div class="calendar-day activity-level-2 me-1"></div>
+                        <div class="calendar-day activity-level-3 me-1"></div>
+                        <div class="calendar-day activity-level-4 me-1"></div>
+                        <span class="ms-1 small text-muted">More</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Streak Achievements -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-animated">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-trophy me-2 text-warning"></i> Streak Achievements</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <div class="card milestone-card text-center {{ milestone_3_days|yesno:'milestone-complete,milestone-incomplete' }}">
+                                <div class="card-body">
+                                    <div class="milestone-icon">
+                                        <i class="fas fa-seedling"></i>
+                                    </div>
+                                    <h5>3-Day Streak</h5>
+                                    <p class="small text-muted mb-0">Learning habit is forming</p>
+                                    <div class="mt-2">
+                                        <span class="badge {{ milestone_3_days|yesno:'bg-success,bg-secondary' }}">
+                                            {{ milestone_3_days|yesno:'Completed,In Progress' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3 mb-3">
+                            <div class="card milestone-card text-center {{ milestone_7_days|yesno:'milestone-complete,milestone-incomplete' }}">
+                                <div class="card-body">
+                                    <div class="milestone-icon">
+                                        <i class="fas fa-leaf"></i>
+                                    </div>
+                                    <h5>7-Day Streak</h5>
+                                    <p class="small text-muted mb-0">A solid week of learning</p>
+                                    <div class="mt-2">
+                                        <span class="badge {{ milestone_7_days|yesno:'bg-success,bg-secondary' }}">
+                                            {{ milestone_7_days|yesno:'Completed,In Progress' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3 mb-3">
+                            <div class="card milestone-card text-center {{ milestone_14_days|yesno:'milestone-complete,milestone-incomplete' }}">
+                                <div class="card-body">
+                                    <div class="milestone-icon">
+                                        <i class="fas fa-tree"></i>
+                                    </div>
+                                    <h5>14-Day Streak</h5>
+                                    <p class="small text-muted mb-0">Two weeks of daily learning</p>
+                                    <div class="mt-2">
+                                        <span class="badge {{ milestone_14_days|yesno:'bg-success,bg-secondary' }}">
+                                            {{ milestone_14_days|yesno:'Completed,In Progress' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3 mb-3">
+                            <div class="card milestone-card text-center {{ milestone_30_days|yesno:'milestone-complete,milestone-incomplete' }}">
+                                <div class="card-body">
+                                    <div class="milestone-icon">
+                                        <i class="fas fa-mountain"></i>
+                                    </div>
+                                    <h5>30-Day Streak</h5>
+                                    <p class="small text-muted mb-0">A month of consistent learning</p>
+                                    <div class="mt-2">
+                                        <span class="badge {{ milestone_30_days|yesno:'bg-success,bg-secondary' }}">
+                                            {{ milestone_30_days|yesno:'Completed,In Progress' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Streak Tips -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-animated">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="fas fa-lightbulb me-2 text-warning"></i> Tips to Maintain Your Streak</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <i class="fas fa-clock text-primary me-2"></i> Set a consistent time each day for learning
+                                </div>
+                                <div class="list-group-item">
+                                    <i class="fas fa-bell text-primary me-2"></i> Enable notifications to remind you to learn daily
+                                </div>
+                                <div class="list-group-item">
+                                    <i class="fas fa-calendar-alt text-primary me-2"></i> Schedule your learning sessions in advance
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <i class="fas fa-users text-primary me-2"></i> Learn with friends to stay accountable
+                                </div>
+                                <div class="list-group-item">
+                                    <i class="fas fa-chart-line text-primary me-2"></i> Track your progress to stay motivated
+                                </div>
+                                <div class="list-group-item">
+                                    <i class="fas fa-trophy text-primary me-2"></i> Focus on small daily wins rather than long sessions
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tooltip-custom" id="calendar-tooltip"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set progress bar width
+        document.querySelectorAll('.goal-progress-bar').forEach(function(element) {
+            if (element.dataset.progress) {
+                element.style.width = element.dataset.progress + '%';
+            }
+        });
+        
+        // Initialize tooltips for calendar days
+        const calendarDays = document.querySelectorAll('.calendar-day[data-date]');
+        calendarDays.forEach(day => {
+            const date = day.dataset.date;
+            const points = day.dataset.points;
+            const activities = day.dataset.activities;
+            
+            if (date && points) {
+                const tooltip = new bootstrap.Tooltip(day, {
+                    title: `${date}: ${points} points (${activities} activities)`,
+                    placement: 'top'
+                });
+            }
+        });
+    });
+</script>
+{% endblock %} 

@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - VidyAI++{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0"><i class="fas fa-user-plus me-2"></i> Create Your Account</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" action="{% url 'core:register' %}">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="username" class="form-label">Username<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email<span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="password" class="form-label">Password<span class="text-danger">*</span></label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="confirm_password" class="form-label">Confirm Password<span class="text-danger">*</span></label>
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4">
+                        <h5>School Information</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="school_name" class="form-label">School Name</label>
+                                <input type="text" class="form-control" id="school_name" name="school_name">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="grade" class="form-label">Grade</label>
+                                <select class="form-select" id="grade" name="grade">
+                                    <option value="" selected>Select your grade</option>
+                                    <option value="1">Grade 1</option>
+                                    <option value="2">Grade 2</option>
+                                    <option value="3">Grade 3</option>
+                                    <option value="4">Grade 4</option>
+                                    <option value="5">Grade 5</option>
+                                    <option value="6">Grade 6</option>
+                                    <option value="7">Grade 7</option>
+                                    <option value="8">Grade 8</option>
+                                    <option value="9">Grade 9</option>
+                                    <option value="10">Grade 10</option>
+                                    <option value="11">Grade 11</option>
+                                    <option value="12">Grade 12</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="bpl_card_number" class="form-label">BPL Card Number (Optional)</label>
+                                <input type="text" class="form-control" id="bpl_card_number" name="bpl_card_number">
+                                <div class="form-text">Below Poverty Line card number for eligibility verification</div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="language" class="form-label">Preferred Language</label>
+                                <select class="form-select" id="language" name="language">
+                                    <option value="en" selected>English</option>
+                                    <option value="hi">Hindi</option>
+                                    <option value="ta">Tamil</option>
+                                    <option value="te">Telugu</option>
+                                    <option value="bn">Bengali</option>
+                                    <option value="mr">Marathi</option>
+                                    <option value="gu">Gujarati</option>
+                                    <option value="kn">Kannada</option>
+                                    <option value="ml">Malayalam</option>
+                                    <option value="pa">Punjabi</option>
+                                    <option value="or">Odia</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+                            <label class="form-check-label" for="terms">
+                                I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a>
+                            </label>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-user-plus me-2"></i> Register
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="text-center mt-4">
+                        <p>Already have an account? <a href="{% url 'core:login' %}">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Terms and Conditions Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>User Agreement for VidyAI++</h5>
+                <p>By accessing or using VidyAI++, you agree to be bound by these Terms and Conditions.</p>
+                
+                <h6>1. Registration</h6>
+                <p>Users must provide accurate and complete information during registration. Users are responsible for maintaining the confidentiality of their account credentials.</p>
+                
+                <h6>2. Educational Use</h6>
+                <p>VidyAI++ is designed for educational purposes only. The platform should not be used for any illegal, harmful, or unethical activities.</p>
+                
+                <h6>3. Privacy</h6>
+                <p>We collect and process user data in accordance with our Privacy Policy. By using the platform, you consent to such processing of your information.</p>
+                
+                <h6>4. Intellectual Property</h6>
+                <p>All content provided on VidyAI++ is the property of the platform or its content suppliers and is protected by international copyright laws.</p>
+                
+                <h6>5. Mentorship</h6>
+                <p>VidyAI++ connects students with volunteer mentors. We do not guarantee the availability or quality of mentorship. Users interact with mentors at their own risk.</p>
+                
+                <h6>6. AI-Generated Content</h6>
+                <p>The platform uses AI to generate educational content. While we strive for accuracy, we do not guarantee the correctness of AI-generated materials.</p>
+                
+                <h6>7. Termination</h6>
+                <p>We reserve the right to terminate or suspend access to our service immediately, without prior notice, for conduct that we believe violates these Terms or is harmful to other users, us, or third parties.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="document.getElementById('terms').checked = true;">I Agree</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm_password');
+        const form = document.querySelector('form');
+        
+        form.addEventListener('submit', function(e) {
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                e.preventDefault();
+                alert('Passwords do not match. Please try again.');
+                confirmPasswordInput.focus();
+            }
+        });
+    });
+</script>
+{% endblock %} 

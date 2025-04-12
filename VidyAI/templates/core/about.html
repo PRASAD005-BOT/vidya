@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}About - VidyAI++{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="text-center mb-4">About VidyAI++</h1>
+            
+            <div class="card mb-5 shadow-sm">
+                <div class="card-body p-4">
+                    <h4>Our Mission</h4>
+                    <p class="lead">VidyAI++ aims to revolutionize education for underprivileged students by providing AI-powered personalized tutoring and mentorship in multiple Indian languages.</p>
+                    
+                    <p>At VidyAI++, we believe that quality education should be accessible to all students, regardless of their socioeconomic background or geographic location. Our platform combines artificial intelligence and human mentorship to create a comprehensive learning experience tailored to each student's needs.</p>
+                </div>
+            </div>
+            
+            <h3 class="mb-4">Key Features</h3>
+            
+            <div class="row mb-5">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="text-center mb-3">
+                                <i class="fas fa-robot text-primary" style="font-size: 3rem;"></i>
+                            </div>
+                            <h5 class="card-title text-center">AI Tutoring</h5>
+                            <p>Our AI tutors use the powerful Gemini API to provide personalized learning experiences. They can explain concepts, create practice problems, and adapt to your learning style.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="text-center mb-3">
+                                <i class="fas fa-language text-success" style="font-size: 3rem;"></i>
+                            </div>
+                            <h5 class="card-title text-center">Multilingual Support</h5>
+                            <p>We support 10+ Indian languages including Hindi, Tamil, Telugu, Bengali, Marathi, Gujarati, and more to ensure that language is never a barrier to learning.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="text-center mb-3">
+                                <i class="fas fa-chalkboard-teacher text-danger" style="font-size: 3rem;"></i>
+                            </div>
+                            <h5 class="card-title text-center">Human Mentorship</h5>
+                            <p>Our platform connects students with dedicated mentors who provide guidance, motivation, and personalized support to help students achieve their academic goals.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="text-center mb-3">
+                                <i class="fas fa-gamepad text-warning" style="font-size: 3rem;"></i>
+                            </div>
+                            <h5 class="card-title text-center">Learning Games</h5>
+                            <p>Our interactive educational games make learning fun and engaging while helping students practice and master important concepts in a gamified environment.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-5 shadow-sm">
+                <div class="card-body p-4">
+                    <h4>Our Technology</h4>
+                    <p>VidyAI++ uses cutting-edge technology to deliver a seamless learning experience:</p>
+                    
+                    <ul>
+                        <li><strong>Gemini AI API:</strong> Powers our AI tutoring system with state-of-the-art natural language processing</li>
+                        <li><strong>Adaptive Learning Algorithms:</strong> Analyze student performance to personalize content</li>
+                        <li><strong>Learning Style Detection:</strong> Identifies whether students learn best visually, auditorily, or kinesthetically</li>
+                        <li><strong>Offline-first Technology:</strong> Allows students to continue learning even with limited internet connectivity</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <h4 class="mb-4">Ready to Start Learning?</h4>
+                <a href="{% url 'core:register' %}" class="btn btn-primary btn-lg px-5">Join VidyAI++ Today</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

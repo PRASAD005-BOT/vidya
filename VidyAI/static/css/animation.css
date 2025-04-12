@@ -1,0 +1,587 @@
+/* Animations CSS for VidyAI++ 
+ * This file contains various animations to enhance the UI/UX
+ */
+
+/* Color Scheme Variables */
+:root {
+    --primary-color: #4361ee;
+    --secondary-color: #3a0ca3;
+    --accent-color: #f72585;
+    --success-color: #4cc9f0;
+    --warning-color: #ffbe0b;
+    --info-color: #4895ef;
+    --danger-color: #f94144;
+    --purple-color: #7209b7;
+    --pink-color: #f72585;
+    --orange-color: #fb8500;
+    --teal-color: #06d6a0;
+    --mint-color: #80ffdb;
+  }
+  
+  /* Gradient Animations */
+  .gradient-text {
+    background: linear-gradient(45deg, var(--pink-color), var(--purple-color), var(--primary-color), var(--teal-color));
+    background-size: 300% 300%;
+    animation: gradient-shift 8s ease infinite;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+  }
+  
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .gradient-bg {
+    background: linear-gradient(45deg, var(--purple-color), var(--primary-color), var(--pink-color), var(--teal-color));
+    background-size: 300% 300%;
+    animation: gradient-shift 8s ease infinite;
+  }
+  
+  /* Rainbow Border Animation */
+  .rainbow-border {
+    position: relative;
+  }
+  
+  .rainbow-border::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(45deg, var(--pink-color), var(--purple-color), var(--primary-color), var(--teal-color), var(--warning-color), var(--orange-color));
+    background-size: 400% 400%;
+    z-index: -1;
+    border-radius: 12px;
+    animation: rainbow-border 3s ease infinite;
+  }
+  
+  @keyframes rainbow-border {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* Confetti Animation */
+  .confetti {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .confetti::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background-image: 
+      radial-gradient(circle, var(--pink-color) 2px, transparent 2px),
+      radial-gradient(circle, var(--warning-color) 2px, transparent 2px),
+      radial-gradient(circle, var(--teal-color) 2px, transparent 2px),
+      radial-gradient(circle, var(--primary-color) 2px, transparent 2px),
+      radial-gradient(circle, var(--purple-color) 2px, transparent 2px);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px, 15px 5px, 5px 15px, 10px 5px;
+    animation: confetti-fall 3s linear infinite;
+  }
+  
+  @keyframes confetti-fall {
+    0% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(100vh);
+    }
+  }
+  
+  /* Fade In Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  /* Fade Out Animation */
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
+  .fade-out {
+    animation: fadeOut 0.3s ease-in-out;
+  }
+  
+  /* Slide In From Top */
+  @keyframes slideInTop {
+    from {
+      transform: translateY(-30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .slide-in-top {
+    animation: slideInTop 0.5s ease-out;
+  }
+  
+  /* Slide In From Right */
+  @keyframes slideInRight {
+    from {
+      transform: translateX(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  .slide-in-right {
+    animation: slideInRight 0.6s ease-out;
+  }
+  
+  /* Slide Out To Right */
+  @keyframes slideOutRight {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+  
+  .slide-out-right {
+    animation: slideOutRight 0.5s forwards;
+  }
+  
+  /* Slide In From Left */
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  .slide-in-left {
+    animation: slideInLeft 0.6s ease-out;
+  }
+  
+  /* Slide In From Bottom */
+  @keyframes slideInBottom {
+    from {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .slide-in-bottom {
+    animation: slideInBottom 0.6s ease-out;
+  }
+  
+  /* Scale Up Animation */
+  @keyframes scaleUp {
+    from {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .scale-up {
+    animation: scaleUp 0.5s ease-out;
+  }
+  
+  /* Bounce Animation */
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-20px);
+    }
+    60% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  .bounce {
+    animation: bounce 1s ease;
+  }
+  
+  /* Pulse Animation */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .pulse {
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+  
+  /* Rotate Animation */
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .rotate {
+    animation: rotate 2s linear infinite;
+  }
+  
+  /* Color Rotate Animation */
+  @keyframes colorRotate {
+    0% { color: var(--pink-color); }
+    25% { color: var(--primary-color); }
+    50% { color: var(--teal-color); }
+    75% { color: var(--warning-color); }
+    100% { color: var(--pink-color); }
+  }
+  
+  .color-rotate {
+    animation: colorRotate 3s linear infinite;
+  }
+  
+  /* Shake Animation */
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+      transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+      transform: translateX(5px);
+    }
+  }
+  
+  .shake {
+    animation: shake 0.8s ease-in-out;
+  }
+  
+  /* Attention-grabbing Flash */
+  @keyframes flash {
+    0%, 50%, 100% {
+      opacity: 1;
+    }
+    25%, 75% {
+      opacity: 0.5;
+    }
+  }
+  
+  .flash {
+    animation: flash 2s infinite;
+  }
+  
+  /* Color Glow Animation */
+  .glow {
+    text-shadow: 0 0 5px var(--pink-color), 0 0 10px var(--purple-color);
+    animation: glow 1.5s infinite alternate;
+  }
+  
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 5px var(--pink-color), 0 0 10px var(--purple-color);
+    }
+    to {
+      text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--teal-color);
+    }
+  }
+  
+  /* Animated Hover Effects */
+  .hover-grow {
+    transition: transform 0.3s ease;
+  }
+  
+  .hover-grow:hover {
+    transform: scale(1.05);
+  }
+  
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .hover-color {
+    transition: color 0.3s ease;
+  }
+  
+  .hover-color:hover {
+    color: var(--accent-color);
+  }
+  
+  /* Color Flip on Hover */
+  .hover-flip {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .hover-flip::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--primary-color);
+    transform: scaleY(0);
+    transform-origin: 50% 100%;
+    transition: transform 0.3s ease;
+  }
+  
+  .hover-flip:hover {
+    color: white;
+  }
+  
+  .hover-flip:hover::before {
+    transform: scaleY(1);
+  }
+  
+  /* Navbar Animation */
+  .nav-item {
+    position: relative;
+  }
+  
+  .nav-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: width 0.3s ease, left 0.3s ease;
+  }
+  
+  .nav-item:hover::after {
+    width: 100%;
+    left: 0;
+  }
+  
+  /* Button Animations */
+  .btn-animated {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+  
+  .btn-animated::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: left 0.3s ease;
+    z-index: -1;
+  }
+  
+  .btn-animated:hover::before {
+    left: 0;
+  }
+  
+  /* Colorful Buttons */
+  .btn-rainbow {
+    background: linear-gradient(90deg, var(--pink-color), var(--purple-color), var(--primary-color), var(--teal-color));
+    background-size: 300% 100%;
+    animation: gradient-shift 4s ease infinite;
+    border: none;
+    color: white !important;
+  }
+  
+  .btn-glow {
+    animation: button-glow 1.5s infinite alternate;
+  }
+  
+  @keyframes button-glow {
+    from {
+      box-shadow: 0 0 5px var(--primary-color), 0 0 10px var(--secondary-color);
+    }
+    to {
+      box-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--pink-color);
+    }
+  }
+  
+  /* Card Animations */
+  .card-animated {
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  
+  .card-animated:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Colorful Card Borders */
+  .card-colorful {
+    border-top: 3px solid var(--primary-color);
+    transition: border-top-color 0.5s ease;
+  }
+  
+  .card-colorful:hover {
+    border-top-color: var(--accent-color);
+  }
+  
+  /* Progress bar animation */
+  @keyframes progressFill {
+    from {
+      width: 0;
+    }
+  }
+  
+  .progress-bar-animated {
+    animation: progressFill 1.5s ease-out;
+  }
+  
+  /* Colorful Progress Bar */
+  .progress-colorful .progress-bar {
+    background: linear-gradient(to right, var(--primary-color), var(--accent-color), var(--teal-color));
+    background-size: 200% 100%;
+    animation: gradient-shift 2s ease infinite;
+  }
+  
+  /* Page transition effects */
+  .page-transition {
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  /* Loading spinner */
+  @keyframes spinner {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .loading-spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spinner 0.8s linear infinite;
+    display: inline-block;
+  }
+  
+  /* Colorful Loading Spinner */
+  .loading-colorful {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 4px solid transparent;
+    border-top-color: var(--primary-color);
+    border-right-color: var(--accent-color);
+    border-bottom-color: var(--teal-color);
+    border-left-color: var(--purple-color);
+    animation: spinner 1s linear infinite;
+  }
+  
+  /* Voice button animation */
+  .voice-btn {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .voice-btn:hover {
+    transform: scale(1.1);
+  }
+  
+  .voice-btn.active {
+    animation: pulse 1.5s infinite;
+    background-color: var(--accent-color);
+  }
+  
+  /* Colorful Backgrounds */
+  .bg-gradient-purple {
+    background: linear-gradient(135deg, var(--purple-color), var(--primary-color));
+  }
+  
+  .bg-gradient-pink {
+    background: linear-gradient(135deg, var(--pink-color), var(--purple-color));
+  }
+  
+  .bg-gradient-blue {
+    background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+  }
+  
+  .bg-gradient-green {
+    background: linear-gradient(135deg, var(--teal-color), var(--mint-color));
+  }
+  
+  /* Floating Elements Animation */
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+  
+  .float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  /* Typing Animation */
+  .typing::after {
+    content: '|';
+    animation: typing 1s infinite;
+  }
+  
+  @keyframes typing {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }

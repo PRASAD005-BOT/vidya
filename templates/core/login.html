@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - VidyAI++{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0"><i class="fas fa-sign-in-alt me-2"></i> Login to VidyAI++</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" action="{% url 'core:login' %}">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input type="text" class="form-control" id="username" name="username" required autofocus>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-sign-in-alt me-2"></i> Login
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="text-center mt-4">
+                        <p>Don't have an account? <a href="{% url 'core:register' %}">Register</a></p>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="alert alert-info d-flex align-items-center" role="alert">
+                            <i class="fas fa-info-circle me-2 fs-4"></i>
+                            <div>
+                                <strong>Demo Account:</strong> For testing, you can use username: <strong>demo</strong> and password: <strong>demopass</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Voice login option -->
+            <div class="card mt-4 shadow-sm">
+                <div class="card-body p-3 text-center">
+                    <p class="mb-2">Can't type? Use voice login:</p>
+                    <button type="button" class="btn btn-outline-primary" id="voiceLoginBtn">
+                        <i class="fas fa-microphone me-2"></i> Login with Voice
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const voiceLoginBtn = document.getElementById('voiceLoginBtn');
+        
+        voiceLoginBtn.addEventListener('click', function() {
+            alert('Voice login is not implemented in this demo. In a full version, this would activate speech recognition for hands-free login.');
+        });
+    });
+</script>
+{% endblock %} 

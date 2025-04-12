@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }} | VidyAI++{% endblock %}
+
+{% block extra_css %}
+<style>
+    .skill-card {
+        border-radius: 15px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .skill-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+    
+    .skill-header {
+        padding: 15px;
+        color: white;
+        border-radius: 15px 15px 0 0;
+    }
+    
+    .skill-level {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+    
+    .heatmap-cell {
+        width: 35px;
+        height: 35px;
+        margin: 2px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        transition: transform 0.2s ease;
+    }
+    
+    .heatmap-cell:hover {
+        transform: scale(1.1);
+    }
+    
+    .level-1 { background-color: rgba(67, 97, 238, 0.2); }
+    .level-2 { background-color: rgba(67, 97, 238, 0.3); }
+    .level-3 { background-color: rgba(67, 97, 238, 0.4); }
+    .level-4 { background-color: rgba(67, 97, 238, 0.5); }
+    .level-5 { background-color: rgba(67, 97, 238, 0.6); }
+    .level-6 { background-color: rgba(67, 97, 238, 0.7); }
+    .level-7 { background-color: rgba(67, 97, 238, 0.8); }
+    .level-8 { background-color: rgba(67, 97, 238, 0.9); }
+    .level-9 { background-color: rgba(67, 97, 238, 1.0); }
+    .level-10 { background-color: #f72585; }
+    
+    .skill-progress {
+        height: 6px;
+        border-radius: 3px;
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .skill-progress-bar {
+        height: 100%;
+        border-radius: 3px;
+        background-color: white;
+    }
+    
+    .fade-in {
+        animation-name: fadeIn;
+        animation-duration: 0.5s;
+        animation-fill-mode: both;
+    }
+    
+    .slide-in-right {
+        animation-name: slideInRight;
+        animation-duration: 0.5s;
+        animation-fill-mode: both;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideInRight {
+        from {
+            transform: translateX(50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-animated">
+                <div class="card-body">
+                    <h2 class="card-title gradient-text mb-4">Skill Heatmap</h2>
+                    <p class="lead">
+                        This visualization shows your proficiency across different skill categories.
+                        The brighter the color, the higher your skill level.
+                    </p>
+                    
+                    {% if not heatmap_data %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> You haven't acquired any skills yet. Complete learning activities to develop your skills!
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% if heatmap_data %}
+    <div class="row">
+        {% for category in heatmap_data %}
+        <div class="col-lg-6 mb-4 fade-in" data-delay="{{ forloop.counter }}">
+            <div class="card skill-card">
+                <div class="skill-header" data-color="{{ category.color }}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="mb-0"><i class="{{ category.icon }} me-2"></i> {{ category.name }}</h3>
+                            <small class="text-white-50">{{ category.skills|length }} skills</small>
+                        </div>
+                        {% with total_level=0 %}
+                            {% for skill in category.skills %}
+                                {% with total_level=total_level|add:skill.level %}{% endwith %}
+                            {% endfor %}
+                            <div class="skill-level">{{ total_level }}</div>
+                        {% endwith %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap mb-3">
+                        {% for skill in category.skills %}
+                        <div class="heatmap-cell level-{{ skill.level }}" 
+                             data-bs-toggle="tooltip" 
+                             data-bs-placement="top" 
+                             title="{{ skill.name }} (Level {{ skill.level }}/{{ skill.max_level }})">
+                            <i class="{{ skill.icon }}"></i>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="skills-list">
+                        {% for skill in category.skills %}
+                        <div class="mb-3 slide-in-right" data-delay="{{ forloop.counter }}">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <div><i class="{{ skill.icon }} me-2"></i> {{ skill.name }}</div>
+                                <div class="text-muted">Level {{ skill.level }}/{{ skill.max_level }}</div>
+                            </div>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" 
+                                     data-progress="{{ skill.progress|floatformat:2 }}"
+                                     data-color="{{ category.color }}"></div>
+                            </div>
+                            <small class="text-muted">Last activity: {{ skill.last_activity }}</small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <!-- Skills Available to Acquire -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card card-animated">
+                <div class="card-header bg-gradient-purple text-white">
+                    <h3 class="mb-0"><i class="fas fa-graduation-cap me-2"></i> Skills Available to Acquire</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for category in all_categories %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 rainbow-border">
+                                <div class="card-body text-center">
+                                    <i class="{{ category.icon }} fa-3x mb-3" data-color="{{ category.color }}"></i>
+                                    <h5>{{ category.name }}</h5>
+                                    <p class="text-muted">{{ category.description|truncatechars:100 }}</p>
+                                    <a href="{% url 'learning:learning_games' %}" class="btn btn-sm btn-outline-primary btn-animated">
+                                        <i class="fas fa-chevron-right me-1"></i> Start Learning
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12 text-center">
+                            <p>No skill categories available yet. Check back soon!</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Initialize tooltips and apply dynamic styles
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Apply animation delays
+        document.querySelectorAll('.fade-in').forEach(function(element) {
+            var delay = element.dataset.delay || 1;
+            element.style.animationDelay = delay + '00ms';
+        });
+        
+        document.querySelectorAll('.slide-in-right').forEach(function(element) {
+            var delay = element.dataset.delay || 1;
+            element.style.animationDelay = delay + '00ms';
+        });
+        
+        // Apply skill header background colors
+        document.querySelectorAll('.skill-header').forEach(function(element) {
+            if (element.dataset.color) {
+                element.style.backgroundColor = element.dataset.color;
+            }
+        });
+        
+        // Apply skill progress bar styles
+        document.querySelectorAll('.skill-progress-bar').forEach(function(element) {
+            if (element.dataset.progress) {
+                var progress = parseFloat(element.dataset.progress);
+                element.style.width = (progress * 100) + '%';
+            }
+            
+            if (element.dataset.color) {
+                element.style.backgroundColor = element.dataset.color;
+            }
+        });
+        
+        // Apply category icon colors
+        document.querySelectorAll('[data-color]').forEach(function(element) {
+            if (element.tagName === 'I' && element.classList.contains('fa-3x')) {
+                element.style.color = element.dataset.color;
+            }
+        });
+    });
+</script>
+{% endblock %} 

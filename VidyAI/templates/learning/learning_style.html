@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Learning Style Assessment | VidyAI++{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-animated">
+                <div class="card-body">
+                    <h2 class="gradient-text mb-4"><i class="fas fa-brain me-2"></i> Learning Style Assessment</h2>
+                    <p class="lead">
+                        Discover your learning style to personalize your educational experience. This assessment will help determine if you're a visual, auditory, or kinesthetic learner.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card card-animated">
+                <div class="card-header">
+                    <h4 class="mb-0">Answer the questions below</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'learning:learning_style' %}">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3 gradient-text">When learning something new, I prefer to:</h5>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="question_1" id="q1_visual" value="visual" required>
+                                <label class="form-check-label" for="q1_visual">
+                                    See diagrams, pictures, or demonstrations
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="question_1" id="q1_auditory" value="auditory">
+                                <label class="form-check-label" for="q1_auditory">
+                                    Listen to explanations and discuss the topic
+                                </label>
+                            </div>
+                            
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="question_1" id="q1_kinesthetic" value="kinesthetic">
+                                <label class="form-check-label" for="q1_kinesthetic">
+                                    Try it out hands-on and learn by doing
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3 gradient-text">When trying to concentrate, I am most distracted by:</h5>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="question_2" id="q2_visual" value="auditory" required>
+                                <label class="form-check-label" for="q2_visual">
+                                    Noises or people talking
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="question_2" id="q2_auditory" value="visual">
+                                <label class="form-check-label" for="q2_auditory">
+                                    Visual distractions or movement
+                                </label>
+                            </div>
+                            
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="question_2" id="q2_kinesthetic" value="kinesthetic">
+                                <label class="form-check-label" for="q2_kinesthetic">
+                                    The temperature or feeling uncomfortable in my seat
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3 gradient-text">When explaining something to someone, I tend to:</h5>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="question_3" id="q3_visual" value="visual" required>
+                                <label class="form-check-label" for="q3_visual">
+                                    Show them pictures or draw diagrams
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="question_3" id="q3_auditory" value="auditory">
+                                <label class="form-check-label" for="q3_auditory">
+                                    Explain verbally with detailed descriptions
+                                </label>
+                            </div>
+                            
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="question_3" id="q3_kinesthetic" value="kinesthetic">
+                                <label class="form-check-label" for="q3_kinesthetic">
+                                    Use physical objects or demonstrate with actions
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3 gradient-text">I remember things best by:</h5>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="question_4" id="q4_visual" value="visual" required>
+                                <label class="form-check-label" for="q4_visual">
+                                    Visualizing them in my mind
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="question_4" id="q4_auditory" value="auditory">
+                                <label class="form-check-label" for="q4_auditory">
+                                    Repeating them out loud or hearing them again
+                                </label>
+                            </div>
+                            
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="question_4" id="q4_kinesthetic" value="kinesthetic">
+                                <label class="form-check-label" for="q4_kinesthetic">
+                                    Writing them down or physically interacting with them
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3 gradient-text">When browsing websites or apps, I prefer:</h5>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="question_5" id="q5_visual" value="visual" required>
+                                <label class="form-check-label" for="q5_visual">
+                                    Clean designs with lots of images and videos
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="question_5" id="q5_auditory" value="auditory">
+                                <label class="form-check-label" for="q5_auditory">
+                                    Audio content like podcasts or videos with good narration
+                                </label>
+                            </div>
+                            
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="question_5" id="q5_kinesthetic" value="kinesthetic">
+                                <label class="form-check-label" for="q5_kinesthetic">
+                                    Interactive elements and games that I can engage with
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5 class="mb-3 gradient-text">When I'm bored, I tend to:</h5>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="question_6" id="q6_visual" value="visual" required>
+                                <label class="form-check-label" for="q6_visual">
+                                    Doodle, look at my phone, or watch something
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="question_6" id="q6_auditory" value="auditory">
+                                <label class="form-check-label" for="q6_auditory">
+                                    Start a conversation or listen to music
+                                </label>
+                            </div>
+                            
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="question_6" id="q6_kinesthetic" value="kinesthetic">
+                                <label class="form-check-label" for="q6_kinesthetic">
+                                    Fidget, tap my fingers, or get up and move around
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-check-circle me-2"></i> Submit Assessment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

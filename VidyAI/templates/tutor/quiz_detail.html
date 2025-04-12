@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - VidyAI++{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'tutor:tutor_home' %}">AI Tutor</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'tutor:quizzes' %}">Quizzes</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ quiz.title }}</li>
+        </ol>
+    </nav>
+    
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h4 class="mb-0">{{ quiz.title }}</h4>
+                </div>
+                <div class="col-auto">
+                    <span class="badge bg-light text-primary">{{ quiz.question_count }} Questions</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <p>{{ quiz.description }}</p>
+                    <div class="d-flex mb-3">
+                        <div class="me-4">
+                            <i class="fas fa-book me-2"></i> <strong>Subject:</strong> {{ quiz.subject.name }}
+                        </div>
+                        <div class="me-4">
+                            <i class="fas fa-signal me-2"></i> <strong>Grade:</strong> {{ quiz.grade_level }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h5>Quiz Information</h5>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-clock me-2"></i> <strong>Time:</strong> {{ quiz.time_limit }} minutes</li>
+                                <li><i class="fas fa-question-circle me-2"></i> <strong>Questions:</strong> {{ quiz.questions.count }}</li>
+                                <li><i class="fas fa-check-circle me-2"></i> <strong>Passing score:</strong> {{ quiz.passing_score }}%</li>
+                                <li><i class="fas fa-redo me-2"></i> <strong>Attempts allowed:</strong> Unlimited</li>
+                            </ul>
+                            <div class="mt-3 small text-muted">
+                                <p><i class="fas fa-info-circle me-1"></i> The passing score is calculated based on the number of questions:</p>
+                                <ul class="small">
+                                    <li>5 or fewer questions: 80% to pass</li>
+                                    <li>6-10 questions: 70% to pass</li>
+                                    <li>11-15 questions: 65% to pass</li>
+                                    <li>16+ questions: 60% to pass</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            {% if question_count > 0 %}
+            <button class="btn btn-primary btn-lg" id="startQuizBtn">
+                <i class="fas fa-play me-2"></i> Start Quiz
+            </button>
+            {% else %}
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i> This quiz doesn't have any questions yet. Please try another quiz.
+            </div>
+            {% if fix_quiz_url and user.is_staff %}
+            <a href="{{ fix_quiz_url }}" class="btn btn-warning mb-2">
+                <i class="fas fa-magic me-2"></i> Generate Questions for this Quiz
+            </a>
+            {% endif %}
+            <a href="{% url 'tutor:quizzes' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left me-2"></i> Back to Quizzes
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Quiz Content (Hidden until start) -->
+    <div id="quizContent" style="display: none;">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Question <span id="currentQuestion">1</span> of {{ question_count }}</h5>
+                <div class="quiz-timer">
+                    <i class="fas fa-clock me-1"></i> <span id="timer">00:00</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <form id="quizForm">
+                    {% for q_data in questions_with_choices %}
+                    <div class="question-container" id="question{{ forloop.counter }}" {% if not forloop.first %}style="display: none;"{% endif %}>
+                        <h5>{{ q_data.question.question_text }}</h5>
+                        <div class="list-group mt-3">
+                            {% for choice in q_data.choices %}
+                            <label class="list-group-item">
+                                <input class="form-check-input me-2" type="radio" name="q{{ forloop.parentloop.counter }}" value="{{ forloop.counter0 }}" data-is-correct="{{ choice.is_correct|lower }}">
+                                {{ choice.choice_text }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                        {% if q_data.question.explanation %}
+                        <div class="explanation alert alert-info mt-3" style="display: none;">
+                            <strong>Explanation:</strong> {{ q_data.question.explanation }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-outline-primary" id="prevBtn" disabled>
+                            <i class="fas fa-arrow-left me-1"></i> Previous
+                        </button>
+                        <button type="button" class="btn btn-primary" id="nextBtn">
+                            Next <i class="fas fa-arrow-right ms-1"></i>
+                        </button>
+                        <button type="submit" class="btn btn-success" id="submitBtn" style="display: none;">
+                            <i class="fas fa-check me-1"></i> Submit Quiz
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM loaded - Quiz Detail Page');
+        
+        const startQuizBtn = document.getElementById('startQuizBtn');
+        const quizContent = document.getElementById('quizContent');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const currentQuestionSpan = document.getElementById('currentQuestion');
+        const questionContainers = document.querySelectorAll('.question-container');
+        
+        console.log('Question containers found:', questionContainers.length);
+        console.log('Total questions reported by server:', {{ question_count }});
+        
+        // Check if we actually have questions
+        if (questionContainers.length === 0 && {{ question_count }} > 0) {
+            console.error('No question containers found even though server reports questions exist');
+            // Add a warning message
+            const warningDiv = document.createElement('div');
+            warningDiv.className = 'alert alert-warning mt-3';
+            warningDiv.innerHTML = `
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Warning:</strong> There was an issue loading the quiz questions. 
+                <a href="{% url 'tutor:quizzes' %}" class="alert-link">Return to quizzes</a> or try again.
+            `;
+            document.querySelector('.card-footer').appendChild(warningDiv);
+            // Disable start button
+            if (startQuizBtn) {
+                startQuizBtn.disabled = true;
+            }
+        }
+        
+        // Start the quiz
+        if (startQuizBtn) {
+            startQuizBtn.addEventListener('click', function() {
+                console.log('Start Quiz button clicked');
+                
+                // Check if there are any questions to display
+                if (questionContainers.length === 0) {
+                    console.error('Cannot start quiz - no questions available');
+                    alert('Sorry, this quiz has no questions. Please try another quiz.');
+                    window.location.href = "{% url 'tutor:quizzes' %}";
+                    return;
+                }
+                
+                startQuizBtn.closest('.card').style.display = 'none';
+                quizContent.style.display = 'block';
+                
+                // Start timer
+                console.log('Starting timer with duration:', {{ quiz.time_limit }} * 60);
+                startTimer({{ quiz.time_limit }} * 60); // Convert minutes to seconds
+                
+                // Check if first question is visible
+                const firstQuestion = document.getElementById('question1');
+                console.log('First question element:', firstQuestion);
+                if (firstQuestion) {
+                    console.log('First question display style:', firstQuestion.style.display);
+                } else {
+                    console.error('Could not find first question element');
+                    alert('Sorry, there was an error displaying the quiz questions. Please try again.');
+                    window.location.reload();
+                }
+            });
+        }
+        
+        // Set up navigation between questions
+        let currentQuestionNum = 1;
+        const totalQuestions = {{ question_count }};
+        
+        // Hide all questions except the first
+        function showQuestion(questionNum) {
+            console.log('Showing question', questionNum);
+            // Hide all questions
+            questionContainers.forEach(container => {
+                container.style.display = 'none';
+            });
+            
+            // Show the current question
+            const questionElement = document.getElementById('question' + questionNum);
+            console.log('Question element to show:', questionElement);
+            if (questionElement) {
+                questionElement.style.display = 'block';
+            } else {
+                console.error('Could not find question element with ID: question' + questionNum);
+                // Try to recover by showing any available question
+                if (questionContainers.length > 0) {
+                    questionContainers[0].style.display = 'block';
+                    currentQuestionNum = 1;
+                    currentQuestionSpan.textContent = '1';
+                } else {
+                    // Critical error - no questions available
+                    alert('Sorry, there was an error displaying the quiz questions. Please try again later.');
+                    window.location.href = "{% url 'tutor:quizzes' %}";
+                }
+            }
+            
+            // Update the question counter
+            currentQuestionSpan.textContent = questionNum;
+            
+            // Update button states
+            prevBtn.disabled = (questionNum === 1);
+            
+            if (questionNum === totalQuestions) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+            }
+        }
+        
+        // Navigation button handlers
+        nextBtn.addEventListener('click', function() {
+            console.log('Next button clicked, current question:', currentQuestionNum);
+            if (currentQuestionNum < totalQuestions) {
+                currentQuestionNum++;
+                showQuestion(currentQuestionNum);
+            }
+        });
+        
+        prevBtn.addEventListener('click', function() {
+            console.log('Previous button clicked, current question:', currentQuestionNum);
+            if (currentQuestionNum > 1) {
+                currentQuestionNum--;
+                showQuestion(currentQuestionNum);
+            }
+        });
+        
+        // Process quiz submission
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            console.log('Quiz submitted');
+            
+            // Calculate score
+            let correctAnswers = 0;
+            let totalAnswered = 0;
+            
+            questionContainers.forEach((container, index) => {
+                const questionNumber = index + 1;
+                const selectedOption = document.querySelector(`input[name="q${questionNumber}"]:checked`);
+                
+                if (selectedOption) {
+                    totalAnswered++;
+                    if (selectedOption.dataset.isCorrect === 'true') {
+                        correctAnswers++;
+                    }
+                }
+            });
+            
+            console.log(`Score: ${correctAnswers} out of ${totalQuestions}`);
+            
+            // Show score
+            const scorePercentage = Math.round((correctAnswers / totalQuestions) * 100);
+            
+            // Display results and explanations
+            questionContainers.forEach(container => {
+                container.style.display = 'block'; // Show all questions
+                
+                // Show explanations
+                const explanation = container.querySelector('.explanation');
+                if (explanation) {
+                    explanation.style.display = 'block';
+                }
+                
+                // Highlight correct/incorrect answers
+                const inputs = container.querySelectorAll('input[type="radio"]');
+                inputs.forEach(input => {
+                    input.disabled = true; // Disable all inputs
+                    
+                    const label = input.closest('label');
+                    if (input.dataset.isCorrect === 'true') {
+                        label.classList.add('list-group-item-success');
+                    } else if (input.checked) {
+                        label.classList.add('list-group-item-danger');
+                    }
+                });
+            });
+            
+            // Hide navigation buttons and show results
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+            submitBtn.style.display = 'none';
+            
+            // Create a results panel
+            const resultsDiv = document.createElement('div');
+            resultsDiv.className = 'alert alert-info mt-4';
+            resultsDiv.innerHTML = `
+                <h4>Quiz Results</h4>
+                <p>You answered ${correctAnswers} out of ${totalQuestions} questions correctly.</p>
+                <p>Your score: ${scorePercentage}%</p>
+                <div class="mt-3">
+                    <a href="{% url 'tutor:quizzes' %}" class="btn btn-primary">Back to Quizzes</a>
+                    <a href="{% url 'tutor:quiz_detail' quiz.id %}" class="btn btn-outline-primary ms-2">Retry Quiz</a>
+                </div>
+            `;
+            
+            // Add results to the page
+            this.appendChild(resultsDiv);
+            
+            // Scroll to top to see results
+            window.scrollTo(0, 0);
+            
+            // In a real implementation, we would save the quiz attempt to the database
+            // For now, we're just showing the results client-side
+        });
+        
+        // Timer function
+        function startTimer(duration) {
+            let timer = duration;
+            const timerDisplay = document.getElementById('timer');
+            let minutes, seconds;
+            
+            const countdown = setInterval(function() {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+                
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                
+                timerDisplay.textContent = minutes + ":" + seconds;
+                
+                if (--timer < 0) {
+                    clearInterval(countdown);
+                    alert('Time is up! Your quiz will be automatically submitted.');
+                    document.getElementById('quizForm').dispatchEvent(new Event('submit'));
+                }
+            }, 1000);
+        }
+    });
+</script>
+{% endblock %}

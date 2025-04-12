@@ -1,0 +1,1 @@
+web: cd VidyAI && gunicorn vidyai.wsgi:application --log-file - 

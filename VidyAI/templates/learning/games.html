@@ -1,0 +1,2972 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Learning Games | VidyAI++{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-animated">
+                <div class="card-body">
+                    <h2 class="gradient-text mb-4"><i class="fas fa-gamepad me-2"></i> Learning Games</h2>
+                    <p class="lead">
+                        Learn through play! Our interactive educational games make learning fun and effective.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Quiz Game -->
+        <div class="col-md-4 mb-4 fade-in">
+            <div class="card h-100 hover-lift card-animated">
+                <img src="{% static 'img/quiz-game.jpg' %}" class="card-img-top" alt="Quiz Game" onerror="this.src='https://placehold.co/350x200?text=Quiz+Game'">
+                <div class="card-body">
+                    <h4 class="card-title">Knowledge Quiz</h4>
+                    <p class="card-text">Test your knowledge with our adaptive quiz game that adjusts to your skill level.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-primary">Multiple Subjects</span>
+                        <span><i class="fas fa-star text-warning"></i> +10 points</span>
+                    </div>
+                </div>
+                <div class="card-footer d-grid">
+                    <button class="btn btn-primary game-button" data-game-type="quiz">
+                        <i class="fas fa-play me-2"></i> Play Now
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Memory Game -->
+        <div class="col-md-4 mb-4 fade-in">
+            <div class="card h-100 hover-lift card-animated">
+                <img src="{% static 'img/memory-game.jpg' %}" class="card-img-top" alt="Memory Game" onerror="this.src='https://placehold.co/350x200?text=Memory+Game'">
+                <div class="card-body">
+                    <h4 class="card-title">Memory Challenge</h4>
+                    <p class="card-text">Improve your memory by matching pairs and learning concepts through repetition.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-success">Cognitive Skills</span>
+                        <span><i class="fas fa-star text-warning"></i> +15 points</span>
+                    </div>
+                </div>
+                <div class="card-footer d-grid">
+                    <button class="btn btn-success game-button" data-game-type="memory">
+                        <i class="fas fa-play me-2"></i> Play Now
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Puzzle Game -->
+        <div class="col-md-4 mb-4 fade-in">
+            <div class="card h-100 hover-lift card-animated">
+                <img src="{% static 'img/puzzle-game.jpg' %}" class="card-img-top" alt="Puzzle Game" onerror="this.src='https://placehold.co/350x200?text=Puzzle+Game'">
+                <div class="card-body">
+                    <h4 class="card-title">Logic Puzzles</h4>
+                    <p class="card-text">Solve challenging puzzles that develop critical thinking and problem-solving skills.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-danger">Problem Solving</span>
+                        <span><i class="fas fa-star text-warning"></i> +20 points</span>
+                    </div>
+                </div>
+                <div class="card-footer d-grid">
+                    <button class="btn btn-danger game-button" data-game-type="puzzle">
+                        <i class="fas fa-play me-2"></i> Play Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <!-- Word Game -->
+        <div class="col-md-4 mb-4 fade-in">
+            <div class="card h-100 hover-lift card-animated">
+                <img src="{% static 'img/word-game.jpg' %}" class="card-img-top" alt="Word Game" onerror="this.src='https://placehold.co/350x200?text=Word+Game'">
+                <div class="card-body">
+                    <h4 class="card-title">Word Master</h4>
+                    <p class="card-text">Expand your vocabulary and improve spelling through engaging word games.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-info">Language Skills</span>
+                        <span><i class="fas fa-star text-warning"></i> +15 points</span>
+                    </div>
+                </div>
+                <div class="card-footer d-grid">
+                    <button class="btn btn-info text-white game-button" data-game-type="word">
+                        <i class="fas fa-play me-2"></i> Play Now
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Math Game -->
+        <div class="col-md-4 mb-4 fade-in">
+            <div class="card h-100 hover-lift card-animated">
+                <img src="{% static 'img/math-game.jpg' %}" class="card-img-top" alt="Math Game" onerror="this.src='https://placehold.co/350x200?text=Math+Game'">
+                <div class="card-body">
+                    <h4 class="card-title">Math Challenge</h4>
+                    <p class="card-text">Practice mathematical concepts through fun, timed challenges at various levels.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-warning text-dark">Mathematics</span>
+                        <span><i class="fas fa-star text-warning"></i> +15 points</span>
+                    </div>
+                </div>
+                <div class="card-footer d-grid">
+                    <button class="btn btn-warning game-button" data-game-type="math">
+                        <i class="fas fa-play me-2"></i> Play Now
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Science Game -->
+        <div class="col-md-4 mb-4 fade-in">
+            <div class="card h-100 hover-lift card-animated">
+                <img src="{% static 'img/science-game.jpg' %}" class="card-img-top" alt="Science Game" onerror="this.src='https://placehold.co/350x200?text=Science+Game'">
+                <div class="card-body">
+                    <h4 class="card-title">Science Explorer</h4>
+                    <p class="card-text">Discover scientific principles through virtual experiments and interactive simulations.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-purple text-white">Science</span>
+                        <span><i class="fas fa-star text-warning"></i> +20 points</span>
+                    </div>
+                </div>
+                <div class="card-footer d-grid">
+                    <button class="btn btn-purple text-white game-button" data-game-type="science">
+                        <i class="fas fa-play me-2"></i> Play Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Learning Stats Widget -->
+<div class="container mt-5 mb-4">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <h4 class="gradient-text mb-3"><i class="fas fa-chart-line me-2"></i> Your Learning Stats</h4>
+            
+            <div class="row">
+                <!-- Streak Status -->
+                <div class="col-md-3 mb-3">
+                    <div class="card h-100 bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-fire fa-2x text-danger mb-2"></i>
+                            <h5>Streak</h5>
+                            <div class="display-4 fw-bold">{{ streak.current_streak }}</div>
+                            <p class="text-muted">day{{ streak.current_streak|pluralize }}</p>
+                            {% if streak.current_streak >= 5 %}
+                                <span class="badge bg-success">On Fire!</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Badges Summary -->
+                <div class="col-md-3 mb-3">
+                    <div class="card h-100 bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-medal fa-2x text-warning mb-2"></i>
+                            <h5>Badges</h5>
+                            <div class="display-4 fw-bold">{{ user_badges.count }}</div>
+                            <p class="text-muted mb-2">earned</p>
+                            {% if user_badges %}
+                                <a href="{% url 'learning:badges_showcase' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Top Skills -->
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100 bg-light">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0"><i class="fas fa-brain text-primary me-2"></i> Top Skills</h5>
+                                <a href="{% url 'learning:skill_heatmap' %}" class="btn btn-sm btn-outline-primary">Skill Map</a>
+                            </div>
+                            
+                            {% if skill_data %}
+                                <div class="row">
+                                    {% for category, skills in skill_data.items %}
+                                        {% for skill in skills|slice:":2" %}
+                                            <div class="col-6 mb-2">
+                                                <div class="d-flex justify-content-between">
+                                                    <small>{{ skill.name }}</small>
+                                                    <small class="text-muted">Lv {{ skill.level }}</small>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar" role="progressbar" 
+                                                         {% if skill.progress %}data-progress="{{ skill.progress }}"{% endif %}
+                                                         {% if skill.color %}data-color="{{ skill.color }}"{% endif %}
+                                                         style="width: 0%;"
+                                                         aria-valuenow="{{ skill.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="text-muted">Play games to build your skills!</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Game Progress -->
+            {% if user_progress %}
+                <h5 class="mt-4 mb-3"><i class="fas fa-gamepad me-2"></i> Recent Games</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Game</th>
+                                <th>High Score</th>
+                                <th>Level</th>
+                                <th>Completion</th>
+                                <th>Last Played</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for progress in user_progress %}
+                                <tr>
+                                    <td>
+                                        <span class="badge rounded-pill" 
+                                              data-bg-color="{% cycle '#4361ee' '#2ec4b6' '#ff9f1c' '#e71d36' '#7209b7' %}">
+                                            {{ progress.game.game_type }}
+                                        </span>
+                                        {{ progress.game.name }}
+                                    </td>
+                                    <td>{{ progress.score }}</td>
+                                    <td>{{ progress.highest_level }}</td>
+                                    <td>
+                                        <div class="progress" style="height: 8px; width: 100px;">
+                                            <div class="progress-bar bg-success" role="progressbar" 
+                                                 data-completion="{{ progress.completion_percentage }}"
+                                                 style="width: 0%;" 
+                                                 aria-valuenow="{{ progress.completion_percentage }}" 
+                                                 aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </td>
+                                    <td>{{ progress.last_played|timesince }} ago</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Apply progress bar styles
+        document.querySelectorAll('.progress-bar[data-progress]').forEach(function(bar) {
+            const progress = bar.getAttribute('data-progress');
+            const color = bar.getAttribute('data-color');
+            bar.style.width = progress + '%';
+            if (color) {
+                bar.style.backgroundColor = color;
+            }
+        });
+
+        // Apply background colors to badges
+        document.querySelectorAll('.badge[data-bg-color]').forEach(function(badge) {
+            const bgColor = badge.getAttribute('data-bg-color');
+            badge.style.backgroundColor = bgColor;
+        });
+        
+        // Apply completion percentages to progress bars
+        document.querySelectorAll('.progress-bar[data-completion]').forEach(function(bar) {
+            const completion = bar.getAttribute('data-completion');
+            bar.style.width = completion + '%';
+        });
+    });
+</script>
+
+<!-- Game Modal -->
+<div class="modal fade" id="gameModal" tabindex="-1" aria-labelledby="gameModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="gameModalLabel">Game Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Loading Screen -->
+                <div id="loadingScreen" class="text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-gamepad fa-5x text-primary mb-3 pulse-animation"></i>
+                        <h4 id="loadingStatus">Initializing game...</h4>
+                        <p id="loadingMessage">Please wait while we prepare your game experience</p>
+                    </div>
+                    <div class="progress mb-3">
+                        <div id="loadingProgress" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 10%"></div>
+                    </div>
+                    <div id="loadingStage" class="text-muted small">Loading assets (1/4)</div>
+                </div>
+                
+                <!-- Game Content (Initially Hidden) -->
+                <div id="gameContent" class="d-none">
+                    <!-- Quiz Game Content -->
+                    <div id="quizGame" class="game-container d-none">
+                        <div class="quiz-header text-center mb-4">
+                            <h3>Knowledge Quiz</h3>
+                            <div class="d-flex justify-content-between">
+                                <span>Question: <span id="questionNumber">1</span>/5</span>
+                                <span>Score: <span id="quizScore">0</span></span>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 id="questionText" class="card-title">Loading question...</h5>
+                                <div class="list-group mt-3" id="answerOptions"></div>
+                            </div>
+                        </div>
+                        <div id="explanationBox" class="alert alert-info d-none">
+                            <h6>Explanation:</h6>
+                            <p id="explanationText"></p>
+                        </div>
+                    </div>
+                    
+                    <!-- Memory Game Content -->
+                    <div id="memoryGame" class="game-container d-none">
+                        <div class="text-center mb-4">
+                            <h3 class="memory-game-title">Memory Challenge</h3>
+                            <p class="memory-game-subtitle">Find matching pairs of cards</p>
+                            <div class="memory-stats d-flex justify-content-between align-items-center p-2 px-3 rounded mb-4">
+                                <span class="badge bg-primary p-2"><i class="fas fa-sync-alt me-1"></i> Moves: <span id="memoryMoves" class="fs-5">0</span></span>
+                                <span class="badge bg-success p-2"><i class="fas fa-check-double me-1"></i> Pairs: <span id="memoryPairsFound" class="fs-5">0</span>/<span id="memoryTotalPairs" class="fs-5">6</span></span>
+                                <span class="timer-badge badge bg-warning p-2 text-dark"><i class="fas fa-clock me-1"></i> Time: <span id="memoryTimer" class="fs-5">00:00</span></span>
+                            </div>
+                        </div>
+                        <div class="memory-board">
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3" id="memoryCards">
+                                <!-- Memory cards will be generated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Default Game Content for games under development -->
+                    <div id="defaultGame" class="game-container d-none">
+                        <div class="text-center mb-4">
+                            <h3 id="defaultGameTitle">Game</h3>
+                            <p id="defaultGameDescription">Game description</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-body text-center py-5">
+                                <i class="fas fa-tools fa-4x mb-3 text-muted"></i>
+                                <h4>Game Under Development</h4>
+                                <p class="lead">We're working hard to bring you this exciting game!</p>
+                                <p>Check back soon for updates.</p>
+                                <div class="mt-4">
+                                    <div class="progress mb-3">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" style="width: 75%"></div>
+                                    </div>
+                                    <p class="text-muted">Development progress: 75%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Word Game Content -->
+                    <div id="wordGame" class="game-container d-none">
+                        <div class="text-center mb-4">
+                            <h3 class="word-game-title">Word Master</h3>
+                            <p class="word-game-subtitle">Unscramble words and learn their meanings</p>
+                            <div class="word-stats d-flex justify-content-between align-items-center p-2 px-3 rounded mb-4">
+                                <span class="badge bg-primary p-2"><i class="fas fa-star me-1"></i> Score: <span id="wordScore" class="fs-5">0</span></span>
+                                <span class="badge bg-success p-2"><i class="fas fa-layer-group me-1"></i> Level: <span id="wordLevel" class="fs-5">1</span></span>
+                                <span class="timer-badge badge bg-warning p-2 text-dark"><i class="fas fa-clock me-1"></i> Time: <span id="wordTimer" class="fs-5">00:30</span></span>
+                            </div>
+                        </div>
+                        <div class="word-game-board">
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="card word-card">
+                                        <div class="card-body">
+                                            <div class="word-clue mb-3 pb-2 border-bottom">
+                                                <h5 class="text-muted"><i class="fas fa-lightbulb text-warning me-2"></i>Clue:</h5>
+                                                <p id="wordClue" class="lead">A hint about the word will appear here.</p>
+                                            </div>
+                                            <div class="scrambled-word text-center mb-4">
+                                                <h2 id="scrambledWord" class="display-4 word-scramble"></h2>
+                                            </div>
+                                            <div class="word-input mb-3">
+                                                <label for="wordGuess" class="form-label">Your answer:</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control form-control-lg" id="wordGuess" placeholder="Type your answer here..." autocomplete="off">
+                                                    <button id="submitWordBtn" class="btn btn-primary btn-lg">
+                                                        <i class="fas fa-check me-2"></i>Submit
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="wordFeedback" class="alert d-none mb-4"></div>
+                            <div class="word-controls text-center">
+                                <button id="skipWordBtn" class="btn btn-secondary">
+                                    <i class="fas fa-forward me-2"></i>Skip Word
+                                </button>
+                                <button id="showHintBtn" class="btn btn-info text-white">
+                                    <i class="fas fa-lightbulb me-2"></i>Get Hint (-5 points)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Math Game Content -->
+                    <div id="mathGame" class="game-container d-none">
+                        <div class="text-center mb-4">
+                            <h3>Math Challenge</h3>
+                            <p>Solve math problems within the time limit</p>
+                            <div class="d-flex justify-content-between">
+                                <span>Score: <span id="mathScore">0</span></span>
+                                <span>Level: <span id="mathLevel">1</span></span>
+                            </div>
+                        </div>
+                        <div class="math-board">
+                            <div class="row row-cols-4 g-2" id="mathCards">
+                                <!-- Math cards will be generated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Puzzle Game Content -->
+                    <div id="puzzleGame" class="game-container d-none">
+                        <div class="text-center mb-4">
+                            <h3 class="puzzle-game-title">Logic Puzzles</h3>
+                            <p class="puzzle-game-subtitle">Solve riddles and puzzles to train your logical thinking</p>
+                            <div class="puzzle-stats d-flex justify-content-between align-items-center p-2 px-3 rounded mb-4">
+                                <span class="badge bg-primary p-2"><i class="fas fa-star me-1"></i> Score: <span id="puzzleScore" class="fs-5">0</span></span>
+                                <span class="badge bg-success p-2"><i class="fas fa-layer-group me-1"></i> Level: <span id="puzzleLevel" class="fs-5">1</span>/10</span>
+                                <span class="badge bg-danger p-2"><i class="fas fa-brain me-1"></i> Difficulty: <span id="puzzleDifficulty" class="fs-5">Easy</span></span>
+                            </div>
+                        </div>
+                        <div class="puzzle-game-board">
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <div class="card puzzle-card">
+                                        <div class="card-body">
+                                            <div class="puzzle-problem mb-4">
+                                                <h5 class="text-muted mb-3"><i class="fas fa-puzzle-piece text-danger me-2"></i>Problem:</h5>
+                                                <p id="puzzleDescription" class="lead">The puzzle description will appear here.</p>
+                                                <div id="puzzleImage" class="text-center my-3 d-none">
+                                                    <!-- Puzzle image container -->
+                                                </div>
+                                            </div>
+                                            <div class="puzzle-options mb-3">
+                                                <h5 class="text-muted mb-3"><i class="fas fa-list-ul text-info me-2"></i>Options:</h5>
+                                                <div id="puzzleAnswerOptions" class="list-group">
+                                                    <!-- Options will be generated here -->
+                                                </div>
+                                            </div>
+                                            <div id="puzzleFeedback" class="alert d-none mb-4"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="puzzle-controls d-flex justify-content-between">
+                                <button id="skipPuzzleBtn" class="btn btn-secondary">
+                                    <i class="fas fa-forward me-2"></i>Skip Puzzle
+                                </button>
+                                <button id="showPuzzleHintBtn" class="btn btn-info text-white">
+                                    <i class="fas fa-lightbulb me-2"></i>Get Hint (-5 points)
+                                </button>
+                                <button id="submitPuzzleBtn" class="btn btn-primary">
+                                    <i class="fas fa-check me-2"></i>Submit Answer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Science Game Content -->
+                    <div id="scienceGame" class="game-container d-none">
+                        <div class="text-center mb-4">
+                            <h3>Science Explorer</h3>
+                            <p>Discover scientific principles through virtual experiments</p>
+                            <div class="d-flex justify-content-between">
+                                <span>Score: <span id="scienceScore">0</span></span>
+                                <span>Level: <span id="scienceLevel">1</span></span>
+                            </div>
+                        </div>
+                        <div class="science-board">
+                            <div class="row row-cols-4 g-2" id="scienceCards">
+                                <!-- Science cards will be generated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div id="gameControls" class="d-none">
+                    <button type="button" class="btn btn-primary me-2" id="continueGameBtn">Continue</button>
+                    <button type="button" class="btn btn-warning me-2" id="restartGameBtn">Restart</button>
+                </div>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Debug output element for troubleshooting -->
+<div id="debug-console" style="display: none; position: fixed; bottom: 10px; left: 10px; right: 10px; height: 200px; background: rgba(0,0,0,0.8); color: white; overflow: auto; padding: 10px; font-family: monospace; z-index: 9999; font-size: 12px;"></div>
+
+<!-- Direct Bootstrap inclusion -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+<!-- Include Gemini AI Integration -->
+<script>
+    // Debug logger
+    function debugLog(message) {
+        const debugConsole = document.getElementById('debug-console');
+        if (debugConsole) {
+            const line = document.createElement('div');
+            line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            debugConsole.appendChild(line);
+            debugConsole.scrollTop = debugConsole.scrollHeight;
+        }
+        console.log(message);
+    }
+    
+    // Show debug console with keyboard shortcut (Ctrl+Shift+D)
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+            const debugConsole = document.getElementById('debug-console');
+            if (debugConsole) {
+                debugConsole.style.display = debugConsole.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+    });
+    
+    // Log page load
+    debugLog('Page loaded, waiting for DOM ready');
+    
+    // Fallback Gemini AI implementation in case the external script fails to load
+    class GeminiFallback {
+        constructor() {
+            this.userPoints = 0;
+            debugLog('Created Gemini fallback instance');
+        }
+        
+        loadUserPoints() { return 0; }
+        saveUserPoints() {}
+        getPoints() { return this.userPoints; }
+        
+        addPoints(points) {
+            this.userPoints += points;
+            debugLog(`Added ${points} points, total: ${this.userPoints}`);
+            return this.userPoints;
+        }
+        
+        showPointsNotification(points, message) {
+            debugLog(`Points notification: +${points} - ${message}`);
+            // Simple notification
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = '#4CAF50';
+            notification.style.color = 'white';
+            notification.style.padding = '15px';
+            notification.style.borderRadius = '5px';
+            notification.style.zIndex = '9999';
+            notification.innerHTML = `<strong>+${points}</strong> ${message}`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s';
+                setTimeout(() => notification.remove(), 500);
+            }, 2000);
+        }
+        
+        generateQuizQuestions(topic) {
+            debugLog('Using fallback quiz questions');
+            return [
+                {
+                    question: `What is ${topic} primarily used for?`,
+                    options: ["Learning and education", "Entertainment", "Communication", "All of the above"],
+                    correctIndex: 3,
+                    explanation: "This subject has applications in education, entertainment, and communication."
+                },
+                {
+                    question: `Which of these is related to ${topic}?`,
+                    options: ["Problem solving", "Critical thinking", "Creative expression", "All of the above"],
+                    correctIndex: 3,
+                    explanation: "All these skills are important aspects of this subject."
+                },
+                {
+                    question: `How does ${topic} affect daily life?`,
+                    options: ["It doesn't", "Minimally", "Significantly", "Only for professionals"],
+                    correctIndex: 2,
+                    explanation: "This subject has a significant impact on many aspects of daily life."
+                },
+                {
+                    question: `Which field is most closely associated with ${topic}?`,
+                    options: ["Science", "Arts", "Technology", "All are related"],
+                    correctIndex: 3,
+                    explanation: "This subject has connections to science, arts, and technology."
+                },
+                {
+                    question: `What skill is most important for mastering ${topic}?`,
+                    options: ["Memorization", "Practice", "Understanding concepts", "All of the above"],
+                    correctIndex: 3,
+                    explanation: "Mastery requires memorization, practice, and conceptual understanding."
+                }
+            ];
+        }
+        
+        getFallbackQuestions(topic) {
+            return this.generateQuizQuestions(topic);
+        }
+        
+        generateMemoryGameItems() {
+            return [
+                ["HTML", "Hypertext Markup Language"],
+                ["CSS", "Cascading Style Sheets"],
+                ["JS", "JavaScript"],
+                ["API", "Application Programming Interface"],
+                ["SQL", "Structured Query Language"],
+                ["DNS", "Domain Name System"]
+            ];
+        }
+        
+        getFallbackMemoryItems() {
+            return this.generateMemoryGameItems();
+        }
+    }
+    
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        debugLog('DOM fully loaded');
+        
+        // Create a fallback instance that will be used if the script fails to load
+        window.geminiAI = new GeminiFallback();
+        
+        // Load Gemini integration script
+        const geminiScript = document.createElement('script');
+        geminiScript.src = "{% static 'js/gemini-integration.js' %}";
+        geminiScript.onload = function() {
+            debugLog('Gemini integration script loaded successfully');
+            initializeGameLogic();
+        };
+        geminiScript.onerror = function() {
+            debugLog('Error loading Gemini integration script - using fallback implementation');
+            // Continue with initialization using the fallback
+            initializeGameLogic();
+        };
+        document.head.appendChild(geminiScript);
+        
+        // Set a timeout to ensure we proceed even if script loading hangs
+        setTimeout(function() {
+            if (typeof initializeGameLogic === 'function' && !window._gameInitialized) {
+                debugLog('Starting game initialization after timeout (fallback)');
+                initializeGameLogic();
+            }
+        }, 2000);
+    });
+    
+    // Bootstrap Modal implementation as fallback
+    class ModalFallback {
+        constructor(element) {
+            this.element = element;
+            this.isShown = false;
+            debugLog('Created modal fallback for ' + element.id);
+        }
+        
+        show() {
+            debugLog('Showing modal with fallback implementation');
+            this.element.classList.add('show');
+            this.element.style.display = 'block';
+            document.body.classList.add('modal-open');
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop fade show';
+            document.body.appendChild(backdrop);
+            this.isShown = true;
+        }
+        
+        hide() {
+            debugLog('Hiding modal with fallback implementation');
+            this.element.classList.remove('show');
+            this.element.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) {
+                backdrop.remove();
+            }
+            this.isShown = false;
+        }
+    }
+    
+    function initializeGameLogic() {
+        // Prevent multiple initializations
+        if (window._gameInitialized) {
+            debugLog('Game already initialized, skipping');
+            return;
+        }
+        window._gameInitialized = true;
+        
+        debugLog('Initializing game logic');
+        
+        // Game loading simulation variables
+        let loadingInterval;
+        let currentProgress = 10;
+        let currentStage = 1;
+        let currentGameType = null;
+        let gameModal = null;
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let quizScore = 0;
+        
+        const loadingStages = [
+            { stage: 1, message: "Loading assets", target: 25 },
+            { stage: 2, message: "Preparing game environment", target: 50 },
+            { stage: 3, message: "Loading game logic", target: 75 },
+            { stage: 4, message: "Finalizing", target: 100 }
+        ];
+        
+        // Initialize game modal
+        const modalElement = document.getElementById('gameModal');
+        if (modalElement) {
+            try {
+                debugLog('Attempting to create Bootstrap modal');
+                if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                    gameModal = new bootstrap.Modal(modalElement);
+                    debugLog('Bootstrap modal created successfully');
+                } else {
+                    debugLog('Bootstrap not available, using fallback modal implementation');
+                    gameModal = new ModalFallback(modalElement);
+                }
+                
+                // Add event listener for when modal is hidden
+                modalElement.addEventListener('hidden.bs.modal', function() {
+                    // Clean up resources when modal is closed
+                    debugLog('Modal hidden event triggered');
+                    if (loadingInterval) {
+                        clearInterval(loadingInterval);
+                    }
+                    
+                    // Stop any running timers
+                    if (window.memoryTimerInterval) {
+                        clearInterval(window.memoryTimerInterval);
+                        window.memoryTimerInterval = null;
+                        debugLog('Memory timer stopped due to modal close');
+                    }
+                });
+                
+                // Add fallback close button handler
+                const closeButtons = modalElement.querySelectorAll('[data-bs-dismiss="modal"]');
+                closeButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        if (gameModal instanceof ModalFallback) {
+                            gameModal.hide();
+                        }
+                    });
+                });
+                
+                debugLog('Game modal initialized successfully');
+            } catch (error) {
+                debugLog('Error initializing modal: ' + error.message);
+            }
+        } else {
+            debugLog('Modal element not found in DOM');
+        }
+        
+        // Add click handlers to game buttons
+        const gameButtons = document.querySelectorAll('.game-button');
+        debugLog(`Found ${gameButtons.length} game buttons`);
+        
+        gameButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const gameType = this.getAttribute('data-game-type');
+                debugLog(`Game button clicked for type: ${gameType}`);
+                showGameModal(gameType);
+            });
+        });
+        
+        function showGameModal(gameType) {
+            try {
+                debugLog(`Showing game modal for: ${gameType}`);
+                
+                if (!gameModal && modalElement) {
+                    debugLog('Creating new modal instance as fallback');
+                    gameModal = new ModalFallback(modalElement);
+                }
+                
+                if (!gameModal) {
+                    debugLog('No modal available, cannot proceed');
+                    alert('There was an error loading the game. Please refresh the page and try again.');
+                    return;
+                }
+                
+                const modalTitle = document.getElementById('gameModalLabel');
+                if (!modalTitle) {
+                    debugLog('Modal title element not found');
+                    return;
+                }
+                
+                // Reset game state
+                resetGameState();
+                
+                // Store current game type
+                currentGameType = gameType;
+                
+                // Set title based on game type
+                switch(gameType) {
+                    case 'quiz':
+                        modalTitle.innerText = 'Knowledge Quiz';
+                        break;
+                    case 'memory':
+                        modalTitle.innerText = 'Memory Challenge';
+                        break;
+                    case 'word':
+                        modalTitle.innerText = 'Word Master';
+                        break;
+                    case 'math':
+                        modalTitle.innerText = 'Math Challenge';
+                        break;
+                    case 'puzzle':
+                        modalTitle.innerText = 'Logic Puzzles';
+                        break;
+                    case 'science':
+                        modalTitle.innerText = 'Science Explorer';
+                        break;
+                    default:
+                        modalTitle.innerText = 'Learning Game';
+                }
+                
+                // Show modal and start loading
+                debugLog('Opening modal');
+                gameModal.show();
+                
+                // Skip the loading simulation and show the game content directly for all games
+                debugLog(`Showing ${gameType} game directly (bypassing loading)`);
+                
+                setTimeout(function() {
+                    // Hide loading screen
+                    document.getElementById('loadingScreen').classList.add('d-none');
+                    // Show game content
+                    document.getElementById('gameContent').classList.remove('d-none');
+                    document.getElementById('gameControls').classList.remove('d-none');
+                    
+                    // Show appropriate game based on type
+                    if (gameType === 'quiz') {
+                        // Use the fallback questions directly
+                        currentQuestions = window.geminiAI.getFallbackQuestions(getQuizTopic(gameType));
+                        // Show quiz
+                        document.getElementById('quizGame').classList.remove('d-none');
+                        initQuizGame();
+                    } else if (gameType === 'memory') {
+                        // Get memory pairs and init game
+                        window.memoryGamePairs = window.geminiAI.getFallbackMemoryItems();
+                        // Show memory game
+                        document.getElementById('memoryGame').classList.remove('d-none');
+                        initMemoryGame();
+                    } else if (gameType === 'word') {
+                        // Show word game
+                        document.getElementById('wordGame').classList.remove('d-none');
+                        initWordGame();
+                    } else if (gameType === 'puzzle') {
+                        // Show puzzle game
+                        document.getElementById('puzzleGame').classList.remove('d-none');
+                        initPuzzleGame();
+                    } else {
+                        // Other games use the generic interface
+                        document.getElementById('defaultGame').classList.remove('d-none');
+                        initDefaultGame(gameType);
+                    }
+                }, 500);
+            } catch (error) {
+                debugLog(`Error showing game modal: ${error.message}`);
+                alert('Sorry, there was an error loading the game. Please try again.');
+            }
+        }
+        
+        function resetGameState() {
+            try {
+                debugLog('Resetting game state');
+                // Reset game-specific variables
+                currentQuestions = [];
+                currentQuestionIndex = 0;
+                quizScore = 0;
+                
+                // Hide all game containers
+                document.querySelectorAll('.game-container').forEach(container => {
+                    container.classList.add('d-none');
+                });
+                
+                // Show loading screen, hide game content
+                const loadingScreen = document.getElementById('loadingScreen');
+                const gameContent = document.getElementById('gameContent');
+                const gameControls = document.getElementById('gameControls');
+                
+                if (loadingScreen) loadingScreen.classList.remove('d-none');
+                if (gameContent) gameContent.classList.add('d-none');
+                if (gameControls) gameControls.classList.add('d-none');
+                
+                // Reset loading progress
+                currentProgress = 10;
+                currentStage = 1;
+                
+                const loadingProgress = document.getElementById('loadingProgress');
+                const loadingStage = document.getElementById('loadingStage');
+                const loadingStatus = document.getElementById('loadingStatus');
+                const loadingMessage = document.getElementById('loadingMessage');
+                
+                if (loadingProgress) loadingProgress.style.width = currentProgress + '%';
+                if (loadingStage) loadingStage.innerText = `Loading assets (1/4)`;
+                if (loadingStatus) loadingStatus.innerText = 'Initializing game...';
+                if (loadingMessage) loadingMessage.innerText = 'Please wait while we prepare your game experience';
+                
+                // Clear any existing interval
+                if (loadingInterval) {
+                    clearInterval(loadingInterval);
+                }
+            } catch (error) {
+                debugLog('Error resetting game state: ' + error.message);
+            }
+        }
+        
+        function simulateGameLoading(gameType) {
+            console.log('Starting game loading simulation');
+            
+            // If it's a quiz game, start fetching questions using Gemini AI
+            if (gameType === 'quiz') {
+                // Fetch quiz questions in the background during loading animation
+                const quizTopic = getQuizTopic(gameType);
+                window.geminiAI.generateQuizQuestions(quizTopic, 'medium', 5)
+                    .then(questions => {
+                        console.log('Received questions from Gemini:', questions);
+                        currentQuestions = questions;
+                    })
+                    .catch(error => {
+                        console.error('Error getting questions from Gemini:', error);
+                        // Use fallback questions
+                        currentQuestions = window.geminiAI.getFallbackQuestions(quizTopic);
+                    });
+            } else if (gameType === 'memory') {
+                // Fetch memory pairs for memory game
+                const memoryTopic = getMemoryTopic(gameType);
+                window.geminiAI.generateMemoryGameItems(memoryTopic)
+                    .then(pairs => {
+                        console.log('Received memory pairs from Gemini:', pairs);
+                        // Store for later use
+                        window.memoryGamePairs = pairs;
+                    })
+                    .catch(error => {
+                        console.error('Error getting memory pairs from Gemini:', error);
+                        // Use fallback pairs
+                        window.memoryGamePairs = window.geminiAI.getFallbackMemoryItems();
+                    });
+            }
+            
+            // Simulate loading process with stages
+            loadingInterval = setInterval(() => {
+                try {
+                    const currentStageData = loadingStages[currentStage - 1];
+                    const targetProgress = currentStageData.target;
+                    
+                    const loadingProgress = document.getElementById('loadingProgress');
+                    if (!loadingProgress) {
+                        console.error('Loading progress element not found');
+                        clearInterval(loadingInterval);
+                        return;
+                    }
+                    
+                    if (currentProgress < targetProgress) {
+                        currentProgress += 1;
+                        loadingProgress.style.width = currentProgress + '%';
+                    } else if (currentStage < loadingStages.length) {
+                        // Move to next stage
+                        currentStage++;
+                        const newStageData = loadingStages[currentStage - 1];
+                        
+                        const loadingStatus = document.getElementById('loadingStatus');
+                        const loadingStage = document.getElementById('loadingStage');
+                        
+                        if (loadingStatus) loadingStatus.innerText = newStageData.message + '...';
+                        if (loadingStage) loadingStage.innerText = `${newStageData.message} (${currentStage}/4)`;
+                    } else if (currentProgress >= 100) {
+                        // Loading complete
+                        console.log('Loading complete');
+                        clearInterval(loadingInterval);
+                        finishLoading(gameType);
+                    }
+                } catch (error) {
+                    console.error('Error in loading simulation:', error);
+                    clearInterval(loadingInterval);
+                }
+            }, 50);
+        }
+        
+        function getQuizTopic(gameType) {
+            // Return appropriate topic based on game type
+            switch(gameType) {
+                case 'quiz': return 'general knowledge';
+                case 'math': return 'mathematics';
+                case 'science': return 'science';
+                case 'word': return 'vocabulary and language';
+                default: return 'education';
+            }
+        }
+        
+        function getMemoryTopic(gameType) {
+            // Return appropriate topic for memory game
+            switch(gameType) {
+                case 'memory': return 'educational concepts';
+                case 'math': return 'mathematics';
+                case 'science': return 'scientific terms';
+                case 'word': return 'vocabulary';
+                default: return 'general knowledge';
+            }
+        }
+        
+        function finishLoading(gameType) {
+            try {
+                console.log('Finishing loading, showing game content');
+                // Show completion message briefly before showing the game
+                const loadingStatus = document.getElementById('loadingStatus');
+                const loadingMessage = document.getElementById('loadingMessage');
+                
+                if (loadingStatus) loadingStatus.innerText = 'Loading complete!';
+                if (loadingMessage) loadingMessage.innerText = 'Launching game...';
+                
+                setTimeout(() => {
+                    // Hide loading screen and show game content
+                    const loadingScreen = document.getElementById('loadingScreen');
+                    const gameContent = document.getElementById('gameContent');
+                    const gameControls = document.getElementById('gameControls');
+                    
+                    if (loadingScreen) loadingScreen.classList.add('d-none');
+                    if (gameContent) gameContent.classList.remove('d-none');
+                    if (gameControls) gameControls.classList.remove('d-none');
+                    
+                    // Show appropriate game content based on type
+                    if (gameType === 'quiz') {
+                        document.getElementById('quizGame').classList.remove('d-none');
+                        initQuizGame();
+                    } else if (gameType === 'memory') {
+                        document.getElementById('memoryGame').classList.remove('d-none');
+                        initMemoryGame();
+                    } else if (gameType === 'word') {
+                        document.getElementById('wordGame').classList.remove('d-none');
+                        initWordGame();
+                    } else if (gameType === 'puzzle') {
+                        document.getElementById('puzzleGame').classList.remove('d-none');
+                        initPuzzleGame();
+                    } else {
+                        // For all other game types, show default game interface
+                        document.getElementById('defaultGame').classList.remove('d-none');
+                        initDefaultGame(gameType);
+                    }
+                }, 800);
+            } catch (error) {
+                console.error('Error finishing loading:', error);
+            }
+        }
+        
+        // Quiz game initialization
+        function initQuizGame() {
+            // Reset quiz content container
+            const quizGameContainer = document.getElementById('quizGame');
+            
+            // Structure for quiz UI
+            quizGameContainer.innerHTML = `
+                <div class="quiz-header text-center mb-4">
+                    <h3>Knowledge Quiz</h3>
+                    <div class="d-flex justify-content-between">
+                        <span>Question: <span id="questionNumber">1</span>/5</span>
+                        <span>Score: <span id="quizScore">0</span></span>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 id="questionText" class="card-title">Loading question...</h5>
+                        <div class="list-group mt-3" id="answerOptions"></div>
+                    </div>
+                </div>
+                <div id="explanationBox" class="alert alert-info d-none">
+                    <h6>Explanation:</h6>
+                    <p id="explanationText"></p>
+                </div>
+            `;
+            
+            // Display the first question
+            displayCurrentQuestion();
+            
+            // Setup continue button
+            const continueBtn = document.getElementById('continueGameBtn');
+            continueBtn.disabled = true;
+            
+            // Remove existing listeners if any
+            const newContinueBtn = continueBtn.cloneNode(true);
+            continueBtn.parentNode.replaceChild(newContinueBtn, continueBtn);
+            
+            // Add event listener for continuing to next question
+            document.getElementById('continueGameBtn').addEventListener('click', function() {
+                // Move to next question
+                currentQuestionIndex++;
+                
+                // Hide explanation
+                document.getElementById('explanationBox').classList.add('d-none');
+                
+                if (currentQuestionIndex < currentQuestions.length) {
+                    // Show next question
+                    displayCurrentQuestion();
+                    
+                    // Update question counter
+                    document.getElementById('questionNumber').textContent = currentQuestionIndex + 1;
+                    
+                    // Disable continue button until answer is selected
+                    this.disabled = true;
+                } else {
+                    // Quiz is complete
+                    finishQuiz();
+                }
+            });
+            
+            // Setup restart button
+            const restartBtn = document.getElementById('restartGameBtn');
+            const newRestartBtn = restartBtn.cloneNode(true);
+            restartBtn.parentNode.replaceChild(newRestartBtn, restartBtn);
+            
+            document.getElementById('restartGameBtn').addEventListener('click', function() {
+                // Reset quiz state
+                currentQuestionIndex = 0;
+                quizScore = 0;
+                document.getElementById('quizScore').textContent = '0';
+                document.getElementById('questionNumber').textContent = '1';
+                document.getElementById('explanationBox').classList.add('d-none');
+                
+                // Display first question
+                displayCurrentQuestion();
+                
+                // Disable continue button
+                document.getElementById('continueGameBtn').disabled = true;
+            });
+        }
+        
+        // Display the current question
+        function displayCurrentQuestion() {
+            try {
+                debugLog('Displaying question #' + (currentQuestionIndex + 1));
+                // Check if questions are available
+                if (!currentQuestions || currentQuestions.length === 0 || !currentQuestions[currentQuestionIndex]) {
+                    debugLog('No questions available or invalid question index');
+                    // Use fallback question
+                    currentQuestions = window.geminiAI.getFallbackQuestions('general knowledge');
+                    if (!currentQuestions || currentQuestions.length === 0) {
+                        debugLog('Even fallback questions not available, showing error');
+                        document.getElementById('questionText').textContent = 'Error loading questions. Please try again.';
+                        return;
+                    }
+                }
+                
+                const question = currentQuestions[currentQuestionIndex];
+                
+                // Set question text
+                document.getElementById('questionText').textContent = question.question;
+                
+                // Create answer options
+                const optionsContainer = document.getElementById('answerOptions');
+                optionsContainer.innerHTML = '';
+                
+                question.options.forEach((option, index) => {
+                    const button = document.createElement('button');
+                    button.className = 'list-group-item list-group-item-action answer-option';
+                    button.textContent = option;
+                    button.dataset.index = index;
+                    button.dataset.correct = (index === question.correctIndex).toString();
+                    
+                    button.addEventListener('click', function() {
+                        handleAnswerSelection(this);
+                    });
+                    
+                    optionsContainer.appendChild(button);
+                });
+                debugLog('Question displayed successfully');
+            } catch (error) {
+                debugLog('Error displaying question: ' + error.message);
+            }
+        }
+        
+        // Handle when user selects an answer
+        function handleAnswerSelection(selectedOption) {
+            const answerOptions = document.querySelectorAll('.answer-option');
+            const isCorrect = selectedOption.dataset.correct === 'true';
+            const currentQuestion = currentQuestions[currentQuestionIndex];
+            
+            // Prevent further selection
+            answerOptions.forEach(opt => {
+                opt.disabled = true;
+                
+                // Highlight the correct answer
+                if (opt.dataset.correct === 'true') {
+                    opt.classList.add('list-group-item-success');
+                }
+            });
+            
+            // Highlight selected option
+            selectedOption.classList.add('active');
+            if (isCorrect) {
+                // Add points for correct answer
+                const pointsToAdd = 10;
+                quizScore += pointsToAdd;
+                document.getElementById('quizScore').textContent = quizScore;
+                
+                // Show points notification
+                window.geminiAI.addPoints(pointsToAdd);
+                window.geminiAI.showPointsNotification(pointsToAdd, 'Correct answer!');
+            } else {
+                selectedOption.classList.add('list-group-item-danger');
+            }
+            
+            // Show explanation
+            const explanationBox = document.getElementById('explanationBox');
+            const explanationText = document.getElementById('explanationText');
+            
+            explanationText.textContent = currentQuestion.explanation || 
+                'Explanation not available for this question.';
+            explanationBox.classList.remove('d-none');
+            
+            // Enable continue button
+            document.getElementById('continueGameBtn').disabled = false;
+        }
+        
+        // Finish quiz and show results
+        function finishQuiz() {
+            const quizGameContainer = document.getElementById('quizGame');
+            const finalScore = quizScore;
+            let message, achievement;
+            
+            // Determine achievement based on score
+            if (finalScore >= 40) {
+                message = "Excellent! You're a quiz master!";
+                achievement = "Quiz Master";
+                // Add bonus points for excellent performance
+                window.geminiAI.addPoints(25);
+                window.geminiAI.showPointsNotification(25, 'Perfect Quiz Bonus!');
+            } else if (finalScore >= 30) {
+                message = "Great job! You know your stuff!";
+                achievement = "Knowledge Expert";
+                // Add bonus points for good performance
+                window.geminiAI.addPoints(15);
+                window.geminiAI.showPointsNotification(15, 'Quiz Excellence Bonus!');
+            } else if (finalScore >= 20) {
+                message = "Good work! Keep learning!";
+                achievement = "Knowledge Seeker";
+                // Add small bonus for completing
+                window.geminiAI.addPoints(5);
+                window.geminiAI.showPointsNotification(5, 'Quiz Completion Bonus!');
+            } else {
+                message = "Keep practicing! You'll improve with time.";
+                achievement = "Knowledge Apprentice";
+            }
+            
+            // Show completion screen
+            quizGameContainer.innerHTML = `
+                <div class="text-center py-5">
+                    <i class="fas fa-trophy fa-4x text-warning mb-3"></i>
+                    <h3>Quiz Complete!</h3>
+                    <div class="achievement-badge my-3 p-2 bg-light rounded">
+                        <span class="badge bg-warning text-dark fs-6">${achievement}</span>
+                    </div>
+                    <p class="lead">You scored: ${finalScore} points</p>
+                    <p>${message}</p>
+                    <button class="btn btn-primary mt-3" id="replayQuizBtn">Play Again</button>
+                </div>
+            `;
+            
+            // Add event listener for replay button
+            document.getElementById('replayQuizBtn').addEventListener('click', function() {
+                // Reset quiz and generate new questions
+                resetGameState();
+                showGameModal('quiz');
+            });
+        }
+        
+        // Memory game initialization 
+        function initMemoryGame() {
+            try {
+                debugLog('Initializing memory game');
+                const memoryBoard = document.getElementById('memoryCards');
+                
+                // Make sure we have memory pairs available
+                if (!window.memoryGamePairs || !Array.isArray(window.memoryGamePairs)) {
+                    window.memoryGamePairs = window.geminiAI.getFallbackMemoryItems();
+                }
+                
+                // Create flat array of all cards (each pair will have same pairIndex)
+                const memoryCards = [];
+                
+                // For each pair, create two cards with the same pairIndex but different content
+                window.memoryGamePairs.forEach((pair, pairIndex) => {
+                    // Add first item of the pair
+                    memoryCards.push({
+                        content: pair[0],
+                        pairIndex: pairIndex,
+                        isKey: true
+                    });
+                    
+                    // Add second item of the pair
+                    memoryCards.push({
+                        content: pair[1],
+                        pairIndex: pairIndex,
+                        isKey: false
+                    });
+                });
+                
+                // Shuffle cards
+                const shuffledCards = [...memoryCards].sort(() => Math.random() - 0.5);
+                
+                // Reset game stats
+                document.querySelector('#memoryMoves').textContent = '0';
+                document.querySelector('#memoryPairsFound').textContent = '0';
+                document.querySelector('#memoryTotalPairs').textContent = window.memoryGamePairs.length;
+                document.querySelector('#memoryTimer').textContent = '00:00';
+                
+                // Timer variables
+                let timerSeconds = 0;
+                
+                // Start the timer
+                function startTimer() {
+                    // Clear any existing timer first
+                    if (window.memoryTimerInterval) {
+                        clearInterval(window.memoryTimerInterval);
+                    }
+                    
+                    window.memoryTimerInterval = setInterval(() => {
+                        timerSeconds++;
+                        const minutes = Math.floor(timerSeconds / 60);
+                        const seconds = timerSeconds % 60;
+                        document.querySelector('#memoryTimer').textContent = 
+                            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    }, 1000);
+                    debugLog('Memory game timer started');
+                }
+                
+                // Stop the timer
+                function stopTimer() {
+                    if (window.memoryTimerInterval) {
+                        clearInterval(window.memoryTimerInterval);
+                        window.memoryTimerInterval = null;
+                        debugLog('Memory game timer stopped');
+                    }
+                }
+                
+                // Generate memory cards with improved visuals
+                memoryBoard.innerHTML = '';
+                shuffledCards.forEach((card, index) => {
+                    const cardEl = document.createElement('div');
+                    cardEl.className = 'col';
+                    
+                    // Create card emoji or icon if the item is short (less than 3 chars)
+                    let cardDisplay = card.content;
+                    let cardIcon = '';
+                    
+                    // If the item is short, try to find an appropriate icon
+                    if (card.content.length < 3) {
+                        switch(card.content.toLowerCase()) {
+                            case 'js': cardIcon = '<i class="fab fa-js text-warning fa-3x"></i>'; break;
+                            case 'html': cardIcon = '<i class="fab fa-html5 text-danger fa-3x"></i>'; break;
+                            case 'css': cardIcon = '<i class="fab fa-css3-alt text-primary fa-3x"></i>'; break;
+                            case 'api': cardIcon = '<i class="fas fa-plug text-success fa-3x"></i>'; break;
+                            case 'sql': cardIcon = '<i class="fas fa-database text-info fa-3x"></i>'; break;
+                            case 'dns': cardIcon = '<i class="fas fa-network-wired text-secondary fa-3x"></i>'; break;
+                            default: cardIcon = ''; // Default to text if no matching icon
+                        }
+                    }
+                    
+                    cardEl.innerHTML = `
+                        <div class="memory-card" data-index="${index}" data-pair-index="${card.pairIndex}" data-content="${card.content}">
+                            <div class="memory-card-inner">
+                                <div class="memory-card-front">
+                                    <div class="d-flex justify-content-center align-items-center h-100">
+                                        <i class="fas fa-question fa-3x"></i>
+                                    </div>
+                                </div>
+                                <div class="memory-card-back">
+                                    <div class="d-flex justify-content-center align-items-center h-100 p-2">
+                                        ${cardIcon || `<span class="fw-bold">${cardDisplay}</span>`}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    memoryBoard.appendChild(cardEl);
+                });
+                
+                // Add memory game logic with enhanced effects
+                let flippedCards = [];
+                let matchedPairs = 0;
+                let moves = 0;
+                let firstMove = true;
+                
+                document.querySelectorAll('.memory-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        debugLog('Memory card clicked: ' + this.dataset.content);
+                        // Start timer on first move
+                        if (firstMove) {
+                            startTimer();
+                            firstMove = false;
+                        }
+                        
+                        // Prevent clicking if card is already flipped, matched, or if two cards are already flipped
+                        if (this.classList.contains('flipped') || this.classList.contains('matched') || flippedCards.length >= 2) return;
+                        
+                        // Play flip sound if available
+                        try {
+                            const flipSound = new Audio("{% static 'sounds/card-flip.mp3' %}");
+                            flipSound.volume = 0.3;
+                            flipSound.play().catch(e => debugLog('Error playing sound: ' + e.message));
+                        } catch (error) {
+                            debugLog('Sound effect error: ' + error.message);
+                        }
+                        
+                        // Flip the card with a slight delay for better animation
+                        setTimeout(() => {
+                            this.classList.add('flipped');
+                            flippedCards.push(this);
+                        
+                            // Check for a match if two cards are flipped
+                            if (flippedCards.length === 2) {
+                                moves++;
+                                document.getElementById('memoryMoves').textContent = moves;
+                                
+                                const firstCard = flippedCards[0];
+                                const secondCard = flippedCards[1];
+                                
+                                // Debug information
+                                debugLog(`Comparing cards: ${firstCard.dataset.content} vs ${secondCard.dataset.content}`);
+                                debugLog(`Pair indices: ${firstCard.dataset.pairIndex} vs ${secondCard.dataset.pairIndex}`);
+                                
+                                // Check for match: same pair index but not the same card
+                                if (firstCard.dataset.pairIndex === secondCard.dataset.pairIndex && 
+                                    firstCard.dataset.index !== secondCard.dataset.index) {
+                                    debugLog('Match found!');
+                                    // Match found - add matched class for visual feedback
+                                    setTimeout(() => {
+                                        firstCard.classList.add('matched');
+                                        secondCard.classList.add('matched');
+                                        
+                                        // Try to play match sound
+                                        try {
+                                            const matchSound = new Audio("{% static 'sounds/match.mp3' %}");
+                                            matchSound.volume = 0.5;
+                                            matchSound.play().catch(e => debugLog('Error playing sound: ' + e.message));
+                                        } catch (error) {
+                                            debugLog('Sound effect error: ' + error.message);
+                                        }
+                                        
+                                        // Update matched pairs counter
+                                        matchedPairs++;
+                                        document.getElementById('memoryPairsFound').textContent = matchedPairs;
+                                        flippedCards = [];
+                                        
+                                        // Award points with more visual feedback
+                                        window.geminiAI.addPoints(10);
+                                        window.geminiAI.showPointsNotification(10, 'Pair Matched!');
+                                        
+                                        // Check if game is complete
+                                        const totalPairs = window.memoryGamePairs.length;
+                                        if (matchedPairs >= totalPairs) {
+                                            // Stop the timer when game is complete
+                                            stopTimer();
+                                            
+                                            setTimeout(() => {
+                                                debugLog('Memory game complete!');
+                                                // Calculate final score based on moves and time
+                                                const timeBonus = Math.max(0, 300 - timerSeconds);
+                                                const moveEfficiency = Math.max(0, 100 - (moves - totalPairs * 2) * 5);
+                                                const totalScore = timeBonus + moveEfficiency;
+                                                
+                                                // Determine achievement level
+                                                let achievement, bonusPoints;
+                                                if (totalScore >= 350) {
+                                                    achievement = "Memory Grandmaster";
+                                                    bonusPoints = 50;
+                                                } else if (totalScore >= 250) {
+                                                    achievement = "Memory Master";
+                                                    bonusPoints = 30;
+                                                } else if (totalScore >= 150) {
+                                                    achievement = "Memory Expert";
+                                                    bonusPoints = 20;
+                                                } else {
+                                                    achievement = "Memory Apprentice";
+                                                    bonusPoints = 10;
+                                                }
+                                                
+                                                // Award bonus points
+                                                if (bonusPoints > 0) {
+                                                    window.geminiAI.addPoints(bonusPoints);
+                                                    window.geminiAI.showPointsNotification(bonusPoints, 'Memory Game Bonus!');
+                                                }
+                                                
+                                                // Format time for display
+                                                const minutes = Math.floor(timerSeconds / 60);
+                                                const seconds = timerSeconds % 60;
+                                                const timeFormatted = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                                                
+                                                // Show enhanced completion screen
+                                                document.getElementById('memoryGame').innerHTML = `
+                                                    <div class="text-center py-5 memory-complete-container">
+                                                        <i class="fas fa-brain fa-4x text-primary mb-3 bounce-animation"></i>
+                                                        <h3 class="memory-complete-title">Memory Challenge Complete!</h3>
+                                                        <div class="achievement-badge my-3 p-3 bg-light rounded">
+                                                            <span class="badge bg-primary text-white fs-5">${achievement}</span>
+                                                        </div>
+                                                        
+                                                        <div class="row justify-content-center mb-4">
+                                                            <div class="col-md-8">
+                                                                <div class="card memory-stats-card">
+                                                                    <div class="card-body">
+                                                                        <div class="d-flex justify-content-between memory-final-stats">
+                                                                            <div class="text-center p-2">
+                                                                                <i class="fas fa-sync-alt text-primary"></i>
+                                                                                <h5>Moves</h5>
+                                                                                <p class="lead">${moves}</p>
+                                                                            </div>
+                                                                            <div class="text-center p-2">
+                                                                                <i class="fas fa-clock text-warning"></i>
+                                                                                <h5>Time</h5>
+                                                                                <p class="lead">${timeFormatted}</p>
+                                                                            </div>
+                                                                            <div class="text-center p-2">
+                                                                                <i class="fas fa-star text-success"></i>
+                                                                                <h5>Score</h5>
+                                                                                <p class="lead">${totalScore}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <button class="btn btn-lg btn-primary mt-3 pulse-button" id="replayMemoryBtn">
+                                                            <i class="fas fa-redo me-2"></i> Play Again
+                                                        </button>
+                                                    </div>
+                                                `;
+                                                
+                                                // Add event listener for the replay button
+                                                document.getElementById('replayMemoryBtn').addEventListener('click', function() {
+                                                    initMemoryGame();
+                                                });
+                                            }, 800);
+                                        }
+                                    }, 300);
+                                } else {
+                                    debugLog('Not a match');
+                                    // Not a match, flip back after delay
+                                    setTimeout(() => {
+                                        firstCard.classList.remove('flipped');
+                                        secondCard.classList.remove('flipped');
+                                        flippedCards = [];
+                                        
+                                        // Try to play non-match sound
+                                        try {
+                                            const noMatchSound = new Audio("{% static 'sounds/no-match.mp3' %}");
+                                            noMatchSound.volume = 0.3;
+                                            noMatchSound.play().catch(e => debugLog('Error playing sound: ' + e.message));
+                                        } catch (error) {
+                                            debugLog('Sound effect error: ' + error.message);
+                                        }
+                                    }, 1000);
+                                }
+                            }
+                        }, 50);
+                    });
+                });
+                
+                // Setup restart button
+                const restartBtn = document.getElementById('restartGameBtn');
+                if (restartBtn) {
+                    const newRestartBtn = restartBtn.cloneNode(true);
+                    restartBtn.parentNode.replaceChild(newRestartBtn, restartBtn);
+                    
+                    document.getElementById('restartGameBtn').addEventListener('click', function() {
+                        // Stop the timer when restarting
+                        stopTimer();
+                        initMemoryGame();
+                    });
+                }
+                
+                debugLog('Memory game initialized successfully');
+            } catch (error) {
+                debugLog('Error initializing memory game: ' + error.message);
+            }
+        }
+        
+        // Function to initialize the default game interface for games under development
+        function initDefaultGame(gameType) {
+            try {
+                debugLog(`Initializing default game for type: ${gameType}`);
+                
+                // Set the title and description based on game type
+                const title = document.getElementById('defaultGameTitle');
+                const description = document.getElementById('defaultGameDescription');
+                
+                switch(gameType) {
+                    case 'word':
+                        title.textContent = 'Word Master';
+                        description.textContent = 'Expand your vocabulary and improve spelling through engaging word games.';
+                        break;
+                    case 'math':
+                        title.textContent = 'Math Challenge';
+                        description.textContent = 'Practice mathematical concepts through fun, timed challenges at various levels.';
+                        break;
+                    case 'puzzle':
+                        title.textContent = 'Logic Puzzles';
+                        description.textContent = 'Solve challenging puzzles that develop critical thinking and problem-solving skills.';
+                        break;
+                    case 'science':
+                        title.textContent = 'Science Explorer';
+                        description.textContent = 'Discover scientific principles through virtual experiments and interactive simulations.';
+                        break;
+                    default:
+                        title.textContent = 'Learning Game';
+                        description.textContent = 'An educational game experience.';
+                }
+                
+                // Setup restart button
+                const restartBtn = document.getElementById('restartGameBtn');
+                if (restartBtn) {
+                    const newRestartBtn = restartBtn.cloneNode(true);
+                    restartBtn.parentNode.replaceChild(newRestartBtn, restartBtn);
+                    
+                    document.getElementById('restartGameBtn').addEventListener('click', function() {
+                        // Just close the modal for now
+                        if (gameModal) {
+                            gameModal.hide();
+                        }
+                    });
+                }
+                
+                // Disable continue button since it's not needed for this view
+                const continueBtn = document.getElementById('continueGameBtn');
+                if (continueBtn) {
+                    continueBtn.disabled = true;
+                }
+                
+                debugLog('Default game initialized successfully');
+            } catch (error) {
+                debugLog('Error initializing default game: ' + error.message);
+            }
+        }
+        
+        // Function to reset the memory game
+        function resetMemoryGame() {
+            var matchedPairs = 0;
+            var flippedCards = [];
+            // Reset all cards
+            document.querySelectorAll('.memory-card').forEach(card => {
+                card.classList.remove('flipped', 'matched');
+            });
+        }
+        
+        // Initialize Word Master game
+        function initWordGame() {
+            debugLog('Initializing Word Master game');
+            
+            // Word game data
+            const wordData = [
+                { word: "ALGORITHM", clue: "A step-by-step procedure for calculations or problem-solving." },
+                { word: "FUNCTION", clue: "A block of code designed to perform a particular task." },
+                { word: "VARIABLE", clue: "A storage location paired with an identifier, containing data that can be modified." },
+                { word: "DATABASE", clue: "An organized collection of structured information or data." },
+                { word: "PROGRAMMING", clue: "The process of creating sets of instructions for a computer to follow." },
+                { word: "INTERFACE", clue: "A shared boundary where two systems exchange information." },
+                { word: "FRAMEWORK", clue: "A platform for developing software applications." },
+                { word: "DEBUGGING", clue: "The process of finding and resolving defects in software." },
+                { word: "ENCRYPTION", clue: "The process of encoding information to prevent unauthorized access." },
+                { word: "SYNTAX", clue: "The set of rules that defines the combinations of symbols in a language." }
+            ];
+            
+            let currentWord = null;
+            let currentWordIndex = 0;
+            let score = 0;
+            let level = 1;
+            let timeLeft = 30;
+            let timerInterval;
+            
+            // Get DOM elements
+            const wordScoreElement = document.getElementById('wordScore');
+            const wordLevelElement = document.getElementById('wordLevel');
+            const wordTimerElement = document.getElementById('wordTimer');
+            const scrambledWordElement = document.getElementById('scrambledWord');
+            const wordClueElement = document.getElementById('wordClue');
+            const wordGuessInput = document.getElementById('wordGuess');
+            const submitWordBtn = document.getElementById('submitWordBtn');
+            const skipWordBtn = document.getElementById('skipWordBtn');
+            const showHintBtn = document.getElementById('showHintBtn');
+            const wordFeedback = document.getElementById('wordFeedback');
+            
+            // Reset game state
+            function resetWordGame() {
+                score = 0;
+                level = 1;
+                currentWordIndex = 0;
+                wordScoreElement.textContent = score;
+                wordLevelElement.textContent = level;
+                
+                // Shuffle words
+                shuffleArray(wordData);
+                
+                // Start with first word
+                showNextWord();
+            }
+            
+            // Shuffle array
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+            
+            // Scramble a word
+            function scrambleWord(word) {
+                const wordArray = word.split('');
+                let scrambled = word;
+                
+                // Make sure the scrambled word is different from original
+                while (scrambled === word) {
+                    for (let i = wordArray.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [wordArray[i], wordArray[j]] = [wordArray[j], wordArray[i]];
+                    }
+                    scrambled = wordArray.join('');
+                }
+                
+                return scrambled;
+            }
+            
+            // Show the next word
+            function showNextWord() {
+                // Reset timer
+                clearInterval(timerInterval);
+                timeLeft = 30 + (level * 5); // Increase time for higher levels
+                updateTimer();
+                
+                // Hide feedback
+                wordFeedback.classList.add('d-none');
+                
+                // Get the current word data
+                currentWord = wordData[currentWordIndex % wordData.length];
+                
+                // Scramble the word and display
+                const scrambled = scrambleWord(currentWord.word);
+                scrambledWordElement.textContent = scrambled;
+                
+                // Set the clue
+                wordClueElement.textContent = currentWord.clue;
+                
+                // Clear input
+                wordGuessInput.value = '';
+                wordGuessInput.focus();
+                
+                // Start timer
+                startTimer();
+            }
+            
+            // Start timer
+            function startTimer() {
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateTimer();
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        timeUp();
+                    }
+                }, 1000);
+            }
+            
+            // Update timer display
+            function updateTimer() {
+                wordTimerElement.textContent = timeLeft.toString().padStart(2, '0');
+                
+                // Change color when time is running low
+                if (timeLeft <= 10) {
+                    wordTimerElement.classList.add('text-danger');
+                } else {
+                    wordTimerElement.classList.remove('text-danger');
+                }
+            }
+            
+            // When time is up
+            function timeUp() {
+                showFeedback(`Time's up! The word was ${currentWord.word}`, 'danger');
+                setTimeout(() => {
+                    nextWord();
+                }, 2000);
+            }
+            
+            // Go to next word
+            function nextWord() {
+                currentWordIndex++;
+                
+                // Every 3 words, increase level
+                if (currentWordIndex > 0 && currentWordIndex % 3 === 0) {
+                    level++;
+                    wordLevelElement.textContent = level;
+                    showFeedback(`Level up! You're now at level ${level}`, 'success');
+                    
+                    window.geminiAI.addPoints(level * 5);
+                    window.geminiAI.showPointsNotification(level * 5, 'Level Up Bonus!');
+                    
+                    setTimeout(() => {
+                        showNextWord();
+                    }, 1500);
+                } else {
+                    showNextWord();
+                }
+            }
+            
+            // Show feedback message
+            function showFeedback(message, type) {
+                wordFeedback.textContent = message;
+                wordFeedback.className = `alert alert-${type} mb-4`;
+                wordFeedback.classList.remove('d-none');
+            }
+            
+            // Check the user's guess
+            function checkGuess() {
+                const guess = wordGuessInput.value.trim().toUpperCase();
+                
+                if (guess === '') {
+                    showFeedback('Please enter a word', 'warning');
+                    return;
+                }
+                
+                if (guess === currentWord.word) {
+                    // Correct guess
+                    clearInterval(timerInterval);
+                    
+                    // Calculate points based on time left and word length
+                    const timeBonus = Math.floor(timeLeft * 0.5);
+                    const lengthBonus = currentWord.word.length;
+                    const pointsEarned = 10 + timeBonus + lengthBonus;
+                    
+                    score += pointsEarned;
+                    wordScoreElement.textContent = score;
+                    
+                    // Show feedback
+                    showFeedback(`Correct! You earned ${pointsEarned} points`, 'success');
+                    
+                    // Add points
+                    window.geminiAI.addPoints(pointsEarned);
+                    window.geminiAI.showPointsNotification(pointsEarned, 'Word Solved!');
+                    
+                    // Go to next word after delay
+                    setTimeout(() => {
+                        nextWord();
+                    }, 1500);
+                } else {
+                    // Wrong guess
+                    showFeedback('That\'s not right. Try again!', 'danger');
+                    
+                    // Shake the scrambled word for visual feedback
+                    scrambledWordElement.classList.add('shake');
+                    setTimeout(() => {
+                        scrambledWordElement.classList.remove('shake');
+                    }, 500);
+                }
+            }
+            
+            // Show a hint
+            function showHint() {
+                // Cost points to get a hint
+                const hintCost = 5;
+                if (score >= hintCost) {
+                    // Deduct points
+                    score -= hintCost;
+                    wordScoreElement.textContent = score;
+                    
+                    // Show the first few letters
+                    const hintLength = Math.ceil(currentWord.word.length * 0.3);
+                    const hint = currentWord.word.substring(0, hintLength) + '...';
+                    
+                    showFeedback(`Hint: The word starts with "${hint}"`, 'info');
+                    
+                    window.geminiAI.addPoints(-hintCost);
+                    window.geminiAI.showPointsNotification(-hintCost, 'Hint Used');
+                } else {
+                    showFeedback(`Not enough points for a hint. Need ${hintCost} points.`, 'warning');
+                }
+            }
+            
+            // Skip current word
+            function skipWord() {
+                clearInterval(timerInterval);
+                showFeedback(`Skipped. The word was "${currentWord.word}"`, 'secondary');
+                
+                setTimeout(() => {
+                    nextWord();
+                }, 1500);
+            }
+            
+            // Set up event listeners
+            submitWordBtn.addEventListener('click', checkGuess);
+            wordGuessInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkGuess();
+                }
+            });
+            
+            skipWordBtn.addEventListener('click', skipWord);
+            showHintBtn.addEventListener('click', showHint);
+            
+            // Setup restart button
+            const restartBtn = document.getElementById('restartGameBtn');
+            if (restartBtn) {
+                const newRestartBtn = restartBtn.cloneNode(true);
+                restartBtn.parentNode.replaceChild(newRestartBtn, restartBtn);
+                
+                document.getElementById('restartGameBtn').addEventListener('click', function() {
+                    clearInterval(timerInterval);
+                    resetWordGame();
+                });
+            }
+            
+            // Start the game
+            resetWordGame();
+        }
+        
+        // Initialize Logic Puzzles game
+        function initPuzzleGame() {
+            debugLog('Initializing Logic Puzzles game');
+            
+            // Puzzle data with different difficulty levels
+            const puzzleData = [
+                // Easy puzzles
+                {
+                    question: "If you have 3 apples and take away 2, how many apples do you have?",
+                    options: ["1", "2", "3", "5"],
+                    correctIndex: 1,
+                    explanation: "You took away 2 apples, so you have those 2 apples in your possession.",
+                    difficulty: "Easy"
+                },
+                {
+                    question: "A farmer has 17 sheep. All but 9 die. How many sheep are left?",
+                    options: ["8", "9", "17", "26"],
+                    correctIndex: 1,
+                    explanation: "The phrase 'all but 9' means that 9 sheep survived, not that 9 sheep died.",
+                    difficulty: "Easy"
+                },
+                {
+                    question: "If a red house is made of red bricks, and a blue house is made of blue bricks, what is a greenhouse made of?",
+                    options: ["Green bricks", "Plants", "Glass", "Eco-friendly materials"],
+                    correctIndex: 2,
+                    explanation: "A greenhouse is a structure with walls and roof made largely of glass, not necessarily green in color.",
+                    difficulty: "Easy"
+                },
+                
+                // Medium puzzles
+                {
+                    question: "Which letter of the English alphabet is the 21st letter from the beginning, but the 6th letter from the end?",
+                    options: ["T", "U", "V", "W"],
+                    correctIndex: 1,
+                    explanation: "The 21st letter from the beginning is U. The 6th letter from the end would be: Z, Y, X, W, V, U - which is also U.",
+                    difficulty: "Medium"
+                },
+                {
+                    question: "I am an odd number. Take away one letter and I become even. What number am I?",
+                    options: ["Five", "Seven", "Nine", "Three"],
+                    correctIndex: 1,
+                    explanation: "SEVEN. Remove the 'S' and it becomes 'EVEN'.",
+                    difficulty: "Medium"
+                },
+                {
+                    question: "A man builds a house rectangular in shape. All sides have southern exposure. A big bear walks by. What color is the bear?",
+                    options: ["Brown", "Black", "White", "Cannot determine"],
+                    correctIndex: 2,
+                    explanation: "The only place where all sides of a house can have southern exposure is at the North Pole, where polar bears (which are white) live.",
+                    difficulty: "Medium"
+                },
+                
+                // Hard puzzles
+                {
+                    question: "Two people are born at the same moment, they die at the same moment, yet they do not live for the same amount of time. How is this possible?",
+                    options: ["They were twins", "They lived in different time zones", "One traveled at high speed in space", "This is impossible"],
+                    correctIndex: 2,
+                    explanation: "According to Einstein's theory of relativity, time passes more slowly for objects moving at high speeds. If one person traveled in space at high speed, they would age more slowly than the person on Earth.",
+                    difficulty: "Hard"
+                },
+                {
+                    question: "You have two hourglasses: one that measures 7 minutes and one that measures 4 minutes. How can you measure exactly 9 minutes?",
+                    options: [
+                        "It's impossible with just these two hourglasses",
+                        "Start both hourglasses, when 4-min finishes, flip it, when 7-min finishes, flip 4-min again",
+                        "Start both hourglasses, when 4-min finishes, start it again, when 7-min finishes, stop both",
+                        "Start 7-min, when it finishes, start both, when 4-min finishes, you have 9 minutes"
+                    ],
+                    correctIndex: 3,
+                    explanation: "Start the 7-minute hourglass. When it runs out (7 min), start both hourglasses. When the 4-minute hourglass runs out, exactly 9 minutes have passed since you started timing (7 + 2 = 9).",
+                    difficulty: "Hard"
+                },
+                {
+                    question: "If five cats can catch five mice in five minutes, how many cats would be needed to catch 100 mice in 100 minutes?",
+                    options: ["5 cats", "20 cats", "100 cats", "500 cats"],
+                    correctIndex: 0,
+                    explanation: "Each cat catches 1 mouse in 5 minutes. In 100 minutes, each cat catches 20 mice. So 5 cats would catch 100 mice in 100 minutes.",
+                    difficulty: "Hard"
+                }
+            ];
+            
+            // Game state variables
+            let currentPuzzleIndex = 0;
+            let currentPuzzle = null;
+            let score = 0;
+            let level = 1;
+            let selectedOptionIndex = null;
+            
+            // Store completed puzzles to avoid repetition
+            let completedPuzzles = [];
+            
+            // DOM elements
+            const puzzleScoreElement = document.getElementById('puzzleScore');
+            const puzzleLevelElement = document.getElementById('puzzleLevel');
+            const puzzleDifficultyElement = document.getElementById('puzzleDifficulty');
+            const puzzleDescriptionElement = document.getElementById('puzzleDescription');
+            const puzzleAnswerOptionsElement = document.getElementById('puzzleAnswerOptions');
+            const puzzleFeedbackElement = document.getElementById('puzzleFeedback');
+            const skipPuzzleBtn = document.getElementById('skipPuzzleBtn');
+            const showPuzzleHintBtn = document.getElementById('showPuzzleHintBtn');
+            const submitPuzzleBtn = document.getElementById('submitPuzzleBtn');
+            
+            // Reset game
+            function resetPuzzleGame() {
+                score = 0;
+                level = 1;
+                completedPuzzles = [];
+                
+                puzzleScoreElement.textContent = score;
+                puzzleLevelElement.textContent = level;
+                
+                // Shuffle puzzles
+                shuffleArray(puzzleData);
+                
+                // Start first puzzle at Easy difficulty
+                showNextPuzzle();
+            }
+            
+            // Shuffle array
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+            
+            // Show next puzzle based on current level
+            function showNextPuzzle() {
+                // Clear selection
+                selectedOptionIndex = null;
+                
+                // Hide feedback
+                puzzleFeedbackElement.classList.add('d-none');
+                
+                // Get difficulty based on level
+                let difficulty;
+                if (level <= 3) {
+                    difficulty = "Easy";
+                } else if (level <= 7) {
+                    difficulty = "Medium";
+                } else {
+                    difficulty = "Hard";
+                }
+                
+                puzzleDifficultyElement.textContent = difficulty;
+                
+                // Filter puzzles by difficulty and not completed
+                const availablePuzzles = puzzleData.filter(puzzle => 
+                    puzzle.difficulty === difficulty && !completedPuzzles.includes(puzzle)
+                );
+                
+                // If no puzzles left at this difficulty, clear completed list or move to next difficulty
+                if (availablePuzzles.length === 0) {
+                    if (difficulty === "Hard") {
+                        // If completed all hard puzzles, clear the completed list and start over
+                        completedPuzzles = [];
+                        showNextPuzzle();
+                        return;
+                    } else {
+                        // Move to next difficulty
+                        level = difficulty === "Easy" ? 4 : 8;
+                        puzzleLevelElement.textContent = level;
+                        showNextPuzzle();
+                        return;
+                    }
+                }
+                
+                // Get random puzzle from available ones
+                currentPuzzle = availablePuzzles[Math.floor(Math.random() * availablePuzzles.length)];
+                
+                // Display puzzle
+                puzzleDescriptionElement.textContent = currentPuzzle.question;
+                
+                // Create answer options
+                puzzleAnswerOptionsElement.innerHTML = '';
+                currentPuzzle.options.forEach((option, index) => {
+                    const button = document.createElement('button');
+                    button.className = 'list-group-item list-group-item-action';
+                    button.textContent = option;
+                    button.dataset.index = index;
+                    
+                    // Add click handler
+                    button.addEventListener('click', function() {
+                        // Remove active class from all options
+                        puzzleAnswerOptionsElement.querySelectorAll('button').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        
+                        // Add active class to selected option
+                        this.classList.add('active');
+                        
+                        // Store selected index
+                        selectedOptionIndex = parseInt(this.dataset.index);
+                    });
+                    
+                    puzzleAnswerOptionsElement.appendChild(button);
+                });
+                
+                // Enable submit button
+                submitPuzzleBtn.disabled = false;
+            }
+            
+            // Show feedback
+            function showFeedback(message, type) {
+                puzzleFeedbackElement.textContent = message;
+                puzzleFeedbackElement.className = `alert alert-${type} mb-4`;
+                puzzleFeedbackElement.classList.remove('d-none');
+            }
+            
+            // Submit answer
+            function submitAnswer() {
+                if (selectedOptionIndex === null) {
+                    showFeedback('Please select an answer', 'warning');
+                    return;
+                }
+                
+                // Disable submit button to prevent multiple submissions
+                submitPuzzleBtn.disabled = true;
+                
+                // Add to completed puzzles
+                completedPuzzles.push(currentPuzzle);
+                
+                // Check if correct
+                if (selectedOptionIndex === currentPuzzle.correctIndex) {
+                    // Correct answer
+                    let pointsEarned;
+                    if (currentPuzzle.difficulty === "Easy") {
+                        pointsEarned = 10;
+                    } else if (currentPuzzle.difficulty === "Medium") {
+                        pointsEarned = 20;
+                    } else {
+                        pointsEarned = 30;
+                    }
+                    
+                    // Add level bonus
+                    pointsEarned += Math.floor(level * 1.5);
+                    
+                    // Update score
+                    score += pointsEarned;
+                    puzzleScoreElement.textContent = score;
+                    
+                    // Show feedback with explanation
+                    showFeedback(`Correct! +${pointsEarned} points. ${currentPuzzle.explanation}`, 'success');
+                    
+                    // Add points
+                    window.geminiAI.addPoints(pointsEarned);
+                    window.geminiAI.showPointsNotification(pointsEarned, 'Puzzle Solved!');
+                    
+                    // Highlight correct answer
+                    const correctButton = puzzleAnswerOptionsElement.querySelector(`button[data-index="${currentPuzzle.correctIndex}"]`);
+                    correctButton.classList.add('list-group-item-success');
+                    
+                    // Move to next level after 2 correct answers at each level
+                    if (level % 1 === 0) {
+                        level++;
+                        puzzleLevelElement.textContent = level;
+                    }
+                    
+                    // Go to next puzzle after delay
+                    setTimeout(() => {
+                        showNextPuzzle();
+                    }, 3000);
+                } else {
+                    // Wrong answer
+                    showFeedback(`Incorrect. The right answer is: ${currentPuzzle.options[currentPuzzle.correctIndex]}. ${currentPuzzle.explanation}`, 'danger');
+                    
+                    // Highlight correct and wrong answers
+                    const selectedButton = puzzleAnswerOptionsElement.querySelector(`button[data-index="${selectedOptionIndex}"]`);
+                    const correctButton = puzzleAnswerOptionsElement.querySelector(`button[data-index="${currentPuzzle.correctIndex}"]`);
+                    
+                    selectedButton.classList.add('list-group-item-danger');
+                    correctButton.classList.add('list-group-item-success');
+                    
+                    // Go to next puzzle after delay
+                    setTimeout(() => {
+                        showNextPuzzle();
+                    }, 3000);
+                }
+            }
+            
+            // Skip puzzle
+            function skipPuzzle() {
+                completedPuzzles.push(currentPuzzle);
+                showFeedback(`Puzzle skipped. The answer was: ${currentPuzzle.options[currentPuzzle.correctIndex]}`, 'info');
+                
+                setTimeout(() => {
+                    showNextPuzzle();
+                }, 2000);
+            }
+            
+            // Show hint
+            function showHint() {
+                // Cost points for a hint
+                const hintCost = 5;
+                
+                if (score >= hintCost) {
+                    // Deduct points
+                    score -= hintCost;
+                    puzzleScoreElement.textContent = score;
+                    
+                    // Get wrong options
+                    const wrongOptions = [];
+                    currentPuzzle.options.forEach((option, index) => {
+                        if (index !== currentPuzzle.correctIndex) {
+                            wrongOptions.push(index);
+                        }
+                    });
+                    
+                    // Randomly select one wrong option to eliminate
+                    const eliminateIndex = wrongOptions[Math.floor(Math.random() * wrongOptions.length)];
+                    
+                    // Gray out the eliminated option
+                    const eliminatedButton = puzzleAnswerOptionsElement.querySelector(`button[data-index="${eliminateIndex}"]`);
+                    eliminatedButton.classList.add('text-muted', 'bg-light');
+                    eliminatedButton.disabled = true;
+                    
+                    showFeedback('One incorrect option has been eliminated', 'info');
+                    
+                    window.geminiAI.addPoints(-hintCost);
+                    window.geminiAI.showPointsNotification(-hintCost, 'Hint Used');
+                } else {
+                    showFeedback(`Not enough points for a hint. Need ${hintCost} points.`, 'warning');
+                }
+            }
+            
+            // Event listeners
+            submitPuzzleBtn.addEventListener('click', submitAnswer);
+            skipPuzzleBtn.addEventListener('click', skipPuzzle);
+            showPuzzleHintBtn.addEventListener('click', showHint);
+            
+            // Setup restart button
+            const restartBtn = document.getElementById('restartGameBtn');
+            if (restartBtn) {
+                const newRestartBtn = restartBtn.cloneNode(true);
+                restartBtn.parentNode.replaceChild(newRestartBtn, restartBtn);
+                
+                document.getElementById('restartGameBtn').addEventListener('click', function() {
+                    resetPuzzleGame();
+                });
+            }
+            
+            // Start the game
+            resetPuzzleGame();
+        }
+    }
+</script>
+
+<!-- Add game progress tracking API -->
+<script>
+    // User progress tracking functions
+    const gameProgressAPI = {
+        // Track game completion and update user progress
+        trackGameCompletion: function(gameType, score, level, completionPercentage = 100) {
+            try {
+                debugLog('Tracking game completion: ' + gameType);
+                
+                // Create the form data for submission
+                const formData = new FormData();
+                formData.append('game_type', gameType);
+                formData.append('score', score);
+                formData.append('level', level);
+                formData.append('completion_percentage', completionPercentage);
+                formData.append('csrfmiddlewaretoken', getCsrfToken());
+                
+                // Submit progress data to server
+                fetch('/api/learning/track-game-progress/', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'same-origin'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    debugLog('Game progress tracked successfully');
+                    
+                    // Show badges/achievements earned if any
+                    if (data.badges_earned && data.badges_earned.length > 0) {
+                        this.showAchievementNotification('badge', data.badges_earned);
+                    }
+                    
+                    // Show certifications earned if any
+                    if (data.certifications_earned && data.certifications_earned.length > 0) {
+                        this.showAchievementNotification('certification', data.certifications_earned);
+                    }
+                    
+                    // Show skill progress if any
+                    if (data.skills_updated && data.skills_updated.length > 0) {
+                        this.showSkillProgressNotification(data.skills_updated);
+                    }
+                })
+                .catch(error => {
+                    debugLog('Error tracking game progress: ' + error.message);
+                    // Still record progress locally if server fails
+                    this.recordLocalProgress(gameType, score, level);
+                });
+            } catch (error) {
+                debugLog('Error in trackGameCompletion: ' + error.message);
+            }
+        },
+        
+        // Track skill progress based on game type
+        trackSkillProgress: function(gameType, score) {
+            try {
+                // Map game types to skills
+                const gameSkillMap = {
+                    'quiz': ['knowledge', 'recall', 'critical_thinking'],
+                    'memory': ['memory', 'pattern_recognition', 'focus'],
+                    'word': ['language', 'vocabulary', 'spelling'],
+                    'math': ['mathematics', 'logical_reasoning', 'calculation'],
+                    'puzzle': ['problem_solving', 'logical_reasoning', 'critical_thinking'],
+                    'science': ['scientific_knowledge', 'analytical_thinking', 'curiosity']
+                };
+                
+                // Get skills for this game type
+                const skills = gameSkillMap[gameType] || [];
+                
+                if (skills.length > 0) {
+                    const formData = new FormData();
+                    formData.append('skills', JSON.stringify(skills));
+                    formData.append('score', score);
+                    formData.append('csrfmiddlewaretoken', getCsrfToken());
+                    
+                    // Submit skill progress data
+                    fetch('/api/learning/update-skills/', {
+                        method: 'POST',
+                        body: formData,
+                        credentials: 'same-origin'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        debugLog('Skill progress updated: ' + JSON.stringify(data));
+                    })
+                    .catch(error => {
+                        debugLog('Error updating skills: ' + error.message);
+                    });
+                }
+            } catch (error) {
+                debugLog('Error in trackSkillProgress: ' + error.message);
+            }
+        },
+        
+        // Record progress locally if server is unavailable
+        recordLocalProgress: function(gameType, score, level) {
+            try {
+                let progressData = localStorage.getItem('gameProgress') || '{}';
+                progressData = JSON.parse(progressData);
+                
+                // Update or create game entry
+                if (!progressData[gameType]) {
+                    progressData[gameType] = {
+                        highScore: score,
+                        highestLevel: level,
+                        plays: 1,
+                        pendingSync: true
+                    };
+                } else {
+                    const gameData = progressData[gameType];
+                    gameData.highScore = Math.max(gameData.highScore, score);
+                    gameData.highestLevel = Math.max(gameData.highestLevel, level);
+                    gameData.plays += 1;
+                    gameData.pendingSync = true;
+                    progressData[gameType] = gameData;
+                }
+                
+                localStorage.setItem('gameProgress', JSON.stringify(progressData));
+                debugLog('Saved game progress locally');
+            } catch (error) {
+                debugLog('Error saving local progress: ' + error.message);
+            }
+        },
+        
+        // Show notification for earned badges or certifications
+        showAchievementNotification: function(type, items) {
+            try {
+                if (!items || items.length === 0) return;
+                
+                const container = document.createElement('div');
+                container.className = 'achievement-notification';
+                container.style.position = 'fixed';
+                container.style.top = '20px';
+                container.style.right = '20px';
+                container.style.maxWidth = '300px';
+                container.style.backgroundColor = '#fff';
+                container.style.borderRadius = '10px';
+                container.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+                container.style.zIndex = '9999';
+                container.style.overflow = 'hidden';
+                container.style.animation = 'slideIn 0.5s forwards';
+                
+                // Add animation keyframes
+                if (!document.getElementById('notification-animations')) {
+                    const style = document.createElement('style');
+                    style.id = 'notification-animations';
+                    const css = [
+                        "@keyframes slideIn {",
+                        "from { transform: translateX(100%); opacity: 0; }",
+                        "to { transform: translateX(0); opacity: 1; }",
+                        "}",
+                        "@keyframes fadeOut {",
+                        "from { opacity: 1; }",
+                        "to { opacity: 0; }",
+                        "}"
+                    ].join('\n');
+                    style.textContent = css;
+                    document.head.appendChild(style);
+                }
+                
+                // Header
+                const header = document.createElement('div');
+                header.style.backgroundColor = type === 'badge' ? '#4361ee' : '#2ec4b6';
+                header.style.color = 'white';
+                header.style.padding = '10px 15px';
+                header.style.fontWeight = 'bold';
+                header.textContent = type === 'badge' ? 'New Badge Earned!' : 'Certification Earned!';
+                container.appendChild(header);
+                
+                // Content
+                const content = document.createElement('div');
+                content.style.padding = '15px';
+                
+                items.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'mb-2 pb-2';
+                    itemDiv.style.borderBottom = '1px solid #eee';
+                    
+                    const icon = document.createElement('i');
+                    icon.className = item.icon || (type === 'badge' ? 'fas fa-medal' : 'fas fa-certificate');
+                    icon.style.marginRight = '10px';
+                    icon.style.color = type === 'badge' ? '#ffd700' : '#2ec4b6';
+                    
+                    const title = document.createElement('span');
+                    title.style.fontWeight = 'bold';
+                    title.textContent = item.name;
+                    
+                    const desc = document.createElement('p');
+                    desc.className = 'small text-muted mb-0 mt-1';
+                    desc.textContent = item.description;
+                    
+                    itemDiv.appendChild(icon);
+                    itemDiv.appendChild(title);
+                    itemDiv.appendChild(document.createElement('br'));
+                    itemDiv.appendChild(desc);
+                    
+                    content.appendChild(itemDiv);
+                });
+                
+                container.appendChild(content);
+                
+                // Add to document
+                document.body.appendChild(container);
+                
+                // Remove after 5 seconds
+                setTimeout(() => {
+                    container.style.animation = 'fadeOut 0.5s forwards';
+                    setTimeout(() => container.remove(), 500);
+                }, 5000);
+                
+            } catch (error) {
+                debugLog('Error showing achievement notification: ' + error.message);
+            }
+        },
+        
+        // Show notification for skill progress
+        showSkillProgressNotification: function(skills) {
+            try {
+                if (!skills || skills.length === 0) return;
+                
+                const container = document.createElement('div');
+                container.className = 'skill-notification';
+                container.style.position = 'fixed';
+                container.style.bottom = '20px';
+                container.style.left = '20px';
+                container.style.maxWidth = '300px';
+                container.style.backgroundColor = '#fff';
+                container.style.borderRadius = '10px';
+                container.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+                container.style.zIndex = '9999';
+                container.style.padding = '15px';
+                container.style.animation = 'slideUp 0.5s forwards';
+                
+                // Add animation keyframes if not already added
+                if (!document.getElementById('notification-animations-skill')) {
+                    const style = document.createElement('style');
+                    style.id = 'notification-animations-skill';
+                    const css = [
+                        "@keyframes slideUp {",
+                        "from { transform: translateY(100%); opacity: 0; }",
+                        "to { transform: translateY(0); opacity: 1; }",
+                        "}",
+                        "@keyframes fadeOut {",
+                        "from { opacity: 1; }",
+                        "to { opacity: 0; }",
+                        "}"
+                    ].join('\n');
+                    style.textContent = css;
+                    document.head.appendChild(style);
+                }
+                
+                // Header
+                const header = document.createElement('div');
+                header.style.fontWeight = 'bold';
+                header.style.marginBottom = '10px';
+                header.textContent = 'Skills Improved!';
+                container.appendChild(header);
+                
+                // Skills list
+                skills.forEach(skill => {
+                    const skillDiv = document.createElement('div');
+                    skillDiv.className = 'mb-2';
+                    
+                    const skillName = document.createElement('div');
+                    skillName.className = 'd-flex justify-content-between align-items-center';
+                    
+                    const nameSpan = document.createElement('span');
+                    nameSpan.textContent = skill.name;
+                    
+                    const levelSpan = document.createElement('span');
+                    levelSpan.className = 'badge bg-info';
+                    levelSpan.textContent = `Level ${skill.level}`;
+                    
+                    skillName.appendChild(nameSpan);
+                    skillName.appendChild(levelSpan);
+                    skillDiv.appendChild(skillName);
+                    
+                    // Progress bar
+                    const progressContainer = document.createElement('div');
+                    progressContainer.className = 'progress mt-1';
+                    progressContainer.style.height = '10px';
+                    
+                    const progressBar = document.createElement('div');
+                    progressBar.className = 'progress-bar bg-success';
+                    progressBar.style.width = `${skill.progress * 100}%`;
+                    
+                    progressContainer.appendChild(progressBar);
+                    skillDiv.appendChild(progressContainer);
+                    
+                    container.appendChild(skillDiv);
+                });
+                
+                // Add to document
+                document.body.appendChild(container);
+                
+                // Remove after 4 seconds
+                setTimeout(() => {
+                    container.style.animation = 'fadeOut 0.5s forwards';
+                    setTimeout(() => container.remove(), 500);
+                }, 4000);
+                
+            } catch (error) {
+                debugLog('Error showing skill notification: ' + error.message);
+            }
+        },
+        
+        // Get CSRF token
+        getCsrfToken: function() {
+            const csrfCookie = document.cookie.match(/csrftoken=([^;]+)/);
+            return csrfCookie ? csrfCookie[1] : '';
+        }
+    };
+    
+    // Helper function to get CSRF token
+    function getCsrfToken() {
+        return gameProgressAPI.getCsrfToken();
+    }
+    
+    // Add game completion tracking to each game type
+    document.addEventListener('DOMContentLoaded', function() {
+        // Override existing game completion functions to add progress tracking
+        
+        // Track Quiz completion
+        const originalFinishQuiz = window.finishQuiz || function() {};
+        window.finishQuiz = function() {
+            // Call original function first
+            originalFinishQuiz.apply(this, arguments);
+            
+            // Track progress
+            gameProgressAPI.trackGameCompletion('quiz', quizScore, 1);
+            gameProgressAPI.trackSkillProgress('quiz', quizScore);
+            
+            debugLog('Quiz completion tracked');
+        };
+        
+        // Track Memory Game completion
+        const memoryBoardElement = document.getElementById('memoryBoard');
+        if (memoryBoardElement) {
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList' && 
+                        mutation.target.id === 'memoryBoard' && 
+                        mutation.addedNodes.length > 0) {
+                        
+                        // Check if completion screen was added
+                        const completionElements = memoryBoardElement.querySelectorAll('.memory-complete-container');
+                        if (completionElements.length > 0) {
+                            // Extract score from completion screen
+                            const timeElement = memoryBoardElement.querySelector('[data-stat="time"]');
+                            const movesElement = memoryBoardElement.querySelector('[data-stat="moves"]');
+                            
+                            const timeScore = timeElement ? parseInt(timeElement.textContent) : 0;
+                            const moves = movesElement ? parseInt(movesElement.textContent) : 0;
+                            
+                            // Calculate score (lower moves and time is better)
+                            const baseScore = 1000;
+                            const timeDeduction = timeScore > 0 ? Math.min(500, timeScore * 2) : 0;
+                            const movesDeduction = moves > 0 ? Math.min(400, moves * 10) : 0;
+                            const finalScore = Math.max(100, baseScore - timeDeduction - movesDeduction);
+                            
+                            // Track progress
+                            gameProgressAPI.trackGameCompletion('memory', finalScore, 1);
+                            gameProgressAPI.trackSkillProgress('memory', finalScore);
+                            
+                            debugLog('Memory game completion tracked');
+                        }
+                    }
+                });
+            });
+            
+            observer.observe(memoryBoardElement, { childList: true, subtree: true });
+        }
+        
+        // Track Word Game completion when implemented
+        if (typeof wordScore !== 'undefined') {
+            const originalWordGameComplete = window.completeWordGame || function() {};
+            window.completeWordGame = function() {
+                originalWordGameComplete.apply(this, arguments);
+                
+                gameProgressAPI.trackGameCompletion('word', wordScore, level);
+                gameProgressAPI.trackSkillProgress('word', wordScore);
+                
+                debugLog('Word game completion tracked');
+            };
+        }
+        
+        // Track Puzzle Game completion when implemented
+        if (typeof score !== 'undefined' && document.getElementById('puzzleGame')) {
+            const originalFinishPuzzle = window.finishPuzzleGame || function() {};
+            window.finishPuzzleGame = function() {
+                originalFinishPuzzle.apply(this, arguments);
+                
+                gameProgressAPI.trackGameCompletion('puzzle', score, level);
+                gameProgressAPI.trackSkillProgress('puzzle', score);
+                
+                debugLog('Puzzle game completion tracked');
+            };
+        }
+        
+        // Similar tracking for other game types
+        debugLog('Game progress tracking initialized');
+    });
+</script>
+
+<!-- Add CSS for memory card flip animation -->
+<style>
+    .pulse-animation {
+        animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+    
+    .memory-board {
+        background: rgba(255,255,255,0.8);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .memory-card {
+        perspective: 1000px;
+        cursor: pointer;
+        margin-bottom: 15px;
+        transition: transform 0.3s ease;
+        height: 140px;
+        display: block;
+        width: 100%;
+    }
+    
+    .memory-card:hover:not(.flipped) {
+        transform: translateY(-5px) scale(1.02);
+        filter: brightness(1.1);
+    }
+    
+    .memory-card-inner {
+        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transform-style: preserve-3d;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border-radius: 12px;
+        background-color: #ffffff;
+    }
+    
+    .memory-card.flipped .memory-card-inner {
+        transform: rotateY(180deg);
+    }
+    
+    .memory-card-front, .memory-card-back {
+        backface-visibility: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .memory-card-front {
+        z-index: 2;
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        border: 4px solid #fff;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+    }
+    
+    .memory-card-back {
+        transform: rotateY(180deg);
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border: 4px solid #fff;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .memory-card-back span.fw-bold {
+        font-size: 1rem;
+        padding: 5px 10px;
+        background-color: rgba(255,255,255,0.7);
+        border-radius: 5px;
+        max-width: 100%;
+        overflow-wrap: break-word;
+        text-align: center;
+    }
+    
+    .memory-card-back i {
+        font-size: 2.5rem !important;
+    }
+    
+    .memory-card.matched .memory-card-inner {
+        box-shadow: 0 0 15px 5px rgba(46, 204, 113, 0.7);
+        animation: pulse-match 1.5s infinite;
+    }
+    
+    @keyframes pulse-match {
+        0% { box-shadow: 0 0 5px 2px rgba(46, 204, 113, 0.7); }
+        50% { box-shadow: 0 0 15px 5px rgba(46, 204, 113, 0.7); }
+        100% { box-shadow: 0 0 5px 2px rgba(46, 204, 113, 0.7); }
+    }
+    
+    .memory-stats {
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        margin-bottom: 20px;
+    }
+    
+    .memory-game-title {
+        color: #2575fc;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        font-weight: 700;
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+    }
+    
+    .memory-game-subtitle {
+        color: #6c757d;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+    
+    .game-play-area {
+        transition: all 0.3s ease;
+    }
+    
+    .hover-lift {
+        transition: transform 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+        transform: translateY(-5px);
+    }
+    
+    .achievement-badge {
+        display: inline-block;
+        animation: badge-glow 2s infinite alternate;
+    }
+    
+    @keyframes badge-glow {
+        from { box-shadow: 0 0 5px gold; }
+        to { box-shadow: 0 0 20px gold; }
+    }
+    
+    /* Modal styles for fallback implementation */
+    .modal.show {
+        display: block;
+        background: rgba(0,0,0,0.5);
+    }
+    
+    /* Memory Game enhanced styles */
+    .bounce-animation {
+        animation: bounce 2s infinite;
+    }
+    
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+        40% {transform: translateY(-20px);}
+        60% {transform: translateY(-10px);}
+    }
+    
+    .memory-complete-title {
+        background: linear-gradient(to right, #396afc, #2948ff);
+        
+        -webkit-text-fill-color: transparent;
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+    
+    .memory-complete-container {
+        animation: fadeInUp 0.8s;
+    }
+    
+    .memory-stats-card {
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        overflow: hidden;
+        animation: fadeIn 1s;
+    }
+    
+    .memory-final-stats {
+        border-radius: 10px;
+        background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    }
+    
+    .memory-final-stats i {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+    }
+    
+    .pulse-button {
+        animation: pulse-button 1.5s infinite;
+    }
+    
+    @keyframes pulse-button {
+        0% {transform: scale(1);}
+        50% {transform: scale(1.05);}
+        100% {transform: scale(1);}
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translate3d(0, 50px, 0);
+        }
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+    
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+    
+    .timer-badge {
+        animation: timer-pulse 1s infinite alternate;
+    }
+    
+    @keyframes timer-pulse {
+        from {opacity: 0.8;}
+        to {opacity: 1;}
+    }
+    
+    /* Additional responsive styles for memory game */
+    @media (max-width: 768px) {
+        .memory-card {
+            height: 120px;
+        }
+        
+        .memory-stats {
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .memory-board {
+            padding: 10px !important;
+        }
+        
+        .memory-card-front i.fa-question {
+            font-size: 2.5rem !important;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .memory-card {
+            height: 80px;
+        }
+        
+        .memory-card-front i.fa-question {
+            font-size: 1.8rem !important;
+        }
+        
+        .memory-card-back span.fw-bold {
+            font-size: 0.8rem !important;
+        }
+    }
+</style>
+{% endblock %}
+</body>
+</html>

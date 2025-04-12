@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - VidyAI++{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Welcome Message -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-2 text-center">
+                    {% if profile.avatar %}
+                    <img src="{{ profile.avatar.url }}" alt="{{ user.username }}" class="rounded-circle img-thumbnail mb-3" style="width: 100px; height: 100px; object-fit: cover;">
+                    {% else %}
+                    <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center mb-3 mx-auto" style="width: 100px; height: 100px;">
+                        <span class="text-white display-4">{{ user.username.0|upper }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-10">
+                    <h4>{{ welcome_message }}</h4>
+                    <div class="d-flex mt-3">
+                        <div class="me-4">
+                            <i class="fas fa-trophy text-warning"></i> <strong>Points:</strong> {{ profile.points }}
+                        </div>
+                        <div class="me-4">
+                            <i class="fas fa-fire text-danger"></i> <strong>Streak:</strong> {{ profile.streak_days }} days
+                        </div>
+                        <div>
+                            <i class="fas fa-graduation-cap text-primary"></i> <strong>Grade:</strong> {{ profile.grade }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Dashboard Content -->
+    <div class="row">
+        <!-- AI Tutor Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-robot text-primary me-2"></i> AI Tutor</h5>
+                    <a href="{% url 'tutor:tutor_home' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="card-body">
+                    <p>Get personalized learning assistance with our AI tutor.</p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'tutor:ai_chat' %}" class="btn btn-primary">
+                            <i class="fas fa-comment-dots me-2"></i> Start a New Chat
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mentors Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-chalkboard-teacher text-success me-2"></i> Mentors</h5>
+                    <a href="{% url 'mentor:mentor_home' %}" class="btn btn-sm btn-outline-success">View All</a>
+                </div>
+                <div class="card-body">
+                    <p>Connect with human mentors for personalized guidance.</p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'mentor:find_mentor' %}" class="btn btn-success">
+                            <i class="fas fa-search me-2"></i> Find a Mentor
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Learning Games Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-gamepad text-danger me-2"></i> Learning Games</h5>
+                    <a href="{% url 'learning:learning_home' %}" class="btn btn-sm btn-outline-danger">View All</a>
+                </div>
+                <div class="card-body">
+                    <p>Learn through fun and interactive educational games.</p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'learning:learning_games' %}" class="btn btn-danger">
+                            <i class="fas fa-dice me-2"></i> Play Games
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Academic Progress -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-chart-line text-primary me-2"></i> Your Academic Progress</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for progress in subject_progress %}
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ progress.subject.name }}</h6>
+                                    <div class="progress mb-2">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: {{ progress.proficiency_level }}0%;" aria-valuenow="{{ progress.proficiency_level }}" aria-valuemin="0" aria-valuemax="10">
+                                            Level {{ progress.proficiency_level }}/10
+                                        </div>
+                                    </div>
+                                    <p class="card-text small">Last activity: {{ progress.last_activity|date:"d M, Y" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12 text-center py-4">
+                            <p>You haven't started learning any subjects yet.</p>
+                            <a href="{% url 'tutor:subjects' %}" class="btn btn-primary">
+                                <i class="fas fa-book me-2"></i> Explore Subjects
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recommended Content -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-lightbulb text-warning me-2"></i> Recommended for You</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-brain text-primary mb-3" style="font-size: 2rem;"></i>
+                                    <h6>Complete Learning Style Assessment</h6>
+                                    <p class="small">Find out if you're a visual, auditory, or kinesthetic learner</p>
+                                    <a href="{% url 'learning:learning_style' %}" class="btn btn-sm btn-outline-primary">Start Assessment</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-book-reader text-success mb-3" style="font-size: 2rem;"></i>
+                                    <h6>Explore Mathematics Lessons</h6>
+                                    <p class="small">Interactive lessons on arithmetic, algebra, and geometry</p>
+                                    <a href="{% url 'tutor:lessons' %}" class="btn btn-sm btn-outline-success">View Lessons</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-puzzle-piece text-danger mb-3" style="font-size: 2rem;"></i>
+                                    <h6>Try Science Quiz Games</h6>
+                                    <p class="small">Fun quizzes to test your knowledge of science concepts</p>
+                                    <a href="{% url 'tutor:quizzes' %}" class="btn btn-sm btn-outline-danger">Play Quizzes</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

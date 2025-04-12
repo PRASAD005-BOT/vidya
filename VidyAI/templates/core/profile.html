@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - VidyAI++{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">My Profile</h5>
+                </div>
+                <div class="card-body text-center">
+                    {% if profile.avatar %}
+                    <img src="{{ profile.avatar.url }}" alt="Profile avatar" class="rounded-circle img-thumbnail mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                    {% else %}
+                    <div class="avatar-placeholder mb-3 mx-auto">
+                        <span>{{ request.user.first_name|first|upper }}{{ request.user.last_name|first|upper }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    <h4>{{ request.user.get_full_name|default:request.user.username }}</h4>
+                    <p class="text-muted">Student, Grade {{ profile.grade }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Edit Profile</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="avatar" class="form-label">Profile Picture</label>
+                            <input type="file" class="form-control" id="avatar" name="avatar">
+                            <small class="text-muted">Upload a new profile picture (optional)</small>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="first_name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" value="{{ request.user.first_name }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="last_name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" value="{{ request.user.last_name }}">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ request.user.email }}">
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="grade" class="form-label">Grade Level</label>
+                                <select class="form-select" id="grade" name="grade">
+                                    <option value="1" {% if profile.grade == '1' %}selected{% endif %}>Grade 1</option>
+                                    <option value="2" {% if profile.grade == '2' %}selected{% endif %}>Grade 2</option>
+                                    <option value="3" {% if profile.grade == '3' %}selected{% endif %}>Grade 3</option>
+                                    <option value="4" {% if profile.grade == '4' %}selected{% endif %}>Grade 4</option>
+                                    <option value="5" {% if profile.grade == '5' %}selected{% endif %}>Grade 5</option>
+                                    <option value="6" {% if profile.grade == '6' %}selected{% endif %}>Grade 6</option>
+                                    <option value="7" {% if profile.grade == '7' %}selected{% endif %}>Grade 7</option>
+                                    <option value="8" {% if profile.grade == '8' %}selected{% endif %}>Grade 8</option>
+                                    <option value="9" {% if profile.grade == '9' %}selected{% endif %}>Grade 9</option>
+                                    <option value="10" {% if profile.grade == '10' %}selected{% endif %}>Grade 10</option>
+                                    <option value="11" {% if profile.grade == '11' %}selected{% endif %}>Grade 11</option>
+                                    <option value="12" {% if profile.grade == '12' %}selected{% endif %}>Grade 12</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="learning_style" class="form-label">Learning Style</label>
+                                <select class="form-select" id="learning_style" name="learning_style">
+                                    <option value="visual" {% if profile.learning_style == 'visual' %}selected{% endif %}>Visual</option>
+                                    <option value="auditory" {% if profile.learning_style == 'auditory' %}selected{% endif %}>Auditory</option>
+                                    <option value="kinesthetic" {% if profile.learning_style == 'kinesthetic' %}selected{% endif %}>Kinesthetic</option>
+                                    <option value="balanced" {% if profile.learning_style == 'balanced' %}selected{% endif %}>Balanced</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="school_name" class="form-label">School Name</label>
+                            <input type="text" class="form-control" id="school_name" name="school_name" value="{{ profile.school_name }}">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="preferred_language" class="form-label">Preferred Language</label>
+                            <select class="form-select" id="preferred_language" name="preferred_language">
+                                <option value="en" {% if profile.preferred_language == 'en' %}selected{% endif %}>English</option>
+                                <option value="hi" {% if profile.preferred_language == 'hi' %}selected{% endif %}>Hindi</option>
+                                <option value="te" {% if profile.preferred_language == 'te' %}selected{% endif %}>Telugu</option>
+                                <option value="ta" {% if profile.preferred_language == 'ta' %}selected{% endif %}>Tamil</option>
+                                <option value="bn" {% if profile.preferred_language == 'bn' %}selected{% endif %}>Bengali</option>
+                                <option value="mr" {% if profile.preferred_language == 'mr' %}selected{% endif %}>Marathi</option>
+                                <option value="gu" {% if profile.preferred_language == 'gu' %}selected{% endif %}>Gujarati</option>
+                                <option value="kn" {% if profile.preferred_language == 'kn' %}selected{% endif %}>Kannada</option>
+                                <option value="ml" {% if profile.preferred_language == 'ml' %}selected{% endif %}>Malayalam</option>
+                                <option value="pa" {% if profile.preferred_language == 'pa' %}selected{% endif %}>Punjabi</option>
+                                <option value="or" {% if profile.preferred_language == 'or' %}selected{% endif %}>Odia</option>
+                            </select>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .avatar-placeholder {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: #6c757d;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2rem;
+    }
+</style>
+{% endblock %} 

@@ -1,0 +1,604 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>{% block title %}VidyAI++{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Animation CSS -->
+    <link href="{% static 'css/animations.css' %}" rel="stylesheet">
+    
+    <!-- Voice Recognition Helper -->
+    <script src="{% static 'js/voice-recognition.js' %}"></script>
+    
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
+            --success-color: #4cc9f0;
+            --warning-color: #ffbe0b;
+            --info-color: #4895ef;
+            --danger-color: #f94144;
+            --purple-color: #7209b7;
+            --pink-color: #f72585;
+            --orange-color: #fb8500;
+            --teal-color: #06d6a0;
+            --mint-color: #80ffdb;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f6f8fc;
+            color: #333;
+        }
+        
+        .navbar {
+            background: linear-gradient(90deg, var(--purple-color), var(--primary-color), var(--accent-color));
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+        
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            color: white !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            border: none;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background-color: rgba(67, 97, 238, 0.1);
+            border-bottom: 1px solid rgba(67, 97, 238, 0.2);
+            font-weight: 600;
+        }
+        
+        footer {
+            background: linear-gradient(135deg, var(--dark-color), var(--purple-color));
+            color: white;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+        
+        .display-image {
+            height: 400px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        /* Voice control button */
+        .voice-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color), var(--purple-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .voice-btn.active {
+            background: linear-gradient(135deg, #f44336, #e91e63);
+            box-shadow: 0 4px 20px rgba(244, 67, 54, 0.5);
+        }
+        
+        .voice-btn i {
+            font-size: 24px;
+            transition: transform 0.5s ease;
+        }
+        
+        .voice-btn i.rotate {
+            animation: pulse-rotate 1.5s infinite;
+        }
+        
+        @keyframes pulse-rotate {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(180deg); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+        
+        /* Accessibility features */
+        .accessibility-panel {
+            position: fixed;
+            top: 70px;
+            right: -250px;
+            width: 250px;
+            background-color: white;
+            border-radius: 15px 0 0 15px;
+            box-shadow: -2px 0 15px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            transition: right 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .accessibility-panel.visible {
+            right: 0;
+        }
+        
+        .accessibility-toggle {
+            position: absolute;
+            left: -40px;
+            top: 10px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--purple-color), var(--primary-color));
+            border-radius: 10px 0 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+        
+        /* User dropdown customization */
+        .dropdown-menu {
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: none;
+        }
+        
+        .dropdown-item {
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-item:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+            transform: translateX(5px);
+        }
+        
+        /* Section title styles */
+        .section-title {
+            position: relative;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+        }
+        
+        /* Alert customization */
+        .alert {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Custom progress bar */
+        .progress {
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            background-color: #e9ecef;
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="page-transition">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'core:home' %}">
+                <i class="fas fa-brain me-2 bounce"></i><span class="gradient-text">VidyAI++</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:home' %}"><i class="fas fa-home me-1"></i> Home</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:dashboard' %}"><i class="fas fa-tachometer-alt me-1"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tutor:tutor_home' %}"><i class="fas fa-robot me-1"></i> AI Tutor</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mentor:mentor_home' %}"><i class="fas fa-chalkboard-teacher me-1"></i> Mentors</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="learningDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-gamepad me-1"></i> Learning
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="learningDropdown">
+                            <li><a class="dropdown-item" href="{% url 'learning:learning_home' %}"><i class="fas fa-home me-1 text-primary"></i> Learning Home</a></li>
+                            <li><a class="dropdown-item" href="{% url 'learning:learning_games' %}"><i class="fas fa-dice me-1 text-success"></i> Learning Games</a></li>
+                            <li><a class="dropdown-item" href="{% url 'learning:skill_heatmap' %}"><i class="fas fa-th me-1 text-warning"></i> Skill Heatmap</a></li>
+                            <li><a class="dropdown-item" href="{% url 'learning:badges_showcase' %}"><i class="fas fa-award me-1 text-danger"></i> Badges & Certifications</a></li>
+                            <li><a class="dropdown-item" href="{% url 'learning:streak_stats' %}"><i class="fas fa-fire me-1 text-orange"></i> Streak Stats</a></li>
+                            <li><a class="dropdown-item" href="{% url 'learning:learning_stats' %}"><i class="fas fa-chart-line me-1 text-info"></i> Learning Stats</a></li>
+                            <li><a class="dropdown-item" href="{% url 'learning:learning_style' %}"><i class="fas fa-brain me-1 text-purple"></i> Learning Style</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:about' %}"><i class="fas fa-info-circle me-1"></i> About</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="btn btn-rainbow dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-1"></i> {{ user.username }}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end rainbow-border" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{% url 'core:profile' %}"><i class="fas fa-user-circle me-1 text-primary"></i> Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'core:logout' %}"><i class="fas fa-sign-out-alt me-1 text-danger"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'core:login' %}" class="btn btn-outline-light me-2 btn-animated"><i class="fas fa-sign-in-alt me-1"></i> Login</a>
+                    <a href="{% url 'core:register' %}" class="btn btn-light btn-glow"><i class="fas fa-user-plus me-1"></i> Register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Accessibility Panel -->
+    <div class="accessibility-panel" id="accessibilityPanel">
+        <div class="accessibility-toggle" onclick="toggleAccessibility()">
+            <i class="fas fa-universal-access"></i>
+        </div>
+        <h5 class="gradient-text">Accessibility Options</h5>
+        <div class="mb-3">
+            <label class="form-label">Text Size</label>
+            <div class="btn-group w-100" role="group">
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeFontSize(-1)">A-</button>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeFontSize(0)">Reset</button>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="changeFontSize(1)">A+</button>
+            </div>
+        </div>
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="highContrastMode" onchange="toggleHighContrast()">
+            <label class="form-check-label" for="highContrastMode">
+                High Contrast Mode
+            </label>
+        </div>
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="dyslexiaFont" onchange="toggleDyslexiaFont()">
+            <label class="form-check-label" for="dyslexiaFont">
+                Dyslexia-friendly Font
+            </label>
+        </div>
+        <button class="btn btn-sm btn-rainbow w-100" id="voiceCommandBtn">
+            <i class="fas fa-microphone me-1"></i> Voice Commands
+        </button>
+    </div>
+    
+    <!-- Voice Control Button -->
+    <div class="voice-btn" id="voiceBtn">
+        <i class="fas fa-microphone"></i>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        {% if messages %}
+        <div class="messages mt-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show slide-in-right card-animated" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 slide-in-left">
+                    <h5><i class="fas fa-brain me-2 pulse"></i><span class="gradient-text">VidyAI++</span></h5>
+                    <p>Making quality education accessible to all underprivileged students through AI and human mentorship.</p>
+                </div>
+                <div class="col-md-4 fade-in" style="animation-delay: 0.2s;">
+                    <h5 class="glow">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'core:home' %}" class="text-light hover-lift"><i class="fas fa-chevron-right me-1 text-info"></i> Home</a></li>
+                        <li><a href="{% url 'core:about' %}" class="text-light hover-lift"><i class="fas fa-chevron-right me-1 text-info"></i> About</a></li>
+                        {% if not user.is_authenticated %}
+                        <li><a href="{% url 'core:login' %}" class="text-light hover-lift"><i class="fas fa-chevron-right me-1 text-info"></i> Login</a></li>
+                        <li><a href="{% url 'core:register' %}" class="text-light hover-lift"><i class="fas fa-chevron-right me-1 text-info"></i> Register</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="col-md-4 slide-in-right">
+                    <h5 class="color-rotate">Contact Us</h5>
+                    <p><i class="fas fa-envelope me-2 text-warning"></i> support@vidyaiplus.org</p>
+                    <p><i class="fas fa-phone me-2 text-warning"></i> +91 123 456 7890</p>
+                    <div class="d-flex mt-3">
+                        <a href="#" class="text-light me-3 hover-grow"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-light me-3 hover-grow"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-light me-3 hover-grow"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-light hover-grow"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 <span class="gradient-text">VidyAI++</span> | All Rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Animation JS -->
+    <script src="{% static 'js/animations.js' %}"></script>
+    
+    <script>
+        // Accessibility Panel Toggle
+        function toggleAccessibility() {
+            const panel = document.getElementById('accessibilityPanel');
+            panel.classList.toggle('visible');
+        }
+        
+        // Font Size Controls
+        let currentFontSize = 0;
+        function changeFontSize(direction) {
+            const body = document.body;
+            currentFontSize += direction;
+            
+            if (currentFontSize < -2) currentFontSize = -2;
+            if (currentFontSize > 3) currentFontSize = 3;
+            
+            const fontSizeMap = {
+                '-2': '0.8rem',
+                '-1': '0.9rem',
+                '0': '1rem',
+                '1': '1.1rem',
+                '2': '1.2rem',
+                '3': '1.3rem'
+            };
+            
+            body.style.fontSize = fontSizeMap[currentFontSize];
+        }
+        
+        // High Contrast Mode
+        function toggleHighContrast() {
+            document.body.classList.toggle('high-contrast');
+            if (document.body.classList.contains('high-contrast')) {
+                document.documentElement.style.setProperty('--primary-color', '#ffcc00');
+                document.documentElement.style.setProperty('--secondary-color', '#ff8800');
+                document.body.style.backgroundColor = '#000';
+                document.body.style.color = '#fff';
+            } else {
+                document.documentElement.style.setProperty('--primary-color', '#4361ee');
+                document.documentElement.style.setProperty('--secondary-color', '#3a0ca3');
+                document.body.style.backgroundColor = '#f6f8fc';
+                document.body.style.color = '#333';
+            }
+        }
+        
+        // Dyslexia-friendly Font
+        function toggleDyslexiaFont() {
+            const dyslexiaFont = document.getElementById('dyslexiaFont').checked;
+            if (dyslexiaFont) {
+                document.body.style.fontFamily = 'Arial, sans-serif';
+                document.body.style.letterSpacing = '0.05em';
+                document.body.style.wordSpacing = '0.1em';
+                document.body.style.lineHeight = '1.6';
+            } else {
+                document.body.style.fontFamily = 'Poppins, sans-serif';
+                document.body.style.letterSpacing = 'normal';
+                document.body.style.wordSpacing = 'normal';
+                document.body.style.lineHeight = 'normal';
+            }
+        }
+        
+        // Voice Commands
+        document.getElementById('voiceBtn').addEventListener('click', function() {
+            // Initialize speech recognition
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            
+            if (!SpeechRecognition) {
+                showAnimatedNotification('Your browser does not support voice commands. Please try Chrome, Edge, or Safari.', 'warning');
+                return;
+            }
+            
+            try {
+                // Create new recognition instance
+                const recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US'; // Default to English
+                
+                // Show recording indicator
+                this.classList.add('active');
+                this.querySelector('i').classList.add('rotate');
+                showAnimatedNotification('Listening... speak a command', 'info');
+                
+                // Handle results
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript.toLowerCase().trim();
+                    console.log('Voice command recognized:', transcript);
+                    
+                    // Process commands
+                    if (transcript.includes('home') || transcript.includes('go home')) {
+                        showAnimatedNotification('Navigating to home page...', 'success');
+                        window.location.href = '/';
+                    } else if (transcript.includes('courses') || transcript.includes('lessons')) {
+                        showAnimatedNotification('Navigating to courses...', 'success');
+                        window.location.href = '/learning/courses/';
+                    } else if (transcript.includes('chat') || transcript.includes('tutor')) {
+                        showAnimatedNotification('Opening AI Tutor...', 'success');
+                        window.location.href = '/tutor/chat/';
+                    } else if (transcript.includes('games') || transcript.includes('play')) {
+                        showAnimatedNotification('Opening learning games...', 'success');
+                        window.location.href = '/learning/games/';
+                    } else if (transcript.includes('profile') || transcript.includes('account')) {
+                        showAnimatedNotification('Opening your profile...', 'success');
+                        window.location.href = '/accounts/profile/';
+                    } else if (transcript.includes('logout') || transcript.includes('sign out')) {
+                        showAnimatedNotification('Logging out...', 'success');
+                        window.location.href = '/accounts/logout/';
+                    } else if (transcript.includes('help') || transcript.includes('support')) {
+                        showAnimatedNotification('Opening help center...', 'success');
+                        window.location.href = '/help/';
+                    } else {
+                        showAnimatedNotification('Command not recognized. Try again.', 'warning');
+                    }
+                };
+                
+                // Handle end of recognition
+                recognition.onend = function() {
+                    document.getElementById('voiceBtn').classList.remove('active');
+                    document.getElementById('voiceBtn').querySelector('i').classList.remove('rotate');
+                };
+                
+                // Handle errors
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error:', event.error);
+                    document.getElementById('voiceBtn').classList.remove('active');
+                    document.getElementById('voiceBtn').querySelector('i').classList.remove('rotate');
+                    
+                    if (event.error === 'not-allowed') {
+                        showAnimatedNotification('Microphone access denied. Please allow microphone access.', 'error');
+                    } else if (event.error === 'no-speech') {
+                        showAnimatedNotification('No speech detected. Please try again.', 'warning');
+                    } else {
+                        showAnimatedNotification('Voice recognition error. Please try again.', 'error');
+                    }
+                };
+                
+                // Start recognition
+                recognition.start();
+                
+            } catch (error) {
+                console.error('Error initializing speech recognition:', error);
+                this.classList.remove('active');
+                if (this.querySelector('i').classList.contains('rotate')) {
+                    this.querySelector('i').classList.remove('rotate');
+                }
+                showAnimatedNotification('Error starting voice recognition. Please try again.', 'error');
+            }
+        });
+        
+        // Function to show animated notifications
+        function showAnimatedNotification(message, type = 'info') {
+            // Create notification element if it doesn't exist
+            let notification = document.getElementById('animated-notification');
+            if (!notification) {
+                notification = document.createElement('div');
+                notification.id = 'animated-notification';
+                notification.style.position = 'fixed';
+                notification.style.top = '20px';
+                notification.style.right = '20px';
+                notification.style.padding = '15px 20px';
+                notification.style.borderRadius = '5px';
+                notification.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+                notification.style.zIndex = '9999';
+                notification.style.transition = 'all 0.3s ease';
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(-20px)';
+                document.body.appendChild(notification);
+            }
+            
+            // Set notification type
+            switch(type) {
+                case 'success':
+                    notification.style.backgroundColor = '#4CAF50';
+                    notification.style.color = 'white';
+                    break;
+                case 'warning':
+                    notification.style.backgroundColor = '#FF9800';
+                    notification.style.color = 'white';
+                    break;
+                case 'error':
+                    notification.style.backgroundColor = '#F44336';
+                    notification.style.color = 'white';
+                    break;
+                case 'info':
+                default:
+                    notification.style.backgroundColor = '#2196F3';
+                    notification.style.color = 'white';
+                    break;
+            }
+            
+            // Set message
+            notification.textContent = message;
+            
+            // Show notification
+            setTimeout(() => {
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateY(0)';
+            }, 10);
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(-20px)';
+            }, 3000);
+        }
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

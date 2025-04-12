@@ -1,0 +1,742 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Learning Statistics | VidyAI++{% endblock %}
+
+{% block extra_css %}
+<style>
+    .stats-card {
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 100%;
+        border: none;
+    }
+    
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .stats-icon {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        background: linear-gradient(45deg, #4361ee, #3a0ca3);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+    
+    .progress-circle {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 20px;
+    }
+    
+    .progress-circle__svg {
+        transform: rotate(-90deg);
+    }
+    
+    .progress-circle__circle {
+        stroke-dasharray: 283;
+        stroke-dashoffset: 283;
+        fill: none;
+        stroke-width: 10px;
+        stroke-linecap: round;
+    }
+    
+    .progress-circle__circle--bg {
+        stroke: #e9ecef;
+    }
+    
+    .progress-circle__circle--progress {
+        transition: stroke-dashoffset 1s ease-in-out;
+    }
+    
+    .progress-circle__text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    
+    .color-primary {
+        stroke: #4361ee;
+    }
+    
+    .color-success {
+        stroke: #4cc9f0;
+    }
+    
+    .color-warning {
+        stroke: #f72585;
+    }
+    
+    .color-info {
+        stroke: #7209b7;
+    }
+    
+    .skill-progress {
+        height: 10px;
+        border-radius: 5px;
+        overflow: hidden;
+        background-color: #e9ecef;
+        margin-bottom: 5px;
+    }
+    
+    .progress-xs {
+        height: 5px;
+    }
+    
+    .chart-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+    }
+    
+    .metrics-card {
+        transition: all 0.3s ease;
+    }
+    
+    .metrics-card:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .topic-badge {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+        border-radius: 20px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        display: inline-block;
+        background-color: rgba(67, 97, 238, 0.1);
+        color: #4361ee;
+    }
+    
+    .timeline {
+        position: relative;
+        padding-left: 30px;
+    }
+    
+    .timeline:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 2px;
+        height: 100%;
+        background-color: #e9ecef;
+    }
+    
+    .timeline-item {
+        position: relative;
+        padding-bottom: 25px;
+    }
+    
+    .timeline-item:last-child {
+        padding-bottom: 0;
+    }
+    
+    .timeline-point {
+        position: absolute;
+        left: -39px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: #4361ee;
+        border: 3px solid #fff;
+        box-shadow: 0 0 0 2px #4361ee;
+        z-index: 1;
+    }
+    
+    .improvement-indicator {
+        display: inline-flex;
+        align-items: center;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 4px;
+    }
+    
+    .improvement-up {
+        color: #28a745;
+        background-color: rgba(40, 167, 69, 0.1);
+    }
+    
+    .improvement-down {
+        color: #dc3545;
+        background-color: rgba(220, 53, 69, 0.1);
+    }
+    
+    .category-pill {
+        display: inline-block;
+        border-radius: 20px;
+        padding: 4px 12px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        font-size: 0.8rem;
+        color: white;
+    }
+    
+    .category-quiz {
+        background-color: #4361ee;
+    }
+    
+    .category-practice {
+        background-color: #f72585;
+    }
+    
+    .category-challenge {
+        background-color: #7209b7;
+    }
+    
+    .category-completion {
+        background-color: #4cc9f0;
+    }
+    
+    .leaderboard-user {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .leaderboard-user:last-child {
+        border-bottom: none;
+    }
+    
+    .leaderboard-rank {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: #f8f9fa;
+        margin-right: 15px;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+    
+    .leaderboard-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: 15px;
+    }
+    
+    .leaderboard-info {
+        flex: 1;
+    }
+    
+    .rank-1 {
+        background-color: #ffd700;
+        color: #212529;
+    }
+    
+    .rank-2 {
+        background-color: #c0c0c0;
+        color: #212529;
+    }
+    
+    .rank-3 {
+        background-color: #cd7f32;
+        color: #212529;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card card-animated bg-gradient-blue text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h2 class="mb-0"><i class="fas fa-chart-line me-2 bounce"></i> Learning Statistics</h2>
+                            <p class="mb-0">Track your learning progress and achievements</p>
+                        </div>
+                        <div class="text-end">
+                            <div class="dropdown">
+                                <button class="btn btn-outline-light dropdown-toggle" type="button" id="timeRangeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Last 30 Days
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="timeRangeDropdown">
+                                    <li><a class="dropdown-item" href="#">Last 7 Days</a></li>
+                                    <li><a class="dropdown-item" href="#">Last 30 Days</a></li>
+                                    <li><a class="dropdown-item" href="#">Last 90 Days</a></li>
+                                    <li><a class="dropdown-item" href="#">All Time</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Key Metrics -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3 mb-md-0">
+            <div class="card stats-card card-animated">
+                <div class="card-body text-center">
+                    <div class="stats-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="counter">{{ total_points }}</h3>
+                    <p class="text-muted mb-0">Total Points Earned</p>
+                    <div class="mt-2">
+                        <span class="improvement-indicator improvement-up">
+                            <i class="fas fa-arrow-up me-1"></i> {{ points_increase_percent }}%
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-3 mb-md-0">
+            <div class="card stats-card card-animated">
+                <div class="card-body text-center">
+                    <div class="stats-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3 class="counter">{{ completed_activities }}</h3>
+                    <p class="text-muted mb-0">Completed Activities</p>
+                    <div class="mt-2">
+                        <span class="improvement-indicator improvement-up">
+                            <i class="fas fa-arrow-up me-1"></i> {{ activities_increase }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 mb-3 mb-md-0">
+            <div class="card stats-card card-animated">
+                <div class="card-body text-center">
+                    <div class="stats-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="counter">{{ total_hours_spent }}</h3>
+                    <p class="text-muted mb-0">Hours Spent Learning</p>
+                    <div class="mt-2">
+                        <span class="improvement-indicator improvement-up">
+                            <i class="fas fa-arrow-up me-1"></i> {{ hours_increase_percent }}%
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card stats-card card-animated">
+                <div class="card-body text-center">
+                    <div class="stats-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h3 class="counter">{{ mastery_level }}</h3>
+                    <p class="text-muted mb-0">Mastery Level</p>
+                    <div class="mt-2">
+                        <div class="progress skill-progress">
+                            <div class="progress-bar bg-primary mastery-progress-bar" role="progressbar" 
+                                 aria-valuenow="{{ mastery_percentage }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100"></div>
+                        </div>
+                        <small class="text-muted">{{ mastery_points_current }}/{{ mastery_points_next }} points to level {{ mastery_level_next }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Progress Overview & Recent Activity -->
+    <div class="row mb-4">
+        <div class="col-md-7 mb-4 mb-md-0">
+            <div class="card card-animated h-100">
+                <div class="card-header bg-transparent">
+                    <h5 class="mb-0"><i class="fas fa-chart-bar me-2 text-primary"></i> Learning Progress</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="learningProgressChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-5">
+            <div class="card card-animated h-100">
+                <div class="card-header bg-transparent">
+                    <h5 class="mb-0"><i class="fas fa-history me-2 text-primary"></i> Recent Activity</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="p-3">
+                        <div class="timeline">
+                            {% for activity in recent_activities %}
+                            <div class="timeline-item">
+                                <div class="timeline-point"></div>
+                                <div class="d-flex align-items-center mb-1">
+                                    <h6 class="mb-0">{{ activity.title }}</h6>
+                                    <span class="ms-auto text-muted small">{{ activity.time_ago }}</span>
+                                </div>
+                                <p class="text-muted mb-0 small">{{ activity.description }}</p>
+                                <div class="mt-1">
+                                    <span class="category-pill category-{{ activity.category }}">{{ activity.category|title }}</span>
+                                    <span class="text-primary small">+{{ activity.points }} points</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-light text-center">
+                    <a href="{% url 'learning:learning_history' %}" class="btn btn-sm btn-outline-primary">View All Activity</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Skill Progress & Topic Distribution -->
+    <div class="row mb-4">
+        <div class="col-md-4 mb-4 mb-md-0">
+            <div class="card card-animated h-100">
+                <div class="card-header bg-transparent">
+                    <h5 class="mb-0"><i class="fas fa-brain me-2 text-primary"></i> Skill Progress</h5>
+                </div>
+                <div class="card-body">
+                    {% for skill in skills %}
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>{{ skill.name }}</span>
+                            <span class="text-primary">{{ skill.level }}/10</span>
+                        </div>
+                        <div class="progress skill-progress">
+                            <div class="progress-bar bg-{{ skill.color }} skill-progress-bar" role="progressbar" 
+                                 data-percentage="{{ skill.percentage }}"
+                                 aria-valuenow="{{ skill.percentage }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="card-footer bg-light text-center">
+                    <a href="{% url 'learning:skill_assessment' %}" class="btn btn-sm btn-outline-primary">Take Skill Assessment</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4 mb-md-0">
+            <div class="card card-animated h-100">
+                <div class="card-header bg-transparent">
+                    <h5 class="mb-0"><i class="fas fa-puzzle-piece me-2 text-primary"></i> Topic Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="topicDistributionChart"></canvas>
+                    </div>
+                </div>
+                <div class="card-footer bg-light p-3">
+                    <h6 class="mb-2">Top Topics</h6>
+                    <div>
+                        {% for topic in top_topics %}
+                        <span class="topic-badge">{{ topic.name }} ({{ topic.count }})</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card card-animated h-100">
+                <div class="card-header bg-transparent">
+                    <h5 class="mb-0"><i class="fas fa-bullseye me-2 text-primary"></i> Learning Goals</h5>
+                </div>
+                <div class="card-body">
+                    {% for goal in learning_goals %}
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span>{{ goal.name }}</span>
+                            <span class="badge bg-{{ goal.status_color }}">{{ goal.status }}</span>
+                        </div>
+                        <div class="progress skill-progress">
+                            <div class="progress-bar bg-{{ goal.color }} goal-progress-bar" role="progressbar" 
+                                 data-percentage="{{ goal.percentage }}"
+                                 aria-valuenow="{{ goal.percentage }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100"></div>
+                        </div>
+                        <small class="text-muted">{{ goal.progress_text }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="card-footer bg-light text-center">
+                    <a href="{% url 'learning:learning_goals' %}" class="btn btn-sm btn-outline-primary">Set New Goal</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Leaderboard & Completion Rates -->
+    <div class="row">
+        <div class="col-md-8 mb-4 mb-md-0">
+            <div class="card card-animated h-100">
+                <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-trophy me-2 text-warning"></i> Leaderboard</h5>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="leaderboardDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            This Month
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="leaderboardDropdown">
+                            <li><a class="dropdown-item" href="#">This Week</a></li>
+                            <li><a class="dropdown-item" href="#">This Month</a></li>
+                            <li><a class="dropdown-item" href="#">All Time</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="p-3">
+                        {% for user in leaderboard %}
+                        <div class="leaderboard-user">
+                            <div class="leaderboard-rank {% if user.rank <= 3 %}rank-{{ user.rank }}{% endif %}">{{ user.rank }}</div>
+                            <div class="leaderboard-avatar">
+                                <img src="{{ user.avatar }}" alt="{{ user.name }}" class="img-fluid">
+                            </div>
+                            <div class="leaderboard-info">
+                                <h6 class="mb-0">{{ user.name }}{% if user.is_you %} <span class="badge bg-primary ms-1">You</span>{% endif %}</h6>
+                                <div class="d-flex justify-content-between">
+                                    <small class="text-muted">{{ user.level }}</small>
+                                    <span class="text-primary">{{ user.points }} points</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="card-footer bg-light text-center">
+                    <a href="{% url 'learning:leaderboard' %}" class="btn btn-sm btn-outline-primary">View Full Leaderboard</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card card-animated h-100">
+                <div class="card-header bg-transparent">
+                    <h5 class="mb-0"><i class="fas fa-check-circle me-2 text-success"></i> Completion Rates</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col">
+                            <div class="progress-circle">
+                                <svg class="progress-circle__svg" width="120" height="120" viewBox="0 0 120 120">
+                                    <circle class="progress-circle__circle progress-circle__circle--bg" cx="60" cy="60" r="45"/>
+                                    <circle class="progress-circle__circle progress-circle__circle--progress color-primary quiz-progress-circle" 
+                                            cx="60" cy="60" r="45" 
+                                            data-rate="{{ quiz_completion_rate }}"/>
+                                </svg>
+                                <div class="progress-circle__text">{{ quiz_completion_rate }}%</div>
+                            </div>
+                            <h6>Quizzes</h6>
+                        </div>
+                        <div class="col">
+                            <div class="progress-circle">
+                                <svg class="progress-circle__svg" width="120" height="120" viewBox="0 0 120 120">
+                                    <circle class="progress-circle__circle progress-circle__circle--bg" cx="60" cy="60" r="45"/>
+                                    <circle class="progress-circle__circle progress-circle__circle--progress color-success challenge-progress-circle" 
+                                            cx="60" cy="60" r="45"
+                                            data-rate="{{ challenge_completion_rate }}"/>
+                                </svg>
+                                <div class="progress-circle__text">{{ challenge_completion_rate }}%</div>
+                            </div>
+                            <h6>Challenges</h6>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <h6>Completion Details</h6>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Quizzes Completed</span>
+                            <span>{{ quizzes_completed }}/{{ total_quizzes }}</span>
+                        </div>
+                        <div class="progress progress-xs mb-3">
+                            <div class="progress-bar bg-primary quiz-completion-bar" role="progressbar" 
+                                 data-rate="{{ quiz_completion_rate }}"
+                                 aria-valuenow="{{ quiz_completion_rate }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100"></div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Challenges Completed</span>
+                            <span>{{ challenges_completed }}/{{ total_challenges }}</span>
+                        </div>
+                        <div class="progress progress-xs">
+                            <div class="progress-bar bg-success challenge-completion-bar" role="progressbar" 
+                                 data-rate="{{ challenge_completion_rate }}"
+                                 aria-valuenow="{{ challenge_completion_rate }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize charts
+        initLearningProgressChart();
+        initTopicDistributionChart();
+        
+        // Set progress bar widths
+        document.querySelectorAll('.mastery-progress-bar').forEach(el => {
+            el.style.width = '{{ mastery_percentage }}%';
+        });
+        
+        document.querySelectorAll('.skill-progress-bar').forEach(el => {
+            el.style.width = el.dataset.percentage + '%';
+        });
+        
+        document.querySelectorAll('.goal-progress-bar').forEach(el => {
+            el.style.width = el.dataset.percentage + '%';
+        });
+        
+        document.querySelectorAll('.quiz-completion-bar').forEach(el => {
+            el.style.width = el.dataset.rate + '%';
+        });
+        
+        document.querySelectorAll('.challenge-completion-bar').forEach(el => {
+            el.style.width = el.dataset.rate + '%';
+        });
+        
+        // Set circle progress
+        document.querySelectorAll('.quiz-progress-circle').forEach(el => {
+            const rate = el.dataset.rate;
+            el.style.strokeDashoffset = 'calc(283 - (283 * ' + rate + ' / 100))';
+        });
+        
+        document.querySelectorAll('.challenge-progress-circle').forEach(el => {
+            const rate = el.dataset.rate;
+            el.style.strokeDashoffset = 'calc(283 - (283 * ' + rate + ' / 100))';
+        });
+        
+        // Animate numbers
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            const target = parseInt(counter.innerText);
+            let count = 0;
+            const duration = 2000; // 2 seconds
+            const increment = target / (duration / 16); // 60fps
+            
+            const updateCount = () => {
+                count += increment;
+                if (count < target) {
+                    counter.innerText = Math.ceil(count);
+                    requestAnimationFrame(updateCount);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+            
+            requestAnimationFrame(updateCount);
+        });
+    });
+    
+    function initLearningProgressChart() {
+        const ctx = document.getElementById('learningProgressChart').getContext('2d');
+        
+        // Sample data - replace with actual data from your context
+        const progressData = {
+            labels: JSON.parse('{{ progress_chart_labels|safe }}'),
+            datasets: [
+                {
+                    label: 'Points Earned',
+                    data: JSON.parse('{{ progress_chart_data|safe }}'),
+                    backgroundColor: 'rgba(67, 97, 238, 0.2)',
+                    borderColor: 'rgba(67, 97, 238, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(67, 97, 238, 1)',
+                    pointBorderColor: '#fff',
+                    pointRadius: 4,
+                    tension: 0.4
+                }
+            ]
+        };
+        
+        new Chart(ctx, {
+            type: 'line',
+            data: progressData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+    
+    function initTopicDistributionChart() {
+        const ctx = document.getElementById('topicDistributionChart').getContext('2d');
+        
+        // Sample data - replace with actual data from your context
+        const topicData = {
+            labels: JSON.parse('{{ topic_chart_labels|safe }}'),
+            datasets: [
+                {
+                    data: JSON.parse('{{ topic_chart_data|safe }}'),
+                    backgroundColor: [
+                        'rgba(67, 97, 238, 0.7)',
+                        'rgba(76, 201, 240, 0.7)',
+                        'rgba(114, 9, 183, 0.7)',
+                        'rgba(247, 37, 133, 0.7)',
+                        'rgba(58, 12, 163, 0.7)',
+                        'rgba(72, 149, 239, 0.7)'
+                    ],
+                    borderWidth: 1
+                }
+            ]
+        };
+        
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: topicData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+    }
+</script>
+{% endblock %} 
