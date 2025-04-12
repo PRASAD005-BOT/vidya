@@ -2,6 +2,7 @@
 
 ## Selected Domain
 Education Technology (EdTech) focusing on accessibility and personalized learning
+![home page](https://github.com/user-attachments/assets/cb30df60-498c-49a7-b2b8-9580fb7227bf)
 
 ## Problem Statement / Use Case
 To develop an inclusive, AI-powered educational platform that bridges the digital and educational divide for underprivileged students across India, providing personalized learning experiences in regional languages with real-time adaptation based on emotional and cognitive states.
