@@ -3,7 +3,7 @@ services:
   - type: web
     name: vidyai
     runtime: python
-    buildCommand: pip install -r requirements.txt && cd VidyAI && python manage.py collectstatic --no-input && python manage.py migrate
+    buildCommand: pip install -r requirements.txt && cd VidyAI && python manage.py collectstatic --no-input
     startCommand: cd VidyAI && gunicorn vidyai.wsgi:application
     envVars:
       - key: SECRET_KEY
@@ -18,10 +18,20 @@ services:
         fromDatabase:
           name: vidyai_db
           property: connectionString
+      - key: RENDER
+        value: "true"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: DEBUG 
+        value: "false"
+    autoDeploy: true
+    # Add post-deploy hooks to run migrations
+    postDeploy:
+      - command: cd VidyAI && python manage.py migrate
 
 # Database service for PostgreSQL
 databases:
   - name: vidyai_db
     plan: free
     databaseName: vidyai
-    user: vidyai 
+    user: vidyai
