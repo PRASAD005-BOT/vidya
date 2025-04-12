@@ -215,7 +215,8 @@ Voice Speech Multilanguage
 https://github.com/user-attachments/assets/e5bfacff-a5a1-4df8-9e2a-36f9ca6c65e5
 
 Quiz with Time Limit
-https://github.com/user-attachments/assets/2eb0cd7e-62d8-4d30-82af-4f8bd105d93b
+![quiz with time](https://github.com/user-attachments/assets/eb471011-f2e8-4457-81e5-71bedd90689d)
+
 
 Dark Mode Dashboard
 https://github.com/user-attachments/assets/ed24d5f0-7ad2-4386-b33d-9876aae08148
