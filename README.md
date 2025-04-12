@@ -160,7 +160,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ![home page](https://github.com/user-attachments/assets/cd9ee61d-0c78-4bed-ae55-3a876218dac2)
 
 ### 🌙 Night Vision (Dark Mode)
-![night visoin dark mode](https://github.com/user-attachments/assets/a2d1738-c79b-436e-827c-d57ed4f18889)
+![night visoin dark mode](https://github.com/user-attachments/assets/a2d1738d-c79b-436e-827c-d57ed4f18889)
 
 ### 👤 Profile Update
 ![profile update](https://github.com/user-attachments/assets/98d6b099-aefc-482a-90a8-e6726fad69b1)
