@@ -155,36 +155,48 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Django for the robust web framework
 - Bootstrap for the responsive design components
 - ##images
-- ![about](https://github.com/user-attachments/assets/02b6e184-16f6-4382-809d-45b4db74ff67)
+- ![home page](https://github.com/user-attachments/assets/cd9ee61d-0c78-4bed-ae55-3a876218dac2)
+- ![night visoin dark mode](https://github.com/user-attachments/assets/a2d1738d-c79b-436e-827c-d57ed4f18889)
+- ![profile update](https://github.com/user-attachments/assets/98d6b099-aefc-482a-90a8-e6726fad69b1)
+- ![dashboard](https://github.com/user-attachments/assets/04e7df37-51cd-444a-ab5a-e85ecc01e5ca)
+- ![dashboard2](https://github.com/user-attachments/assets/d5f03507-9aee-4cfa-b25b-c748a75a5ffe)
+- ![voice sppech mutlilanguage](https://github.com/user-attachments/assets/2d50bba0-b069-436f-a19d-2c8146a50c80)
+- ![multilang](https://github.com/user-attachments/assets/c15c3278-1a3a-4745-bba0-a8dfaf3ba210)
+- ![multi lang](https://github.com/user-attachments/assets/b9096ca9-1a0b-4607-9cbf-eefbdeddee0e)
+- ![Quiz](https://github.com/user-attachments/assets/4f78d0e1-fb6f-47e9-87f7-089a25b2d10a)
 - 
-![Analysis of quiz](https://github.com/user-attachments/assets/5ece7d2a-71ff-41bd-8375-1a78a4523747)
+-![quiz with time](https://github.com/user-attachments/assets/bf07a157-afd7-46bd-8f8d-2a422e17496d)
+-![Analysis of quiz](https://github.com/user-attachments/assets/5ece7d2a-71ff-41bd-8375-1a78a4523747)
+- ![about](https://github.com/user-attachments/assets/02b6e184-16f6-4382-809d-45b4db74ff67)
+- ![lessons creator](https://github.com/user-attachments/assets/82a24d49-aa7d-4e86-aa7d-564bf741d45c)
+- [video mentors](https://github.com/user-attachments/assets/2623e585-7be0-4ea0-a25f-a30e97c1eb0d)
+- [mentors](https://github.com/user-attachments/assets/9bea878a-f2dc-4523-8a9a-55140eed275b)
+
 ![automatic dout ask](https://github.com/user-attachments/assets/7b8c2886-82e0-4014-85a7-8da035e20224)
 
-![video mentors](https://github.com/user-attachments/assets/2623e585-7be0-4ea0-a25f-a30e97c1eb0d)
+![automatic dout ask](https://github.com/user-attachments/assets/08ed6a25-5d83-444a-bbac-3007c3493510)
 ![user analysis](https://github.com/user-attachments/assets/66592ce7-9a1c-4a88-9ab6-29eec5191045)
 ![streak](https://github.com/user-attachments/assets/53a8d3db-40ba-44cc-a986-6a45f527f727)
 ![streak status](https://github.com/user-attachments/assets/ef651a71-5364-4790-93e0-b0039e8b0e52)
-![Quiz](https://github.com/user-attachments/assets/4f78d0e1-fb6f-47e9-87f7-089a25b2d10a)
-![quiz with time](https://github.com/user-attachments/assets/bf07a157-afd7-46bd-8f8d-2a422e17496d)
-![profile update](https://github.com/user-attachments/assets/98d6b099-aefc-482a-90a8-e6726fad69b1)
-![night visoin dark mode](https://github.com/user-attachments/assets/a2d1738d-c79b-436e-827c-d57ed4f18889)
-![multilang](https://github.com/user-attachments/assets/c15c3278-1a3a-4745-bba0-a8dfaf3ba210)
-![multi lang](https://github.com/user-attachments/assets/b9096ca9-1a0b-4607-9cbf-eefbdeddee0e)
-![mentors](https://github.com/user-attachments/assets/9bea878a-f2dc-4523-8a9a-55140eed275b)
-![math puzzeles](https://github.com/user-attachments/assets/480f41a8-1f41-4112-92c4-e51309254866)
-![lessons creator](https://github.com/user-attachments/assets/82a24d49-aa7d-4e86-aa7d-564bf741d45c)
+![emotion detection](https://github.com/user-attachments/assets/e3804c8e-f8bd-4a31-ab7d-ddc4e1cb7f9e)
+![cam with emotions](https://github.com/user-attachments/assets/5bc9d307-d093-4e10-84cc-f2be4e7e1cbe)
+
 ![learning by quizzes](https://github.com/user-attachments/assets/86bfa73c-7a82-4d35-97a6-73818d5e7f37)
+
+![math puzzeles](https://github.com/user-attachments/assets/480f41a8-1f41-4112-92c4-e51309254866)
+
+
 ![learning by games](https://github.com/user-attachments/assets/9c2393e7-225f-435b-b9ad-57bee8eec91e)
 ![learn topics](https://github.com/user-attachments/assets/c0cbeb20-84b9-4ee9-a4e2-adcb012d6460)
-![home page](https://github.com/user-attachments/assets/cd9ee61d-0c78-4bed-ae55-3a876218dac2)
+
 ![generate quiz](https://github.com/user-attachments/assets/97c9f74e-f3ac-44f1-9d3b-86f2c18c28bd)
 ![general knowledge](https://github.com/user-attachments/assets/8f54a180-9d44-40ba-890d-7a6ce2308a71)
-![emotion detection](https://github.com/user-attachments/assets/e3804c8e-f8bd-4a31-ab7d-ddc4e1cb7f9e)
-![dashboard2](https://github.com/user-attachments/assets/d5f03507-9aee-4cfa-b25b-c748a75a5ffe)
-![dashboard](https://github.com/user-attachments/assets/04e7df37-51cd-444a-ab5a-e85ecc01e5ca)
+
+
+
 ![correction of quiz](https://github.com/user-attachments/assets/51196624-49cf-40cb-ac84-a2a5469a146a)
 ![cerification and progress](https://github.com/user-attachments/assets/03ecef8b-799b-4641-9dfd-825deb5cd34b)
-![cam with emotions](https://github.com/user-attachments/assets/5bc9d307-d093-4e10-84cc-f2be4e7e1cbe)
-![automatic dout ask](https://github.com/user-attachments/assets/08ed6a25-5d83-444a-bbac-3007c3493510)
+
+
 ![word master](https://github.com/user-attachments/assets/f222b782-84d7-463a-995a-defa331baf92)
-![voice sppech mutlilanguage](https://github.com/user-attachments/assets/2d50bba0-b069-436f-a19d-2c8146a50c80)
+
